@@ -131,16 +131,15 @@
     text-transform: uppercase; color: var(--pink);
     margin-bottom: 14px;
   }
+
+  .message-text {
+    font-size: 15.5px; line-height: 1.85;
+    color: #333;
+    font-weight: 600;
+    min-height: 200px;
+  }
   .message-text p { margin-bottom: 14px; }
   .message-text p:last-child { margin-bottom: 0; }
-
-  .highlight {
-    background: linear-gradient(120deg, var(--yellow) 0%, var(--yellow) 100%);
-    background-repeat: no-repeat;
-    background-size: 100% 40%;
-    background-position: 0 85%;
-    padding: 0 2px;
-  }
 
   .koka-name {
     font-family: 'Fredoka One', cursive;
@@ -148,6 +147,21 @@
     color: var(--pink);
     display: block;
     margin-bottom: 12px;
+  }
+
+  /* Blinking cursor */
+  .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background: var(--pink);
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    animation: blink 0.7s step-end infinite;
+  }
+  @keyframes blink {
+    0%,100% { opacity: 1; }
+    50%      { opacity: 0; }
   }
 
   .badge {
@@ -224,56 +238,7 @@
 
   <div class="message-card">
     <div class="message-label">✨ A message just for you</div>
-    <div class="message-text">
-
-      <span class="koka-name">Dear KOKA,</span>
-
-      <p>
-        Okay first of all — <span class="highlight">YOU JUST SURVIVED YOUR FIRST EXAM!!</span> 🎉
-        Do you understand what that means?? That means you walked in there,
-        looked that exam dead in the eyes, and said "not today."
-        And honestly?? I would be SO proud of you right now.
-        Like actually genuinely proud.
-      </p>
-
-      <p>
-        I know you studied hard. I know there were moments where your brain
-        felt like it was running on 3% battery with low power mode on 😭
-        but look at you!! You did it anyway!! That's not luck, that's not magic —
-        that's just you being <span class="highlight">incredibly, annoyingly impressive</span> as always.
-      </p>
-
-      <p>
-        You know what SpongeBob always says — <em>"I'm ready!! I'm ready!! I'm ready!!"</em>
-        That was literally you walking into that exam. Maybe you didn't feel ready.
-        Maybe you thought you were gonna forget everything the second you sat down.
-        But here's the thing about you, KOKA — <span class="highlight">you always figure it out.</span>
-        You always do. Every single time.
-      </p>
-
-      <p>
-        The week isn't over yet, I know. There's still more exams coming at you
-         But I need you to remember something:
-        you've already proven today that you can handle it.
-        One down. And you're still standing. Still breathing. Still that girl. 💅
-      </p>
-
-      <p>
-        So tonight? Rest. Eat something good. Watch something silly.
-        Laugh a little. You've <span class="highlight">100% earned it.</span>
-        Tomorrow we go again — but right now, this moment is yours.
-      </p>
-
-      <p>
-        I'm rooting for you so hard.
-        You've got this whole week, KOKA. I know it. 🧽⭐
-      </p>
-
-      <p style="margin-top:18px; color: var(--pink); font-size:16px;">
-        <strong>Your biggest fan, always 🩷</strong>
-      </p>
-
-    </div>
+    <div class="message-text"></div>
   </div>
 
   <div class="badge">🏆 Exam #1: CONQUERED 🏆</div>
@@ -283,11 +248,11 @@
 <button class="music-btn" id="musicBtn" title="Play/pause music" onclick="toggleMusic()">🎵</button>
 
 <audio id="bgMusic" loop>
-  <!-- 🎵 REPLACE THIS with a direct link to your mp3 file -->
   <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg"/>
 </audio>
 
 <script>
+/* ── Confetti ── */
 const canvas = document.getElementById('confetti');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
@@ -342,6 +307,7 @@ function animate() {
 }
 animate();
 
+/* ── Floating stars ── */
 const starsEl = document.getElementById('stars');
 const starChars = ['⭐','🌟','✨','💫','🩷','🎀'];
 for (let i = 0; i < 18; i++) {
@@ -357,34 +323,38 @@ for (let i = 0; i < 18; i++) {
 
 /* ── Typewriter effect ── */
 const paragraphs = [
-  "Dear KOKA,",
-  "Okay first of all — YOU JUST SURVIVED YOUR FIRST EXAM!! 🎉 Do you understand what that means?? That means you walked in there, looked that exam dead in the eyes, and said \"not today.\" And honestly?? I would be SO proud of you right now. Like actually genuinely proud.
-  "I know you studied hard. I know there were moments where your brain felt like it was running on 3% battery with low power mode on 😭 but look at you!! You did it anyway!! That's not luck, that's not magic — that's just you being incredibly, annoyingly impressive as always.",
-  "You know what SpongeBob always says — \"I'm ready!! I'm ready!! I'm ready!!\" That was literally you walking into that exam. Maybe you didn't feel ready. Maybe you thought you were gonna forget everything the second you sat down. But here's the thing about you, KOKA — you always figure it out. You always do. Every single time.",
-  "The week isn't over yet, I know. There's still more exams coming at you But I need you to remember something: you've already proven today that you can handle it. One down. And you're still standing. Still breathing. Still that girl. 💅",
-  "So tonight? Rest. Eat something good. Watch something silly. Laugh a little. You've 100% earned it. Tomorrow we go again — but right now, this moment is yours.",
-  "I'm rooting for you so hard. You've got this whole week, KOKA. I know it.
-  Your biggest fan, always 🩷"
+  { text: "Dear KOKA,", type: "name" },
+  { text: "Okay first of all — YOU JUST SURVIVED YOUR FIRST EXAM!! 🎉 Do you understand what that means?? That means you walked in there, looked that exam dead in the eyes, and said \"not today.\" And honestly?? I would be SO proud of you right now. Like actually genuinely proud.", type: "p" },
+  { text: "I know you studied hard. I know there were moments where your brain felt like it was running on 3% battery with low power mode on 😭 but look at you!! You did it anyway!! That's not luck, that's not magic — that's just you being incredibly, annoyingly impressive as always.", type: "p" },
+  { text: "You know what SpongeBob always says — \"I'm ready!! I'm ready!! I'm ready!!\" That was literally you walking into that exam. Maybe you didn't feel ready. Maybe you thought you were gonna forget everything the second you sat down. But here's the thing about you, KOKA — you always figure it out. You always do. Every single time.", type: "p" },
+  { text: "The week isn't over yet, I know. There's still more exams coming at you. But I need you to remember something: you've already proven today that you can handle it. One down. And you're still standing. Still breathing. Still that girl. 💅", type: "p" },
+  { text: "So tonight? Rest. Eat something good. Watch something silly. Laugh a little. You've 100% earned it. Tomorrow we go again — but right now, this moment is yours.", type: "p" },
+  { text: "I'm rooting for you so hard. You've got this whole week, KOKA. I know it. 🧽⭐", type: "p" },
+  { text: "Your biggest fan, always 🩷", type: "last" }
 ];
 
 const messageText = document.querySelector('.message-text');
-messageText.innerHTML = '';
+const cursor = document.createElement('span');
+cursor.className = 'cursor';
 
-const SPEED = 18; // ms per character — lower = faster
+const SPEED = 18;
 let paraIndex = 0;
 let charIndex = 0;
 let currentEl = null;
 
 function typeNext() {
-  if (paraIndex >= paragraphs.length) return;
+  if (paraIndex >= paragraphs.length) {
+    cursor.remove();
+    return;
+  }
 
-  const text = paragraphs[paraIndex];
+  const { text, type } = paragraphs[paraIndex];
 
   if (charIndex === 0) {
-    if (paraIndex === 0) {
+    if (type === 'name') {
       currentEl = document.createElement('span');
       currentEl.className = 'koka-name';
-    } else if (paraIndex === paragraphs.length - 1) {
+    } else if (type === 'last') {
       currentEl = document.createElement('p');
       currentEl.style.marginTop = '18px';
       currentEl.style.color = 'var(--pink)';
@@ -393,15 +363,19 @@ function typeNext() {
       currentEl = document.createElement('p');
     }
     messageText.appendChild(currentEl);
+    currentEl.appendChild(cursor);
   }
 
   const char = text[charIndex];
+  cursor.remove();
+
   if (char === '\n') {
     currentEl.appendChild(document.createElement('br'));
   } else {
-    currentEl.innerHTML += char;
+    currentEl.insertAdjacentText('beforeend', char);
   }
 
+  currentEl.appendChild(cursor);
   charIndex++;
 
   if (charIndex < text.length) {
@@ -409,11 +383,10 @@ function typeNext() {
   } else {
     charIndex = 0;
     paraIndex++;
-    setTimeout(typeNext, 180); // pause between paragraphs
+    setTimeout(typeNext, 250);
   }
 }
 
-// Start typing after a short delay
 setTimeout(typeNext, 800);
 
 /* ── Music ── */
