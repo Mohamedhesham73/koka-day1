@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KOKA survived!! 🎉</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --yellow: #FFE566;
+    --pink: #FF6EB4;
+    --blue: #5BC8F5;
+    --green: #7FE87F;
+    --orange: #FFB347;
+    --purple: #C77DFF;
+    --bg: #FFF9F0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  .bg-blobs {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+  }
+  .blob {
+    position: absolute; border-radius: 50%;
+    opacity: 0.18; animation: drift 12s ease-in-out infinite;
+  }
+  .blob:nth-child(1)  { width:320px;height:320px;background:var(--pink);  top:-80px; left:-60px; animation-delay:0s; }
+  .blob:nth-child(2)  { width:250px;height:250px;background:var(--blue);  top:30%; right:-80px; animation-delay:-4s; }
+  .blob:nth-child(3)  { width:200px;height:200px;background:var(--yellow);bottom:20%;left:10%; animation-delay:-7s; }
+  .blob:nth-child(4)  { width:180px;height:180px;background:var(--purple);bottom:-60px;right:20%; animation-delay:-2s; }
+  .blob:nth-child(5)  { width:140px;height:140px;background:var(--green); top:55%;left:50%; animation-delay:-9s; }
+
+  @keyframes drift {
+    0%,100% { transform: translate(0,0) scale(1); }
+    33%      { transform: translate(20px,-25px) scale(1.05); }
+    66%      { transform: translate(-15px,15px) scale(0.96); }
+  }
+
+  #confetti { position:fixed;inset:0;pointer-events:none;z-index:999; }
+
+  .page {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 40px 22px 60px;
+    text-align: center;
+  }
+
+  .emoji-burst {
+    font-size: 52px; line-height: 1;
+    margin-bottom: 16px;
+    animation: pop 0.6s cubic-bezier(.36,1.56,.64,1) both;
+  }
+  @keyframes pop {
+    from { transform: scale(0) rotate(-15deg); opacity:0; }
+    to   { transform: scale(1) rotate(0deg);   opacity:1; }
+  }
+
+  .title {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(42px, 12vw, 72px);
+    line-height: 1.05;
+    margin-bottom: 6px;
+    background: linear-gradient(135deg, var(--pink) 0%, var(--purple) 50%, var(--blue) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: slideUp 0.7s 0.2s cubic-bezier(.36,1.56,.64,1) both;
+  }
+
+  .subtitle {
+    font-size: clamp(18px, 5vw, 26px);
+    font-weight: 800;
+    color: var(--orange);
+    margin-bottom: 28px;
+    animation: slideUp 0.7s 0.35s cubic-bezier(.36,1.56,.64,1) both;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(40px); opacity:0; }
+    to   { transform: translateY(0);    opacity:1; }
+  }
+
+  .stickers {
+    display: flex; gap: 10px; justify-content: center;
+    flex-wrap: wrap; margin-bottom: 28px;
+    animation: slideUp 0.7s 0.45s cubic-bezier(.36,1.56,.64,1) both;
+  }
+  .sticker {
+    background: white;
+    border-radius: 20px;
+    padding: 10px 16px;
+    font-size: 28px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.10);
+    animation: wiggle 3s ease-in-out infinite;
+  }
+  .sticker:nth-child(2) { animation-delay: -1s; }
+  .sticker:nth-child(3) { animation-delay: -2s; }
+  @keyframes wiggle {
+    0%,100% { transform: rotate(-4deg) scale(1); }
+    50%      { transform: rotate(4deg) scale(1.06); }
+  }
+
+  .message-card {
+    background: white;
+    border-radius: 28px;
+    padding: 28px 24px;
+    max-width: 480px; width: 100%;
+    box-shadow: 0 8px 40px rgba(255,110,180,0.15), 0 2px 12px rgba(0,0,0,0.07);
+    text-align: left;
+    animation: slideUp 0.8s 0.55s cubic-bezier(.36,1.56,.64,1) both;
+    position: relative; overflow: hidden;
+  }
+  .message-card::before {
+    content:'';
+    position:absolute; top:0; left:0; right:0; height:5px;
+    background: linear-gradient(90deg, var(--pink), var(--yellow), var(--blue), var(--green), var(--purple));
+  }
+
+  .message-label {
+    font-size: 11px; font-weight: 800; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--pink);
+    margin-bottom: 14px;
+  }
+
+  .message-text {
+    font-size: 15.5px; line-height: 1.85;
+    color: #333;
+    font-weight: 600;
+  }
+  .message-text p { margin-bottom: 14px; }
+  .message-text p:last-child { margin-bottom: 0; }
+
+  .highlight {
+    background: linear-gradient(120deg, var(--yellow) 0%, var(--yellow) 100%);
+    background-repeat: no-repeat;
+    background-size: 100% 40%;
+    background-position: 0 85%;
+    padding: 0 2px;
+  }
+
+  .koka-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: 22px;
+    color: var(--pink);
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  .badge {
+    margin-top: 28px;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    color: white;
+    font-family: 'Fredoka One', cursive;
+    font-size: 20px;
+    padding: 14px 32px;
+    border-radius: 50px;
+    box-shadow: 0 6px 24px rgba(199,125,255,0.4);
+    animation: slideUp 0.8s 0.7s cubic-bezier(.36,1.56,.64,1) both, pulse 2.5s 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { transform: scale(1); box-shadow: 0 6px 24px rgba(199,125,255,0.4); }
+    50%      { transform: scale(1.04); box-shadow: 0 8px 32px rgba(199,125,255,0.6); }
+  }
+
+  .stars { position:fixed;inset:0;pointer-events:none;z-index:0; }
+  .star {
+    position:absolute; font-size:18px;
+    animation: floatStar linear infinite;
+    opacity:0;
+  }
+  @keyframes floatStar {
+    0%   { transform: translateY(100vh) rotate(0deg); opacity:0; }
+    10%  { opacity:1; }
+    90%  { opacity:1; }
+    100% { transform: translateY(-10vh) rotate(720deg); opacity:0; }
+  }
+
+  .music-btn {
+    position: fixed; bottom: 24px; right: 24px; z-index: 100;
+    width: 52px; height: 52px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    border: none; cursor: pointer; font-size: 22px;
+    box-shadow: 0 4px 18px rgba(199,125,255,0.5);
+    display: flex; align-items: center; justify-content: center;
+    animation: slideUp 1s 1s both;
+    transition: transform 0.2s;
+  }
+  .music-btn:active { transform: scale(0.92); }
+  @keyframes spinRecord {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="bg-blobs">
+  <div class="blob"></div><div class="blob"></div><div class="blob"></div>
+  <div class="blob"></div><div class="blob"></div>
+</div>
+
+<div class="stars" id="stars"></div>
+
+<div class="page">
+
+  <div class="emoji-burst">🎉🧽⭐</div>
+
+  <h1 class="title">KOKA!!</h1>
+  <p class="subtitle">You survived your first exam!! 🥳</p>
+
+  <div class="stickers">
+    <div class="sticker">🧽</div>
+    <div class="sticker">🌟</div>
+    <div class="sticker">🩷</div>
+    <div class="sticker">⭐</div>
+    <div class="sticker">🎊</div>
+  </div>
+
+  <div class="message-card">
+    <div class="message-label">✨ A message just for you</div>
+    <div class="message-text">
+
+      <span class="koka-name">Dear KOKA,</span>
+
+      <p>
+        Okay first of all — <span class="highlight">YOU JUST SURVIVED YOUR FIRST EXAM!!</span> 🎉
+        Do you understand what that means?? That means you walked in there,
+        looked that exam dead in the eyes, and said "not today."
+        And honestly?? Patrick Star would be SO proud of you right now.
+        Like actually genuinely proud. Maybe even more proud than that one time he did absolutely nothing and got an award for it.
+      </p>
+
+      <p>
+        I know you studied hard. I know there were moments where your brain
+        felt like it was running on 3% battery with low power mode on 😭
+        but look at you!! You did it anyway!! That's not luck, that's not magic —
+        that's just you being <span class="highlight">incredibly, annoyingly impressive</span> as always.
+      </p>
+
+      <p>
+        You know what SpongeBob always says — <em>"I'm ready!! I'm ready!! I'm ready!!"</em>
+        That was literally you walking into that exam. Maybe you didn't feel ready.
+        Maybe you thought you were gonna forget everything the second you sat down.
+        But here's the thing about you, KOKA — <span class="highlight">you always figure it out.</span>
+        You always do. Every single time.
+      </p>
+
+      <p>
+        The week isn't over yet, I know. There's still more exams coming at you
+        like jellyfish in Jellyfish Fields 🪼 But I need you to remember something:
+        you've already proven today that you can handle it.
+        One down. And you're still standing. Still breathing. Still that girl. 💅
+      </p>
+
+      <p>
+        So tonight? Rest. Eat something good. Watch something silly.
+        Laugh a little. You've <span class="highlight">100% earned it.</span>
+        Tomorrow we go again — but right now, this moment is yours.
+      </p>
+
+      <p>
+        I'm rooting for you so hard it's embarrassing. Like genuinely embarrassingly loud.
+        You've got this whole week, KOKA. I know it. Patrick knows it. SpongeBob definitely knows it. 🧽⭐
+      </p>
+
+      <p style="margin-top:18px; color: var(--pink); font-size:16px;">
+        With all the support in Bikini Bottom 🌊<br/>
+        <strong>Your biggest fan, always 🩷</strong>
+      </p>
+
+    </div>
+  </div>
+
+  <div class="badge">🏆 Exam #1: CONQUERED 🏆</div>
+
+</div>
+
+<button class="music-btn" id="musicBtn" title="Play/pause music" onclick="toggleMusic()">🎵</button>
+
+<audio id="bgMusic" loop>
+  <!-- 🎵 REPLACE THIS with a direct link to your mp3 file -->
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg"/>
+</audio>
+
+<script>
+const canvas = document.getElementById('confetti');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+
+const COLORS = ['#FF6EB4','#FFE566','#5BC8F5','#7FE87F','#FFB347','#C77DFF','#FF8C8C'];
+const pieces = [];
+
+function makePiece(x, y) {
+  return {
+    x: x ?? Math.random() * canvas.width,
+    y: y ?? -10,
+    r: Math.random() * 7 + 4,
+    color: COLORS[Math.floor(Math.random() * COLORS.length)],
+    rot: Math.random() * Math.PI * 2,
+    vx: (Math.random() - 0.5) * 4,
+    vy: Math.random() * 3 + 2,
+    vrot: (Math.random() - 0.5) * 0.2,
+    shape: Math.random() > 0.5 ? 'rect' : 'circle',
+    w: Math.random() * 10 + 5,
+    h: Math.random() * 6 + 3,
+    life: 1
+  };
+}
+
+for (let i = 0; i < 120; i++) {
+  const p = makePiece(Math.random() * canvas.width, Math.random() * canvas.height * 0.4);
+  p.vy = (Math.random() - 0.4) * 6;
+  p.vx = (Math.random() - 0.5) * 8;
+  pieces.push(p);
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (Math.random() < 0.4) pieces.push(makePiece());
+  for (let i = pieces.length - 1; i >= 0; i--) {
+    const p = pieces[i];
+    p.x += p.vx; p.y += p.vy; p.rot += p.vrot;
+    p.vy += 0.08;
+    if (p.y > canvas.height + 20) { pieces.splice(i, 1); continue; }
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rot);
+    ctx.globalAlpha = p.life;
+    ctx.fillStyle = p.color;
+    if (p.shape === 'rect') ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+    else { ctx.beginPath(); ctx.arc(0, 0, p.r, 0, Math.PI*2); ctx.fill(); }
+    ctx.restore();
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+
+const starsEl = document.getElementById('stars');
+const starChars = ['⭐','🌟','✨','💫','🩷','🎀'];
+for (let i = 0; i < 18; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  s.textContent = starChars[Math.floor(Math.random() * starChars.length)];
+  s.style.left = Math.random() * 100 + 'vw';
+  s.style.animationDuration = (8 + Math.random() * 10) + 's';
+  s.style.animationDelay = (Math.random() * 12) + 's';
+  s.style.fontSize = (14 + Math.random() * 16) + 'px';
+  starsEl.appendChild(s);
+}
+
+let playing = false;
+const music = document.getElementById('bgMusic');
+const btn = document.getElementById('musicBtn');
+music.volume = 0.35;
+
+function toggleMusic() {
+  if (playing) {
+    music.pause();
+    btn.textContent = '🎵';
+    btn.style.animation = '';
+  } else {
+    music.play().catch(() => {});
+    btn.textContent = '🎶';
+    btn.style.animation = 'spinRecord 3s linear infinite';
+  }
+  playing = !playing;
+}
+
+document.body.addEventListener('click', function tryPlay() {
+  if (!playing) toggleMusic();
+  document.body.removeEventListener('click', tryPlay);
+}, { once: true });
+</script>
+</body>
+</html>
