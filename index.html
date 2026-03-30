@@ -149,7 +149,6 @@
     margin-bottom: 12px;
   }
 
-  /* Blinking cursor */
   .cursor {
     display: inline-block;
     width: 2px;
@@ -208,6 +207,9 @@
     from { transform: rotate(0deg); }
     to   { transform: rotate(360deg); }
   }
+
+  /* Hidden paragraphs source — emojis live here in HTML so they always render */
+  #msg-source { display: none; }
 </style>
 </head>
 <body>
@@ -220,6 +222,18 @@
 </div>
 
 <div class="stars" id="stars"></div>
+
+<!-- Hidden message source — edit your text and emojis HERE freely -->
+<div id="msg-source">
+  <p data-type="name">Dear KOKA,</p>
+  <p>Okay first of all — YOU JUST SURVIVED YOUR FIRST EXAM!! 🎉 Do you understand what that means?? That means you walked in there, looked that exam dead in the eyes, and said "not today." And honestly?? I would be SO proud of you right now. Like actually genuinely proud.</p>
+  <p>I know you studied hard. I know there were moments where your brain felt like it was running on 3% battery with low power mode on 😭 but look at you!! You did it anyway!! That's not luck, that's not magic — that's just you being incredibly, annoyingly impressive as always.</p>
+  <p>You know what SpongeBob always says — "I'm ready!! I'm ready!! I'm ready!!" That was literally you walking into that exam. Maybe you didn't feel ready. Maybe you thought you were gonna forget everything the second you sat down. But here's the thing about you, KOKA — you always figure it out. You always do. Every single time.</p>
+  <p>The week isn't over yet, I know. There's still more exams coming at you. But I need you to remember something: you've already proven today that you can handle it. One down. And you're still standing. Still breathing. Still that girl. 💅</p>
+  <p>So tonight? Rest. Eat something good. Watch something silly. Laugh a little. You've 100% earned it. Tomorrow we go again — but right now, this moment is yours.</p>
+  <p>I'm rooting for you so hard. You've got this whole week, KOKA. I know it. 🧽⭐</p>
+  <p data-type="last">Your biggest fan, always 🩷</p>
+</div>
 
 <div class="page">
 
@@ -321,17 +335,12 @@ for (let i = 0; i < 18; i++) {
   starsEl.appendChild(s);
 }
 
-/* ── Typewriter effect ── */
-const paragraphs = [
-  { text: "Dear KOKA,", type: "name" },
-  { text: "Okay first of all \u2014 YOU JUST SURVIVED YOUR FIRST EXAM!! \uD83C\uDF89 Do you understand what that means?? That means you walked in there, looked that exam dead in the eyes, and said \"not today.\" And honestly?? I would be SO proud of you right now. Like actually genuinely proud.", type: "p" },
-  { text: "I know you studied hard. I know there were moments where your brain felt like it was running on 3% battery with low power mode on \uD83D\uDE2D but look at you!! You did it anyway!! That\u2019s not luck, that\u2019s not magic \u2014 that\u2019s just you being incredibly, annoyingly impressive as always.", type: "p" },
-  { text: "You know what SpongeBob always says \u2014 \"I\u2019m ready!! I\u2019m ready!! I\u2019m ready!!\" That was literally you walking into that exam. Maybe you didn\u2019t feel ready. Maybe you thought you were gonna forget everything the second you sat down. But here\u2019s the thing about you, KOKA \u2014 you always figure it out. You always do. Every single time.", type: "p" },
-  { text: "The week isn\u2019t over yet, I know. There\u2019s still more exams coming at you. But I need you to remember something: you\u2019ve already proven today that you can handle it. One down. And you\u2019re still standing. Still breathing. Still that girl. \uD83D\uDC85", type: "p" },
-  { text: "So tonight? Rest. Eat something good. Watch something silly. Laugh a little. You\u2019ve 100% earned it. Tomorrow we go again \u2014 but right now, this moment is yours.", type: "p" },
-  { text: "I\u2019m rooting for you so hard. You\u2019ve got this whole week, KOKA. I know it. \uD83E\uDDE5\u2B50", type: "p" },
-  { text: "Your biggest fan, always \uD83E\uDE77", type: "last" }
-];
+/* ── Typewriter — reads from hidden HTML so emojis always work ── */
+const sources = Array.from(document.querySelectorAll('#msg-source p'));
+const paragraphs = sources.map(el => ({
+  text: el.textContent,
+  type: el.dataset.type || 'p'
+}));
 
 const messageText = document.querySelector('.message-text');
 const cursor = document.createElement('span');
