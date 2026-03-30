@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>كوكا ⭐</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌟</text></svg>"/>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --gold: #D4A017;
+    --gold-light: #F5C842;
+    --gold-pale: #FFF8DC;
+    --gold-dark: #8B6914;
+    --warm: #FFFBF0;
+    --brown: #4a2800;
+    --orange: #E07B39;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--warm);
+    min-height: 100vh;
+    overflow-x: hidden;
+    direction: rtl;
+  }
+
+  /* ══ PASSWORD SCREEN ══ */
+  #password-screen {
+    position: fixed; inset: 0; z-index: 1000;
+    background: linear-gradient(160deg, #1a0e00 0%, #2d1a00 50%, #1a0e00 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 30px 24px; text-align: center;
+  }
+  .pw-ornament { font-size: 52px; margin-bottom: 12px; animation: float 3s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .pw-title {
+    font-family: 'Amiri', serif;
+    font-size: clamp(28px, 8vw, 42px);
+    color: var(--gold-light); margin-bottom: 6px;
+    text-shadow: 0 0 30px rgba(245,200,66,0.4);
+  }
+  .pw-subtitle { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 32px; }
+  .pw-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(212,160,23,0.35);
+    border-radius: 24px; padding: 28px 22px;
+    max-width: 370px; width: 100%;
+  }
+  .pw-question-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--gold); margin-bottom: 16px; }
+  .pw-sentence {
+    font-family: 'Amiri', serif;
+    font-size: clamp(20px, 6vw, 28px);
+    color: white; line-height: 1.9; margin-bottom: 6px; direction: rtl;
+  }
+  .pw-underlined {
+    text-decoration: underline;
+    text-decoration-color: var(--gold-light);
+    text-decoration-thickness: 2px;
+    color: var(--gold-light); font-weight: 700;
+  }
+  .pw-hint { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
+  .pw-input {
+    width: 100%;
+    background: rgba(255,255,255,0.07);
+    border: 1.5px solid rgba(212,160,23,0.4);
+    border-radius: 12px; padding: 14px 16px;
+    font-family: 'Amiri', serif; font-size: 20px;
+    color: white; text-align: center; direction: rtl;
+    outline: none; transition: border-color 0.3s; margin-bottom: 14px;
+  }
+  .pw-input:focus { border-color: var(--gold-light); }
+  .pw-input::placeholder { color: rgba(255,255,255,0.25); font-size: 14px; }
+  .pw-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+    color: var(--brown); font-family: 'Cairo', sans-serif;
+    font-size: 16px; font-weight: 900; padding: 14px;
+    border: none; border-radius: 12px; cursor: pointer;
+    box-shadow: 0 4px 20px rgba(212,160,23,0.4); transition: transform 0.15s;
+  }
+  .pw-btn:active { transform: scale(0.97); }
+  .pw-error { font-size: 13px; color: #ff8888; margin-top: 10px; min-height: 20px; }
+  .pw-shake { animation: shake 0.4s ease; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }
+
+  /* ══ MAIN ══ */
+  #main-content { display: none; }
+
+  .bg-glow {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse at top, rgba(212,160,23,0.12) 0%, transparent 55%),
+      radial-gradient(ellipse at bottom right, rgba(224,123,57,0.1) 0%, transparent 55%);
+  }
+  .bg-stars-wrap { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .bstar { position: absolute; color: var(--gold-light); animation: twinkle ease-in-out infinite; opacity: 0; }
+  @keyframes twinkle { 0%,100%{opacity:0;transform:scale(0.7)} 50%{opacity:0.5;transform:scale(1.2)} }
+
+  /* ── Hero ── */
+  .hero {
+    position: relative; z-index: 1;
+    background: linear-gradient(160deg, #1a0e00, #3d2200, #1a0e00);
+    padding: 52px 24px 50px; text-align: center; overflow: hidden;
+  }
+  .hero::after {
+    content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 40px;
+    background: var(--warm); clip-path: ellipse(55% 100% at 50% 100%);
+  }
+  .hero-sparkle { font-size: 44px; margin-bottom: 10px; animation: float 3s ease-in-out infinite; }
+  .hero-title {
+    font-family: 'Amiri', serif;
+    font-size: clamp(38px, 11vw, 64px);
+    color: var(--gold-light);
+    text-shadow: 0 0 40px rgba(245,200,66,0.5);
+    line-height: 1.2; margin-bottom: 8px;
+  }
+  .hero-sub { font-size: clamp(14px, 4vw, 18px); color: rgba(255,255,255,0.65); margin-bottom: 18px; }
+  .hero-divider { color: var(--gold); font-size: 20px; letter-spacing: 10px; }
+
+  /* ── Countdown ── */
+  .countdown-wrap {
+    position: relative; z-index: 1;
+    margin: 28px 18px 0;
+    background: linear-gradient(135deg, #2d1a00, #3d2200);
+    border-radius: 20px; padding: 20px 16px; text-align: center;
+    border: 1px solid rgba(212,160,23,0.3);
+    box-shadow: 0 6px 28px rgba(0,0,0,0.15);
+  }
+  .cd-label { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; color: var(--gold); margin-bottom: 14px; }
+  .cd-boxes { display: flex; gap: 10px; justify-content: center; }
+  .cd-box { background: rgba(255,255,255,0.07); border: 1px solid rgba(212,160,23,0.25); border-radius: 14px; padding: 12px 10px; min-width: 68px; }
+  .cd-num { font-family: 'Amiri', serif; font-size: 34px; color: var(--gold-light); line-height: 1; display: block; }
+  .cd-unit { font-size: 11px; color: rgba(255,255,255,0.45); display: block; margin-top: 3px; }
+  .cd-done { font-family: 'Amiri', serif; font-size: 22px; color: var(--gold-light); display: none; }
+
+  /* ── Message ── */
+  .message-wrap { position: relative; z-index: 1; margin: 28px 18px 0; }
+  .section-heading {
+    font-family: 'Amiri', serif; font-size: 22px; color: var(--brown);
+    text-align: center; margin-bottom: 16px;
+  }
+  .section-heading::before, .section-heading::after { content: ' ✦ '; color: var(--gold); font-size: 14px; }
+  .message-card {
+    background: white; border-radius: 26px; padding: 30px 22px;
+    box-shadow: 0 8px 40px rgba(92,61,17,0.13);
+    border: 1px solid rgba(212,160,23,0.15);
+    position: relative; overflow: hidden;
+  }
+  .message-card::before {
+    content: ''; position: absolute; top: 0; right: 0; left: 0; height: 5px;
+    background: linear-gradient(90deg, var(--orange), var(--gold), var(--gold-light), var(--gold));
+  }
+  .msg-body {
+    font-size: 15.5px; line-height: 2.1; color: #3a2000;
+    font-weight: 600; direction: rtl; text-align: right; min-height: 80px;
+  }
+  .msg-body p { margin-bottom: 18px; }
+  .msg-body p:last-child { margin-bottom: 0; }
+  .msg-name { font-family: 'Amiri', serif; font-size: 24px; color: var(--gold-dark); display: block; margin-bottom: 16px; }
+  .msg-joke-block {
+    background: var(--gold-pale);
+    border-right: 4px solid var(--gold);
+    border-radius: 0 12px 12px 0;
+    padding: 12px 16px 12px 12px; margin: 4px 0 18px;
+    font-size: 14.5px; color: var(--brown);
+    direction: rtl; text-align: right; line-height: 1.9;
+  }
+  .msg-poem-block {
+    background: linear-gradient(135deg, #2d1a00, #3d2200);
+    border-radius: 16px; padding: 22px 18px; margin: 4px 0 18px;
+    text-align: center; border: 1px solid rgba(212,160,23,0.3);
+  }
+  .poem-label-inner { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--gold); margin-bottom: 12px; }
+  .poem-lines { font-family: 'Amiri', serif; font-size: clamp(16px, 4.5vw, 21px); color: rgba(255,255,255,0.9); line-height: 2.3; direction: rtl; }
+  .poem-sep { color: var(--gold); font-size: 16px; letter-spacing: 4px; margin: 4px 0; display: block; }
+  .poem-by { font-size: 12px; color: var(--gold); margin-top: 10px; }
+
+  .cursor { display: inline-block; width: 2px; height: 1em; background: var(--gold); margin-right: 2px; vertical-align: text-bottom; animation: blink 0.7s step-end infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* ── Badge ── */
+  .badge-wrap { position: relative; z-index: 1; text-align: center; margin: 28px 18px 60px; }
+  .badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+    color: white; font-family: 'Amiri', serif; font-size: 20px;
+    padding: 16px 28px; border-radius: 50px;
+    box-shadow: 0 6px 28px rgba(212,160,23,0.55);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{transform:scale(1);box-shadow:0 6px 28px rgba(212,160,23,0.55)} 50%{transform:scale(1.04);box-shadow:0 10px 36px rgba(212,160,23,0.75)} }
+
+  /* ── Music btn ── */
+  .music-btn {
+    position: fixed; bottom: 24px; left: 24px; z-index: 100;
+    width: 54px; height: 54px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+    border: none; cursor: pointer; font-size: 24px;
+    box-shadow: 0 4px 20px rgba(212,160,23,0.55);
+    display: flex; align-items: center; justify-content: center; transition: transform 0.2s;
+  }
+  .music-btn:active { transform: scale(0.92); }
+  @keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+
+  .fade-up { animation: fadeUp 0.9s ease both; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+  .d1{animation-delay:.1s} .d2{animation-delay:.25s} .d3{animation-delay:.4s}
+</style>
+</head>
+<body>
+
+<!-- ══ PASSWORD ══ -->
+<div id="password-screen">
+  <div class="pw-ornament">🌟</div>
+  <h1 class="pw-title">أهلاً يا كوكا</h1>
+  <p class="pw-subtitle">في سؤال الأول عشان تدخلي 😏</p>
+  <div class="pw-card" id="pw-card">
+    <div class="pw-question-label">✦ سؤال إعراب ✦</div>
+    <div class="pw-sentence">"<span class="pw-underlined">محمد</span> دمه خفيف عن كوكا"</div>
+    <div class="pw-hint">أعربي الكلمة اللي تحتها خط 👆</div>
+    <input class="pw-input" id="pw-input" type="text" placeholder="اكتبي الإجابة هنا..." autocomplete="off"/>
+    <button class="pw-btn" onclick="checkPassword()">✦ ادخلي ✦</button>
+    <div class="pw-error" id="pw-error"></div>
+  </div>
+</div>
+
+<!-- ══ MAIN ══ -->
+<div id="main-content">
+  <div class="bg-glow"></div>
+  <div class="bg-stars-wrap" id="bstars"></div>
+
+  <div class="hero fade-up">
+    <div class="hero-sparkle">🌟</div>
+    <h1 class="hero-title">كوكا يا نجمة</h1>
+    <p class="hero-sub">امتحان العربي مش هيقدر عليكِ 💛</p>
+    <div class="hero-divider">✦ ✦ ✦</div>
+  </div>
+
+  <div class="countdown-wrap fade-up d1">
+    <div class="cd-label">⏳ الوقت اللي فاضل على الساعة ١٠ الصبح</div>
+    <div class="cd-boxes" id="cd-boxes">
+      <div class="cd-box"><span class="cd-num" id="cd-h">00</span><span class="cd-unit">ساعة</span></div>
+      <div class="cd-box"><span class="cd-num" id="cd-m">00</span><span class="cd-unit">دقيقة</span></div>
+      <div class="cd-box"><span class="cd-num" id="cd-s">00</span><span class="cd-unit">ثانية</span></div>
+    </div>
+    <div class="cd-done" id="cd-done">🎉 يلا يا بطلة خلصت!</div>
+  </div>
+
+  <div class="message-wrap fade-up d2">
+    <div class="section-heading">رسالة ليكِ</div>
+    <div class="message-card">
+      <div class="msg-body" id="msg-body"></div>
+    </div>
+  </div>
+
+  <div class="badge-wrap fade-up d3">
+    <div class="badge">⭐ إنتِ أقوى من أي امتحان ⭐</div>
+  </div>
+</div>
+
+<!-- Hidden message source -->
+<div id="msg-src" style="display:none">
+  <p data-type="name">كوكا يا وردة،</p>
+  <p>يا ستي أنا عارف إنك دلوقتي فاتحة الموقع ده وإنتِ تعبانة ومش قادرة تكمل. عارف إن البطارية خلصت، والمزاج في الأرض، والأيام دي تقيلة على قلبك. وعشان كده بالظبط قعدت أعمل الموقع ده، عشان أقولك إنك مش لوحدك في ده خالص.</p>
+  <p>بس خليني أقولك حاجة وسمعيني كويس: إنتِ من النوع اللي بيعمل المستحيل بهدوء من غير ما حد يلاحظ. مش بتصرخي، مش بتعملي دراما، بس بتكملي. وده في حد نفسه حاجة مش كل واحد عنده، وإنتِ مش شايفاها في نفسك وده اللي بيحزنني.</p>
+  <p>طب خليني أفكرك بحاجة. المتنبي زمان قال كلام عنك بالظبط وهو مش عارفك 👇</p>
+  <div data-type="poem"></div>
+  <p>يعني إيه ده؟ يعني إن الأهداف بتبقى على قد الناس اللي عندها عزيمة. وإنتِ يا كوكا عندك عزيمة أكبر مما بتتخيلي، حتى لو احساسك دلوقتي إنك خلصت وما فيش طاقة. الطاقة دي موجودة، بس محتاجة حد يفكرك بيها.</p>
+  <p>دلوقتي بقى هنتكلم عن امتحان العربي. وبما إن الموضوع عربي، يبقى لازم نتكلم عن أستاذنا الكبير الأسطورة رضا الفاروق 😂</p>
+  <div data-type="joke1"></div>
+  <p>بس بجد يا كوكا، حتى لو رضا الفاروق بيشرح بالطريقة دي، إنتِ ذاكرتِ وفهمتِ. وهتدخلي الامتحان وهتجاوبي. مش لأن المادة سهلة، لأنك إنتِ مش بتستسلمي حتى لما بتتعبي.</p>
+  <div data-type="joke2"></div>
+  <p>وإنتِ جوا الامتحان، فتكري إن كل سؤال بتجاوبيه ده خطوة أقرب للنهاية. مش محتاجة تعرفي كل حاجة، محتاجة بس تكتبي اللي عندك بثقة. الثقة دي هي نص الإجابة يا كوكا، صدقيني.</p>
+  <div data-type="joke3"></div>
+  <p>أنا فاخر بيكِ جداً. مش بس من الأيام دي، من زمان. عارفك بتحاولي حتى لما تعبانة، وبتضحكي حتى لما الأمور صعبة. وده اللي بيخليكِ مختلفة عن أي حد تاني.</p>
+  <p>يلا قومي يا نجمة، اشربي حاجة حلوة، ذاكري اللي فاضل، وفتكري إن بكره بعد ما تخلصي هتحسي بأجمل احساس في الدنيا. وأنا هنا بدعيلك في كل سؤال وكل ثانية 💛</p>
+  <p data-type="last">صاحبك اللي دايماً في صفك 🌟</p>
+</div>
+
+<button class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</button>
+<audio id="bgMusic" loop>
+  <source src="./song.mp3" type="audio/mpeg"/>
+</audio>
+
+<script>
+/* ══ PASSWORD ══ */
+const ACCEPTED = ["مبتدأ","مبتدا"];
+function normalize(s){
+  return s.trim()
+    .replace(/[أإآا]/g,'ا')
+    .replace(/ة/g,'ه')
+    .replace(/ى/g,'ي')
+    .replace(/\s+/g,' ');
+}
+function checkPassword(){
+  const val = document.getElementById('pw-input').value;
+  const n = normalize(val);
+  const ok = ACCEPTED.some(a => n.startsWith(normalize(a)));
+  if(ok){
+    const scr = document.getElementById('password-screen');
+    scr.style.transition = 'opacity 0.9s';
+    scr.style.opacity = '0';
+    setTimeout(()=>{
+      scr.style.display = 'none';
+      document.getElementById('main-content').style.display = 'block';
+      buildMessage();
+      startCountdown();
+      spawnStars();
+    }, 900);
+  } else {
+    const card = document.getElementById('pw-card');
+    const err = document.getElementById('pw-error');
+    card.classList.remove('pw-shake');
+    void card.offsetWidth;
+    card.classList.add('pw-shake');
+    const msgs = ['غلط! فكري تاني 😏','لأ يا كوكا، غلط! 😂','لسه غلط!! 💀'];
+    err.textContent = msgs[Math.floor(Math.random()*msgs.length)];
+    setTimeout(()=>err.textContent='', 2500);
+  }
+}
+document.getElementById('pw-input').addEventListener('keydown', e=>{ if(e.key==='Enter') checkPassword(); });
+
+/* ══ BUILD MESSAGE ══ */
+function buildMessage(){
+  const sources = Array.from(document.querySelectorAll('#msg-src > *'));
+  const container = document.getElementById('msg-body');
+  const cursor = document.createElement('span');
+  cursor.className = 'cursor';
+
+  function makePoem(){
+    const d = document.createElement('div');
+    d.className = 'msg-poem-block';
+    d.innerHTML = `<div class="poem-label-inner">✦ المتنبي ✦</div>
+      <div class="poem-lines">
+        عَلى قَدرِ أَهلِ العَزمِ تَأتي العَزائِمُ
+        <span class="poem-sep">— ✦ —</span>
+        وَتَأتي عَلى قَدرِ الكِرامِ المَكارِمُ
+        <span class="poem-sep">— ✦ —</span>
+        وَتَعظُمُ في عَينِ الصَغيرِ صِغارُها
+        <span class="poem-sep">— ✦ —</span>
+        وَتَصغُرُ في عَينِ العَظيمِ العَظائِمُ
+      </div>
+      <div class="poem-by">— أبو الطيب المتنبي</div>`;
+    return d;
+  }
+
+  function makeJoke(num){
+    const jokes = [
+      'رضا الفاروق لما بيشرح: "الفاعل مرفوع وعلامة رفعه الضمة الظاهرة على آخره، واضح؟" — الفصل كله ماسك إيده: "لأ أستاذ!" — هو: "تمام، السؤال الجاي!" 😂💀 يا عم ما فيش حد فهم بس هو كمل!',
+      'لما بتسأل رضا الفاروق سؤال برا المنهج: "ده مش هييجي في الامتحان يا بنتي، ركزي في اللي هيجي" 😭 يعني الفضول ممنوع وعقلك مش ملكك خالص!',
+      'رضا الفاروق لما بيصحح ورقتك وإنتِ كتبتِ نفس اللي قاله بالظبط: "ده إيه اللي كتبتيه ده؟!" — والله يا أستاذ إنت اللي قلته باللفظة دي 😂 بس ماشي!'
+    ];
+    const d = document.createElement('div');
+    d.className = 'msg-joke-block';
+    d.textContent = jokes[num];
+    return d;
+  }
+
+  const SPEED = 22;
+  let segIndex = 0;
+
+  function processNext(){
+    if(segIndex >= sources.length){ cursor.remove(); return; }
+    const el = sources[segIndex];
+    const type = el.dataset.type || 'p';
+    segIndex++;
+
+    if(type === 'poem'){ cursor.remove(); container.appendChild(makePoem()); setTimeout(processNext, 400); return; }
+    if(type === 'joke1'){ cursor.remove(); container.appendChild(makeJoke(0)); setTimeout(processNext, 400); return; }
+    if(type === 'joke2'){ cursor.remove(); container.appendChild(makeJoke(1)); setTimeout(processNext, 400); return; }
+    if(type === 'joke3'){ cursor.remove(); container.appendChild(makeJoke(2)); setTimeout(processNext, 400); return; }
+
+    let currentEl;
+    if(type === 'name'){
+      currentEl = document.createElement('span');
+      currentEl.className = 'msg-name';
+    } else if(type === 'last'){
+      currentEl = document.createElement('p');
+      currentEl.style.color = 'var(--gold-dark)';
+      currentEl.style.fontFamily = "'Amiri',serif";
+      currentEl.style.fontSize = '18px';
+      currentEl.style.marginTop = '16px';
+    } else {
+      currentEl = document.createElement('p');
+    }
+    container.appendChild(currentEl);
+    currentEl.appendChild(cursor);
+
+    const text = el.textContent;
+    let ci = 0;
+    function typeChar(){
+      if(ci >= text.length){ setTimeout(processNext, 280); return; }
+      cursor.remove();
+      const ch = text[ci];
+      if(ch === '\n') currentEl.appendChild(document.createElement('br'));
+      else currentEl.insertAdjacentText('beforeend', ch);
+      currentEl.appendChild(cursor);
+      ci++;
+      setTimeout(typeChar, SPEED);
+    }
+    typeChar();
+  }
+
+  setTimeout(processNext, 600);
+}
+
+/* ══ COUNTDOWN ══ */
+function startCountdown(){
+  function tick(){
+    const now = new Date();
+    const t = new Date();
+    t.setHours(10,0,0,0);
+    if(now >= t) t.setDate(t.getDate()+1);
+    const diff = t - now;
+    if(diff <= 0){
+      document.getElementById('cd-boxes').style.display='none';
+      document.getElementById('cd-done').style.display='block';
+      return;
+    }
+    const h=Math.floor(diff/3600000);
+    const m=Math.floor((diff%3600000)/60000);
+    const s=Math.floor((diff%60000)/1000);
+    document.getElementById('cd-h').textContent=String(h).padStart(2,'0');
+    document.getElementById('cd-m').textContent=String(m).padStart(2,'0');
+    document.getElementById('cd-s').textContent=String(s).padStart(2,'0');
+  }
+  tick(); setInterval(tick,1000);
+}
+
+/* ══ STARS ══ */
+function spawnStars(){
+  const wrap = document.getElementById('bstars');
+  ['✦','✧','⭐','💛','🌟'].forEach(c=>{
+    for(let j=0;j<4;j++){
+      const s=document.createElement('div');
+      s.className='bstar';
+      s.textContent=c;
+      s.style.left=Math.random()*100+'vw';
+      s.style.top=Math.random()*100+'vh';
+      s.style.animationDuration=(3+Math.random()*5)+'s';
+      s.style.animationDelay=(Math.random()*6)+'s';
+      s.style.fontSize=(11+Math.random()*12)+'px';
+      wrap.appendChild(s);
+    }
+  });
+}
+
+/* ══ MUSIC ══ */
+let playing=false;
+const music=document.getElementById('bgMusic');
+const btn=document.getElementById('musicBtn');
+music.volume=0.4;
+function toggleMusic(){
+  if(playing){ music.pause(); btn.textContent='🎵'; btn.style.animation=''; }
+  else { music.play().catch(()=>{}); btn.textContent='🎶'; btn.style.animation='spin 3s linear infinite'; }
+  playing=!playing;
+}
+</script>
+</body>
+</html>
