@@ -27,7 +27,6 @@
     direction: rtl;
   }
 
-  /* ══ PASSWORD SCREEN ══ */
   #password-screen {
     position: fixed; inset: 0; z-index: 1000;
     background: linear-gradient(160deg, #1a0e00 0%, #2d1a00 50%, #1a0e00 100%);
@@ -87,7 +86,6 @@
   .pw-shake { animation: shake 0.4s ease; }
   @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }
 
-  /* ══ MAIN ══ */
   #main-content { display: none; }
 
   .bg-glow {
@@ -100,7 +98,6 @@
   .bstar { position: absolute; color: var(--gold-light); animation: twinkle ease-in-out infinite; opacity: 0; }
   @keyframes twinkle { 0%,100%{opacity:0;transform:scale(0.7)} 50%{opacity:0.5;transform:scale(1.2)} }
 
-  /* ── Hero ── */
   .hero {
     position: relative; z-index: 1;
     background: linear-gradient(160deg, #1a0e00, #3d2200, #1a0e00);
@@ -118,10 +115,9 @@
     text-shadow: 0 0 40px rgba(245,200,66,0.5);
     line-height: 1.2; margin-bottom: 8px;
   }
-  .hero-sub { font-size: clamp(14px, 4vw, 18px); color: rgba(255,255,255,0.65); margin-bottom: 18px; }
-  .hero-divider { color: var(--gold); font-size: 20px; letter-spacing: 10px; }
+  .hero-sub { font-size: clamp(14px, 4vw, 18px); color: rgba(255,255,255,0.65); margin-bottom: 10px; }
+  .hero-divider { color: var(--gold); font-size: 20px; letter-spacing: 10px; margin-top: 8px; }
 
-  /* ── Countdown ── */
   .countdown-wrap {
     position: relative; z-index: 1;
     margin: 28px 18px 0;
@@ -137,7 +133,6 @@
   .cd-unit { font-size: 11px; color: rgba(255,255,255,0.45); display: block; margin-top: 3px; }
   .cd-done { font-family: 'Amiri', serif; font-size: 22px; color: var(--gold-light); display: none; }
 
-  /* ── Message ── */
   .message-wrap { position: relative; z-index: 1; margin: 28px 18px 0; }
   .section-heading {
     font-family: 'Amiri', serif; font-size: 22px; color: var(--brown);
@@ -161,14 +156,6 @@
   .msg-body p { margin-bottom: 18px; }
   .msg-body p:last-child { margin-bottom: 0; }
   .msg-name { font-family: 'Amiri', serif; font-size: 24px; color: var(--gold-dark); display: block; margin-bottom: 16px; }
-  .msg-joke-block {
-    background: var(--gold-pale);
-    border-right: 4px solid var(--gold);
-    border-radius: 0 12px 12px 0;
-    padding: 12px 16px 12px 12px; margin: 4px 0 18px;
-    font-size: 14.5px; color: var(--brown);
-    direction: rtl; text-align: right; line-height: 1.9;
-  }
   .msg-poem-block {
     background: linear-gradient(135deg, #2d1a00, #3d2200);
     border-radius: 16px; padding: 22px 18px; margin: 4px 0 18px;
@@ -179,11 +166,16 @@
   .poem-sep { color: var(--gold); font-size: 16px; letter-spacing: 4px; margin: 4px 0; display: block; }
   .poem-by { font-size: 12px; color: var(--gold); margin-top: 10px; }
 
-  .cursor { display: inline-block; width: 2px; height: 1em; background: var(--gold); margin-right: 2px; vertical-align: text-bottom; animation: blink 0.7s step-end infinite; }
+  /* cursor blinks at end of current word */
+  .cursor {
+    display: inline-block; width: 2px; height: 1.1em;
+    background: var(--gold); margin-right: 3px;
+    vertical-align: text-bottom;
+    animation: blink 0.7s step-end infinite;
+  }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
-  /* ── Badge ── */
-  .badge-wrap { position: relative; z-index: 1; text-align: center; margin: 28px 18px 60px; }
+  .badge-wrap { position: relative; z-index: 1; text-align: center; margin: 28px 18px 60px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
   .badge {
     display: inline-block;
     background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
@@ -195,7 +187,6 @@
   }
   @keyframes pulse { 0%,100%{transform:scale(1);box-shadow:0 6px 28px rgba(212,160,23,0.55)} 50%{transform:scale(1.04);box-shadow:0 10px 36px rgba(212,160,23,0.75)} }
 
-  /* ── Music btn ── */
   .music-btn {
     position: fixed; bottom: 24px; left: 24px; z-index: 100;
     width: 54px; height: 54px; border-radius: 50%;
@@ -214,7 +205,7 @@
 </head>
 <body>
 
-<!-- ══ PASSWORD ══ -->
+<!-- PASSWORD -->
 <div id="password-screen">
   <div class="pw-ornament">🌟</div>
   <h1 class="pw-title">أهلاً يا كوكا</h1>
@@ -229,7 +220,7 @@
   </div>
 </div>
 
-<!-- ══ MAIN ══ -->
+<!-- MAIN -->
 <div id="main-content">
   <div class="bg-glow"></div>
   <div class="bg-stars-wrap" id="bstars"></div>
@@ -261,12 +252,11 @@
 
   <div class="badge-wrap fade-up d3">
     <div class="badge">⭐ إنتِ أقوى من أي امتحان ⭐</div>
-    <div style="margin-top: 16px;">
-<div class="badge">🏆 Exam #2: CONQUERED 🏆</div>
+    <div class="badge">🏆 Exam #2: CONQUERED 🏆</div>
   </div>
 </div>
 
-<!-- Hidden message source -->
+<!-- Hidden message — word by word typewriter friendly -->
 <div id="msg-src" style="display:none">
   <p data-type="name">كوكا يا وحشه</p>
   <p>يا ستي أنا عارف إنك دلوقتي فاتحة الموقع ده وإنتِ تعبانة ومش قادرة تكملي. عارف إن البطارية خلصت، والمزاج في الأرض، والأيام دي تقيلة على قلبك. جي أقولك إنك مش لوحدك في ده خالص.</p>
@@ -286,7 +276,7 @@
 </audio>
 
 <script>
-/* ══ PASSWORD ══ */
+/* PASSWORD */
 const ACCEPTED = ["مبتدأ","مبتدا"];
 function normalize(s){
   return s.trim()
@@ -323,7 +313,7 @@ function checkPassword(){
 }
 document.getElementById('pw-input').addEventListener('keydown', e=>{ if(e.key==='Enter') checkPassword(); });
 
-/* ══ BUILD MESSAGE ══ */
+/* BUILD MESSAGE — word by word for correct Arabic RTL rendering */
 function buildMessage(){
   const sources = Array.from(document.querySelectorAll('#msg-src > *'));
   const container = document.getElementById('msg-body');
@@ -347,19 +337,8 @@ function buildMessage(){
     return d;
   }
 
-  function makeJoke(num){
-    const jokes = [
-      'رضا الفاروق لما بيشرح: "الفاعل مرفوع وعلامة رفعه الضمة الظاهرة على آخره، واضح؟" — الفصل كله ماسك إيده: "لأ أستاذ!" — هو: "تمام، السؤال الجاي!" 😂💀 يا عم ما فيش حد فهم بس هو كمل!',
-      'لما بتسأل رضا الفاروق سؤال برا المنهج: "ده مش هييجي في الامتحان يا بنتي، ركزي في اللي هيجي" 😭 يعني الفضول ممنوع وعقلك مش ملكك خالص!',
-      'رضا الفاروق لما بيصحح ورقتك وإنتِ كتبتِ نفس اللي قاله بالظبط: "ده إيه اللي كتبتيه ده؟!" — والله يا أستاذ إنت اللي قلته باللفظة دي 😂 بس ماشي!'
-    ];
-    const d = document.createElement('div');
-    d.className = 'msg-joke-block';
-    d.textContent = jokes[num];
-    return d;
-  }
-
-  const SPEED = 22;
+  const WORD_DELAY = 120; // ms per word — feels natural for Arabic
+  const PARA_DELAY = 350;
   let segIndex = 0;
 
   function processNext(){
@@ -368,11 +347,14 @@ function buildMessage(){
     const type = el.dataset.type || 'p';
     segIndex++;
 
-    if(type === 'poem'){ cursor.remove(); container.appendChild(makePoem()); setTimeout(processNext, 400); return; }
-    if(type === 'joke1'){ cursor.remove(); container.appendChild(makeJoke(0)); setTimeout(processNext, 400); return; }
-    if(type === 'joke2'){ cursor.remove(); container.appendChild(makeJoke(1)); setTimeout(processNext, 400); return; }
-    if(type === 'joke3'){ cursor.remove(); container.appendChild(makeJoke(2)); setTimeout(processNext, 400); return; }
+    if(type === 'poem'){
+      cursor.remove();
+      container.appendChild(makePoem());
+      setTimeout(processNext, 500);
+      return;
+    }
 
+    // Build the element
     let currentEl;
     if(type === 'name'){
       currentEl = document.createElement('span');
@@ -387,27 +369,37 @@ function buildMessage(){
       currentEl = document.createElement('p');
     }
     container.appendChild(currentEl);
+
+    // Split into words and type word by word
+    const words = el.textContent.trim().split(/\s+/);
+    let wi = 0;
+
+    // text node that grows
+    const textNode = document.createTextNode('');
+    currentEl.appendChild(textNode);
     currentEl.appendChild(cursor);
 
-    const text = el.textContent;
-    let ci = 0;
-    function typeChar(){
-      if(ci >= text.length){ setTimeout(processNext, 280); return; }
+    function typeWord(){
+      if(wi >= words.length){
+        cursor.remove();
+        setTimeout(processNext, PARA_DELAY);
+        return;
+      }
+      const prefix = wi === 0 ? '' : ' ';
+      textNode.nodeValue += prefix + words[wi];
+      wi++;
+      // move cursor after text node
       cursor.remove();
-      const ch = text[ci];
-      if(ch === '\n') currentEl.appendChild(document.createElement('br'));
-      else currentEl.insertAdjacentText('beforeend', ch);
       currentEl.appendChild(cursor);
-      ci++;
-      setTimeout(typeChar, SPEED);
+      setTimeout(typeWord, WORD_DELAY);
     }
-    typeChar();
+    typeWord();
   }
 
   setTimeout(processNext, 600);
 }
 
-/* ══ COUNTDOWN ══ */
+/* COUNTDOWN */
 function startCountdown(){
   function tick(){
     const now = new Date();
@@ -430,7 +422,7 @@ function startCountdown(){
   tick(); setInterval(tick,1000);
 }
 
-/* ══ STARS ══ */
+/* STARS */
 function spawnStars(){
   const wrap = document.getElementById('bstars');
   ['✦','✧','⭐','💛','🌟'].forEach(c=>{
@@ -448,7 +440,7 @@ function spawnStars(){
   });
 }
 
-/* ══ MUSIC ══ */
+/* MUSIC */
 let playing=false;
 const music=document.getElementById('bgMusic');
 const btn=document.getElementById('musicBtn');
