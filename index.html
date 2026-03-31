@@ -88,6 +88,11 @@
 
   #main-content { display: none; }
 
+  /* ── Floating golden particles canvas ── */
+  #particles-canvas {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  }
+
   .bg-glow {
     position: fixed; inset: 0; z-index: 0; pointer-events: none;
     background:
@@ -97,6 +102,72 @@
   .bg-stars-wrap { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
   .bstar { position: absolute; color: var(--gold-light); animation: twinkle ease-in-out infinite; opacity: 0; }
   @keyframes twinkle { 0%,100%{opacity:0;transform:scale(0.7)} 50%{opacity:0.5;transform:scale(1.2)} }
+
+  /* ── Quran ayah banner ── */
+  .ayah-banner {
+    position: relative; z-index: 1;
+    background: linear-gradient(135deg, #1a0e00, #2d1a00);
+    padding: 18px 24px;
+    text-align: center;
+    border-bottom: 1px solid rgba(212,160,23,0.2);
+  }
+  .ayah-text {
+    font-family: 'Amiri', serif;
+    font-size: clamp(15px, 4vw, 19px);
+    color: var(--gold-light);
+    line-height: 2;
+    direction: rtl;
+    text-shadow: 0 0 20px rgba(245,200,66,0.3);
+  }
+  .ayah-ref {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 4px;
+    direction: rtl;
+  }
+
+  /* ── Shake surprise overlay ── */
+  #shake-overlay {
+    position: fixed; inset: 0; z-index: 500;
+    background: rgba(26,14,0,0.92);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 30px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  #shake-overlay.show { opacity: 1; pointer-events: all; }
+  .shake-emoji { font-size: 64px; margin-bottom: 16px; animation: bounceIn 0.5s ease; }
+  @keyframes bounceIn { 0%{transform:scale(0)} 70%{transform:scale(1.2)} 100%{transform:scale(1)} }
+  .shake-msg {
+    font-family: 'Amiri', serif;
+    font-size: clamp(22px, 6vw, 32px);
+    color: var(--gold-light);
+    line-height: 1.7;
+    margin-bottom: 24px;
+    direction: rtl;
+  }
+  .shake-close {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--brown); font-family: 'Cairo', sans-serif;
+    font-size: 15px; font-weight: 900;
+    padding: 12px 28px; border: none;
+    border-radius: 50px; cursor: pointer;
+    box-shadow: 0 4px 16px rgba(212,160,23,0.4);
+  }
+  .shake-hint {
+    position: fixed; bottom: 90px; left: 50%;
+    transform: translateX(-50%);
+    background: rgba(26,14,0,0.85);
+    border: 1px solid rgba(212,160,23,0.3);
+    color: var(--gold-light);
+    font-size: 12px; padding: 8px 16px;
+    border-radius: 50px; z-index: 10;
+    animation: fadeHint 4s ease forwards;
+    white-space: nowrap;
+    direction: rtl;
+  }
+  @keyframes fadeHint { 0%{opacity:0} 20%{opacity:1} 70%{opacity:1} 100%{opacity:0} }
 
   .hero {
     position: relative; z-index: 1;
@@ -156,17 +227,34 @@
   .msg-body p { margin-bottom: 18px; }
   .msg-body p:last-child { margin-bottom: 0; }
   .msg-name { font-family: 'Amiri', serif; font-size: 24px; color: var(--gold-dark); display: block; margin-bottom: 16px; }
+
+  /* ── Poem with fancy reveal ── */
   .msg-poem-block {
     background: linear-gradient(135deg, #2d1a00, #3d2200);
     border-radius: 16px; padding: 22px 18px; margin: 4px 0 18px;
     text-align: center; border: 1px solid rgba(212,160,23,0.3);
+    opacity: 0; transform: translateY(20px) scale(0.97);
+    transition: opacity 0.8s ease, transform 0.8s ease;
   }
+  .msg-poem-block.revealed { opacity: 1; transform: translateY(0) scale(1); }
   .poem-label-inner { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--gold); margin-bottom: 12px; }
-  .poem-lines { font-family: 'Amiri', serif; font-size: clamp(16px, 4.5vw, 21px); color: rgba(255,255,255,0.9); line-height: 2.3; direction: rtl; }
-  .poem-sep { color: var(--gold); font-size: 16px; letter-spacing: 4px; margin: 4px 0; display: block; }
-  .poem-by { font-size: 12px; color: var(--gold); margin-top: 10px; }
+  .poem-lines {
+    font-family: 'Amiri', serif;
+    font-size: clamp(16px, 4.5vw, 21px);
+    color: rgba(255,255,255,0.9); line-height: 2.3; direction: rtl;
+  }
+  /* each poem line fades in one by one */
+  .poem-line-item {
+    display: block;
+    opacity: 0; transform: translateY(10px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .poem-line-item.show { opacity: 1; transform: translateY(0); }
+  .poem-sep { color: var(--gold); font-size: 16px; letter-spacing: 4px; margin: 4px 0; display: block; opacity: 0; transition: opacity 0.4s ease; }
+  .poem-sep.show { opacity: 1; }
+  .poem-by { font-size: 12px; color: var(--gold); margin-top: 10px; opacity: 0; transition: opacity 0.6s ease; }
+  .poem-by.show { opacity: 1; }
 
-  /* cursor blinks at end of current word */
   .cursor {
     display: inline-block; width: 2px; height: 1.1em;
     background: var(--gold); margin-right: 3px;
@@ -220,10 +308,30 @@
   </div>
 </div>
 
+<!-- SHAKE SURPRISE OVERLAY -->
+<div id="shake-overlay">
+  <div class="shake-emoji">🌟</div>
+  <div class="shake-msg">
+    إنتِ مش بس بتذاكري<br/>
+    إنتِ بتتحدي نفسك كل يوم<br/>
+    وده أصعب حاجة في الدنيا 💛<br/>
+    <br/>
+    ربنا معاكِ يا كوكا 🤲
+  </div>
+  <button class="shake-close" onclick="closeShake()">✦ شكراً 💛 ✦</button>
+</div>
+
 <!-- MAIN -->
 <div id="main-content">
+  <canvas id="particles-canvas"></canvas>
   <div class="bg-glow"></div>
   <div class="bg-stars-wrap" id="bstars"></div>
+
+  <!-- Quran ayah banner -->
+  <div class="ayah-banner">
+    <div class="ayah-text">﴿ وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ ﴾</div>
+    <div class="ayah-ref">سورة الطلاق — آية ٢-٣</div>
+  </div>
 
   <div class="hero fade-up">
     <div class="hero-sparkle">🌟</div>
@@ -256,17 +364,17 @@
   </div>
 </div>
 
-<!-- Hidden message — word by word typewriter friendly -->
+<!-- Hidden message -->
 <div id="msg-src" style="display:none">
   <p data-type="name">كوكا يا وحشه</p>
   <p>يا ستي أنا عارف إنك دلوقتي فاتحة الموقع ده وإنتِ تعبانة ومش قادرة تكملي. عارف إن البطارية خلصت، والمزاج في الأرض، والأيام دي تقيلة على قلبك. جي أقولك إنك مش لوحدك في ده خالص.</p>
   <p>بس خليني أقولك حاجة واسمعيني كويس: إنتِ من النوع اللي بيعمل المستحيل بهدوء من غير ما حد يلاحظ. مش بتصرخي، مش بتعملي دراما، بس بتكملي. وده في حد نفسه حاجة مش كل واحد عنده القدره انه يعملها، وإنتِ مش شايفاها في نفسك وده اللي بيحزنني.</p>
-  <p> طب خليني أفكرك بحاجة من المنهج عندك كمان يا ستي. المتنبي زمان قال كلام عنك بالظبط وهو مش عارفك بس كان حاسس بيكي تقريبا👇</p>
+  <p>طب خليني أفكرك بحاجة من المنهج عندك كمان يا ستي. المتنبي زمان قال كلام عنك بالظبط وهو مش عارفك بس كان حاسس بيكي تقريبا 👇</p>
   <div data-type="poem"></div>
   <p>يعني إيه ده؟ يعني إن الأهداف بتبقى على قد الناس اللي عندها عزيمة. وإنتِ يا كوكا عندك عزيمة أكبر مما بتتخيلي، حتى لو احساسك دلوقتي إنك خلصتي ومفيش طاقة. الطاقة دي موجودة، بس محتاجة حد يفكرك بيها.</p>
   <p>وإنتِ جوا الامتحان، افتكري إن كل سؤال بتجاوبيه ده خطوة أقرب للنهاية. مش محتاجة تعرفي كل حاجة، محتاجة بس تكتبي اللي عندك بثقة. الثقة دي هي نص الإجابة يا كوكا، صدقيني.</p>
-  <p>أنا فخور بيكِ جداً. مش بس من الأيام دي، من زمان. عارفك بتحاولي حتى لما بتبقي تعبانة، وبتضحكي حتى لما الأمورتبقي صعبة. وده اللي بيخليكِ مختلفة عن أي حد تاني.</p>
-  <p>يلا قومي يا نجمة، اشربي و كلي حاجة حلوة، ذاكري اللي فاضل، وافتكري إن بكره بعد ما تخلصي هتحسي بأجمل احساس في الدنيا. وأنا هنا بدعيلك في كل سؤال وكل ثانية 💛</p>
+  <p>أنا فخور بيكِ جداً. مش بس من الأيام دي، من زمان. عارفك بتحاولي حتى لما بتبقي تعبانة، وبتضحكي حتى لما الأمور تبقي صعبة. وده اللي بيخليكِ مختلفة عن أي حد تاني.</p>
+  <p>يلا قومي يا نجمة، اشربي وكلي حاجة حلوة، ذاكري اللي فاضل، وافتكري إن بكره بعد ما تخلصي هتحسي بأجمل احساس في الدنيا. وأنا هنا بدعيلك في كل سؤال وكل ثانية 💛</p>
   <p data-type="last">صاحبك اللي دايماً في صفك 🌟</p>
 </div>
 
@@ -276,7 +384,7 @@
 </audio>
 
 <script>
-/* PASSWORD */
+/* ══ PASSWORD ══ */
 const ACCEPTED = ["مبتدأ","مبتدا"];
 function normalize(s){
   return s.trim()
@@ -299,6 +407,9 @@ function checkPassword(){
       buildMessage();
       startCountdown();
       spawnStars();
+      startParticles();
+      showShakeHint();
+      initShake();
     }, 900);
   } else {
     const card = document.getElementById('pw-card');
@@ -313,7 +424,111 @@ function checkPassword(){
 }
 document.getElementById('pw-input').addEventListener('keydown', e=>{ if(e.key==='Enter') checkPassword(); });
 
-/* BUILD MESSAGE — word by word for correct Arabic RTL rendering */
+/* ══ FLOATING GOLDEN PARTICLES ══ */
+function startParticles(){
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  window.addEventListener('resize', ()=>{ canvas.width=window.innerWidth; canvas.height=window.innerHeight; });
+
+  const particles = [];
+  const COLORS = ['#F5C842','#D4A017','#FFE082','#FFCA28','#FFF8DC'];
+  const SHAPES = ['circle','rect','diamond'];
+
+  for(let i=0; i<55; i++){
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 5 + 2,
+      color: COLORS[Math.floor(Math.random()*COLORS.length)],
+      shape: SHAPES[Math.floor(Math.random()*SHAPES.length)],
+      vx: (Math.random()-0.5) * 0.4,
+      vy: -(Math.random() * 0.6 + 0.2),
+      alpha: Math.random() * 0.5 + 0.1,
+      rot: Math.random()*Math.PI*2,
+      vrot: (Math.random()-0.5)*0.02
+    });
+  }
+
+  function drawParticle(p){
+    ctx.save();
+    ctx.globalAlpha = p.alpha;
+    ctx.fillStyle = p.color;
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rot);
+    if(p.shape==='circle'){
+      ctx.beginPath(); ctx.arc(0,0,p.size,0,Math.PI*2); ctx.fill();
+    } else if(p.shape==='rect'){
+      ctx.fillRect(-p.size,-p.size/2,p.size*2,p.size);
+    } else {
+      ctx.beginPath();
+      ctx.moveTo(0,-p.size); ctx.lineTo(p.size,0);
+      ctx.lineTo(0,p.size); ctx.lineTo(-p.size,0);
+      ctx.closePath(); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function animParticles(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy; p.rot+=p.vrot;
+      if(p.y < -10){ p.y=canvas.height+10; p.x=Math.random()*canvas.width; }
+      drawParticle(p);
+    });
+    requestAnimationFrame(animParticles);
+  }
+  animParticles();
+}
+
+/* ══ SHAKE SURPRISE ══ */
+let shakeTriggered = false;
+let lastX=0, lastY=0, lastZ=0;
+
+function initShake(){
+  if(typeof DeviceMotionEvent === 'undefined') return;
+  if(typeof DeviceMotionEvent.requestPermission === 'function'){
+    // iOS 13+ needs permission — try on first touch
+    document.addEventListener('touchend', function askPerm(){
+      DeviceMotionEvent.requestPermission().then(r=>{
+        if(r==='granted') listenShake();
+      }).catch(()=>{});
+      document.removeEventListener('touchend', askPerm);
+    }, {once:true});
+  } else {
+    listenShake();
+  }
+}
+
+function listenShake(){
+  window.addEventListener('devicemotion', e=>{
+    if(shakeTriggered) return;
+    const a = e.accelerationIncludingGravity;
+    if(!a) return;
+    const dx=Math.abs(a.x-lastX), dy=Math.abs(a.y-lastY), dz=Math.abs(a.z-lastZ);
+    lastX=a.x; lastY=a.y; lastZ=a.z;
+    if(dx+dy+dz > 30){ triggerShake(); }
+  });
+}
+
+function triggerShake(){
+  shakeTriggered = true;
+  document.getElementById('shake-overlay').classList.add('show');
+}
+function closeShake(){
+  document.getElementById('shake-overlay').classList.remove('show');
+}
+
+function showShakeHint(){
+  const hint = document.createElement('div');
+  hint.className = 'shake-hint';
+  hint.textContent = '📳 حركي التليفون عشان مفاجأة!';
+  document.body.appendChild(hint);
+  setTimeout(()=> hint.remove(), 4500);
+}
+
+/* ══ BUILD MESSAGE — word by word ══ */
 function buildMessage(){
   const sources = Array.from(document.querySelectorAll('#msg-src > *'));
   const container = document.getElementById('msg-body');
@@ -323,21 +538,36 @@ function buildMessage(){
   function makePoem(){
     const d = document.createElement('div');
     d.className = 'msg-poem-block';
-    d.innerHTML = `<div class="poem-label-inner">✦ المتنبي ✦</div>
+    d.innerHTML = `
+      <div class="poem-label-inner">✦ المتنبي ✦</div>
       <div class="poem-lines">
-        عَلى قَدرِ أَهلِ العَزمِ تَأتي العَزائِمُ
+        <span class="poem-line-item">عَلى قَدرِ أَهلِ العَزمِ تَأتي العَزائِمُ</span>
         <span class="poem-sep">— ✦ —</span>
-        وَتَأتي عَلى قَدرِ الكِرامِ المَكارِمُ
+        <span class="poem-line-item">وَتَأتي عَلى قَدرِ الكِرامِ المَكارِمُ</span>
         <span class="poem-sep">— ✦ —</span>
-        وَتَعظُمُ في عَينِ الصَغيرِ صِغارُها
+        <span class="poem-line-item">وَتَعظُمُ في عَينِ الصَغيرِ صِغارُها</span>
         <span class="poem-sep">— ✦ —</span>
-        وَتَصغُرُ في عَينِ العَظيمِ العَظائِمُ
+        <span class="poem-line-item">وَتَصغُرُ في عَينِ العَظيمِ العَظائِمُ</span>
       </div>
       <div class="poem-by">— أبو الطيب المتنبي</div>`;
+
+    // Animate poem lines one by one after block appears
+    setTimeout(()=>{
+      d.classList.add('revealed');
+      const lines = d.querySelectorAll('.poem-line-item');
+      const seps = d.querySelectorAll('.poem-sep');
+      const by = d.querySelector('.poem-by');
+      lines.forEach((line, i)=>{
+        setTimeout(()=> line.classList.add('show'), i * 400);
+        if(seps[i]) setTimeout(()=> seps[i].classList.add('show'), i*400+200);
+      });
+      setTimeout(()=> by.classList.add('show'), lines.length * 400 + 200);
+    }, 100);
+
     return d;
   }
 
-  const WORD_DELAY = 120; // ms per word — feels natural for Arabic
+  const WORD_DELAY = 120;
   const PARA_DELAY = 350;
   let segIndex = 0;
 
@@ -350,11 +580,10 @@ function buildMessage(){
     if(type === 'poem'){
       cursor.remove();
       container.appendChild(makePoem());
-      setTimeout(processNext, 500);
+      setTimeout(processNext, 2800); // wait for poem animation
       return;
     }
 
-    // Build the element
     let currentEl;
     if(type === 'name'){
       currentEl = document.createElement('span');
@@ -370,11 +599,8 @@ function buildMessage(){
     }
     container.appendChild(currentEl);
 
-    // Split into words and type word by word
     const words = el.textContent.trim().split(/\s+/);
     let wi = 0;
-
-    // text node that grows
     const textNode = document.createTextNode('');
     currentEl.appendChild(textNode);
     currentEl.appendChild(cursor);
@@ -388,7 +614,6 @@ function buildMessage(){
       const prefix = wi === 0 ? '' : ' ';
       textNode.nodeValue += prefix + words[wi];
       wi++;
-      // move cursor after text node
       cursor.remove();
       currentEl.appendChild(cursor);
       setTimeout(typeWord, WORD_DELAY);
@@ -399,7 +624,7 @@ function buildMessage(){
   setTimeout(processNext, 600);
 }
 
-/* COUNTDOWN */
+/* ══ COUNTDOWN ══ */
 function startCountdown(){
   function tick(){
     const now = new Date();
@@ -422,7 +647,7 @@ function startCountdown(){
   tick(); setInterval(tick,1000);
 }
 
-/* STARS */
+/* ══ STARS ══ */
 function spawnStars(){
   const wrap = document.getElementById('bstars');
   ['✦','✧','⭐','💛','🌟'].forEach(c=>{
@@ -440,7 +665,7 @@ function spawnStars(){
   });
 }
 
-/* MUSIC */
+/* ══ MUSIC ══ */
 let playing=false;
 const music=document.getElementById('bgMusic');
 const btn=document.getElementById('musicBtn');
