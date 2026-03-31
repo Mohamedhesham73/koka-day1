@@ -86,12 +86,52 @@
   .pw-shake { animation: shake 0.4s ease; }
   @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }
 
+  /* ══ WAITING SCREEN ══ */
+  #waiting-screen {
+    position: fixed; inset: 0; z-index: 999;
+    background: linear-gradient(160deg, #1a0e00 0%, #2d1a00 50%, #1a0e00 100%);
+    display: none; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 30px 24px; text-align: center;
+  }
+  .wait-ornament { font-size: 56px; margin-bottom: 16px; animation: float 3s ease-in-out infinite; }
+  .wait-title {
+    font-family: 'Amiri', serif;
+    font-size: clamp(24px, 7vw, 36px);
+    color: var(--gold-light); margin-bottom: 10px;
+    text-shadow: 0 0 30px rgba(245,200,66,0.4);
+    direction: rtl;
+  }
+  .wait-subtitle {
+    font-size: 14px; color: rgba(255,255,255,0.5);
+    margin-bottom: 36px; direction: rtl;
+  }
+  .wait-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(212,160,23,0.3);
+    border-radius: 24px; padding: 28px 22px;
+    max-width: 340px; width: 100%;
+    margin-bottom: 28px;
+  }
+  .wait-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--gold); margin-bottom: 16px; }
+  .wait-boxes { display: flex; gap: 10px; justify-content: center; }
+  .wait-box {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(212,160,23,0.25);
+    border-radius: 14px; padding: 14px 10px; min-width: 72px;
+  }
+  .wait-num { font-family: 'Amiri', serif; font-size: 36px; color: var(--gold-light); line-height: 1; display: block; }
+  .wait-unit { font-size: 11px; color: rgba(255,255,255,0.45); display: block; margin-top: 4px; }
+  .wait-msg {
+    font-family: 'Amiri', serif;
+    font-size: clamp(16px, 4vw, 20px);
+    color: rgba(255,255,255,0.7);
+    direction: rtl; line-height: 1.9;
+  }
+
   #main-content { display: none; }
 
-  /* ── Floating golden particles canvas ── */
-  #particles-canvas {
-    position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  }
+  #particles-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 
   .bg-glow {
     position: fixed; inset: 0; z-index: 0; pointer-events: none;
@@ -103,30 +143,20 @@
   .bstar { position: absolute; color: var(--gold-light); animation: twinkle ease-in-out infinite; opacity: 0; }
   @keyframes twinkle { 0%,100%{opacity:0;transform:scale(0.7)} 50%{opacity:0.5;transform:scale(1.2)} }
 
-  /* ── Quran ayah banner ── */
   .ayah-banner {
     position: relative; z-index: 1;
     background: linear-gradient(135deg, #1a0e00, #2d1a00);
-    padding: 18px 24px;
-    text-align: center;
+    padding: 18px 24px; text-align: center;
     border-bottom: 1px solid rgba(212,160,23,0.2);
   }
   .ayah-text {
     font-family: 'Amiri', serif;
     font-size: clamp(15px, 4vw, 19px);
-    color: var(--gold-light);
-    line-height: 2;
-    direction: rtl;
+    color: var(--gold-light); line-height: 2; direction: rtl;
     text-shadow: 0 0 20px rgba(245,200,66,0.3);
   }
-  .ayah-ref {
-    font-size: 11px;
-    color: rgba(255,255,255,0.4);
-    margin-top: 4px;
-    direction: rtl;
-  }
+  .ayah-ref { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px; direction: rtl; }
 
-  /* ── Shake surprise overlay ── */
   #shake-overlay {
     position: fixed; inset: 0; z-index: 500;
     background: rgba(26,14,0,0.92);
@@ -142,10 +172,8 @@
   .shake-msg {
     font-family: 'Amiri', serif;
     font-size: clamp(22px, 6vw, 32px);
-    color: var(--gold-light);
-    line-height: 1.7;
-    margin-bottom: 24px;
-    direction: rtl;
+    color: var(--gold-light); line-height: 1.7;
+    margin-bottom: 24px; direction: rtl;
   }
   .shake-close {
     background: linear-gradient(135deg, var(--gold), var(--gold-light));
@@ -164,8 +192,7 @@
     font-size: 12px; padding: 8px 16px;
     border-radius: 50px; z-index: 10;
     animation: fadeHint 4s ease forwards;
-    white-space: nowrap;
-    direction: rtl;
+    white-space: nowrap; direction: rtl;
   }
   @keyframes fadeHint { 0%{opacity:0} 20%{opacity:1} 70%{opacity:1} 100%{opacity:0} }
 
@@ -228,7 +255,6 @@
   .msg-body p:last-child { margin-bottom: 0; }
   .msg-name { font-family: 'Amiri', serif; font-size: 24px; color: var(--gold-dark); display: block; margin-bottom: 16px; }
 
-  /* ── Poem with fancy reveal ── */
   .msg-poem-block {
     background: linear-gradient(135deg, #2d1a00, #3d2200);
     border-radius: 16px; padding: 22px 18px; margin: 4px 0 18px;
@@ -238,29 +264,15 @@
   }
   .msg-poem-block.revealed { opacity: 1; transform: translateY(0) scale(1); }
   .poem-label-inner { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--gold); margin-bottom: 12px; }
-  .poem-lines {
-    font-family: 'Amiri', serif;
-    font-size: clamp(16px, 4.5vw, 21px);
-    color: rgba(255,255,255,0.9); line-height: 2.3; direction: rtl;
-  }
-  /* each poem line fades in one by one */
-  .poem-line-item {
-    display: block;
-    opacity: 0; transform: translateY(10px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
+  .poem-lines { font-family: 'Amiri', serif; font-size: clamp(16px, 4.5vw, 21px); color: rgba(255,255,255,0.9); line-height: 2.3; direction: rtl; }
+  .poem-line-item { display: block; opacity: 0; transform: translateY(10px); transition: opacity 0.6s ease, transform 0.6s ease; }
   .poem-line-item.show { opacity: 1; transform: translateY(0); }
   .poem-sep { color: var(--gold); font-size: 16px; letter-spacing: 4px; margin: 4px 0; display: block; opacity: 0; transition: opacity 0.4s ease; }
   .poem-sep.show { opacity: 1; }
   .poem-by { font-size: 12px; color: var(--gold); margin-top: 10px; opacity: 0; transition: opacity 0.6s ease; }
   .poem-by.show { opacity: 1; }
 
-  .cursor {
-    display: inline-block; width: 2px; height: 1.1em;
-    background: var(--gold); margin-right: 3px;
-    vertical-align: text-bottom;
-    animation: blink 0.7s step-end infinite;
-  }
+  .cursor { display: inline-block; width: 2px; height: 1.1em; background: var(--gold); margin-right: 3px; vertical-align: text-bottom; animation: blink 0.7s step-end infinite; }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
   .badge-wrap { position: relative; z-index: 1; text-align: center; margin: 28px 18px 60px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
@@ -308,7 +320,23 @@
   </div>
 </div>
 
-<!-- SHAKE SURPRISE OVERLAY -->
+<!-- WAITING SCREEN -->
+<div id="waiting-screen">
+  <div class="wait-ornament">⏳</div>
+  <h1 class="wait-title">إجابتك صح يا كوكا 💛</h1>
+  <p class="wait-subtitle">بس الموقع مش هيفتح غير الساعة ١٠ الصبح 😏</p>
+  <div class="wait-card">
+    <div class="wait-label">⏳ الوقت اللي فاضل</div>
+    <div class="wait-boxes">
+      <div class="wait-box"><span class="wait-num" id="wt-h">00</span><span class="wait-unit">ساعة</span></div>
+      <div class="wait-box"><span class="wait-num" id="wt-m">00</span><span class="wait-unit">دقيقة</span></div>
+      <div class="wait-box"><span class="wait-num" id="wt-s">00</span><span class="wait-unit">ثانية</span></div>
+    </div>
+  </div>
+  <div class="wait-msg">روحي ذاكري يا نجمة 😂<br/>الموقع هيفتح لوحده الساعة ١٠ 💛</div>
+</div>
+
+<!-- SHAKE OVERLAY -->
 <div id="shake-overlay">
   <div class="shake-emoji">🌟</div>
   <div class="shake-msg">
@@ -327,10 +355,9 @@
   <div class="bg-glow"></div>
   <div class="bg-stars-wrap" id="bstars"></div>
 
-  <!-- Quran ayah banner -->
   <div class="ayah-banner">
-    <div class="ayah-text">﴿ وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ ﴾</div>
-    <div class="ayah-ref">سورة الطلاق — آية ٢-٣</div>
+    <div class="ayah-text">﴿ وَلَا تَهِنُوا وَلَا تَحْزَنُوا وَأَنتُمُ الْأَعْلَوْنَ ﴾</div>
+    <div class="ayah-ref">سورة آل عمران — آية ١٣٩</div>
   </div>
 
   <div class="hero fade-up">
@@ -384,6 +411,45 @@
 </audio>
 
 <script>
+/* ══ TIME CHECK ══ */
+function isAfter10AM(){
+  const now = new Date();
+  return now.getHours() >= 10;
+}
+
+/* ══ WAITING SCREEN COUNTDOWN ══ */
+function startWaitCountdown(){
+  function tick(){
+    const now = new Date();
+    const t = new Date();
+    t.setHours(10,0,0,0);
+    if(now >= t){
+      // Time reached — auto open main content!
+      document.getElementById('waiting-screen').style.display = 'none';
+      openMainContent();
+      return;
+    }
+    const diff = t - now;
+    const h=Math.floor(diff/3600000);
+    const m=Math.floor((diff%3600000)/60000);
+    const s=Math.floor((diff%60000)/1000);
+    document.getElementById('wt-h').textContent=String(h).padStart(2,'0');
+    document.getElementById('wt-m').textContent=String(m).padStart(2,'0');
+    document.getElementById('wt-s').textContent=String(s).padStart(2,'0');
+  }
+  tick(); setInterval(tick,1000);
+}
+
+function openMainContent(){
+  document.getElementById('main-content').style.display = 'block';
+  buildMessage();
+  startCountdown();
+  spawnStars();
+  startParticles();
+  showShakeHint();
+  initShake();
+}
+
 /* ══ PASSWORD ══ */
 const ACCEPTED = ["مبتدأ","مبتدا"];
 function normalize(s){
@@ -403,13 +469,15 @@ function checkPassword(){
     scr.style.opacity = '0';
     setTimeout(()=>{
       scr.style.display = 'none';
-      document.getElementById('main-content').style.display = 'block';
-      buildMessage();
-      startCountdown();
-      spawnStars();
-      startParticles();
-      showShakeHint();
-      initShake();
+      if(isAfter10AM()){
+        // Time is fine — open directly
+        openMainContent();
+      } else {
+        // Too early — show waiting screen
+        const ws = document.getElementById('waiting-screen');
+        ws.style.display = 'flex';
+        startWaitCountdown();
+      }
     }, 900);
   } else {
     const card = document.getElementById('pw-card');
@@ -424,57 +492,40 @@ function checkPassword(){
 }
 document.getElementById('pw-input').addEventListener('keydown', e=>{ if(e.key==='Enter') checkPassword(); });
 
-/* ══ FLOATING GOLDEN PARTICLES ══ */
+/* ══ PARTICLES ══ */
 function startParticles(){
   const canvas = document.getElementById('particles-canvas');
   const ctx = canvas.getContext('2d');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   window.addEventListener('resize', ()=>{ canvas.width=window.innerWidth; canvas.height=window.innerHeight; });
-
   const particles = [];
   const COLORS = ['#F5C842','#D4A017','#FFE082','#FFCA28','#FFF8DC'];
   const SHAPES = ['circle','rect','diamond'];
-
   for(let i=0; i<55; i++){
     particles.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      size: Math.random() * 5 + 2,
+      x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+      size: Math.random()*5+2,
       color: COLORS[Math.floor(Math.random()*COLORS.length)],
       shape: SHAPES[Math.floor(Math.random()*SHAPES.length)],
-      vx: (Math.random()-0.5) * 0.4,
-      vy: -(Math.random() * 0.6 + 0.2),
-      alpha: Math.random() * 0.5 + 0.1,
-      rot: Math.random()*Math.PI*2,
-      vrot: (Math.random()-0.5)*0.02
+      vx: (Math.random()-0.5)*0.4, vy: -(Math.random()*0.6+0.2),
+      alpha: Math.random()*0.5+0.1,
+      rot: Math.random()*Math.PI*2, vrot: (Math.random()-0.5)*0.02
     });
   }
-
   function drawParticle(p){
-    ctx.save();
-    ctx.globalAlpha = p.alpha;
-    ctx.fillStyle = p.color;
-    ctx.translate(p.x, p.y);
-    ctx.rotate(p.rot);
-    if(p.shape==='circle'){
-      ctx.beginPath(); ctx.arc(0,0,p.size,0,Math.PI*2); ctx.fill();
-    } else if(p.shape==='rect'){
-      ctx.fillRect(-p.size,-p.size/2,p.size*2,p.size);
-    } else {
-      ctx.beginPath();
-      ctx.moveTo(0,-p.size); ctx.lineTo(p.size,0);
-      ctx.lineTo(0,p.size); ctx.lineTo(-p.size,0);
-      ctx.closePath(); ctx.fill();
-    }
+    ctx.save(); ctx.globalAlpha=p.alpha; ctx.fillStyle=p.color;
+    ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+    if(p.shape==='circle'){ ctx.beginPath(); ctx.arc(0,0,p.size,0,Math.PI*2); ctx.fill(); }
+    else if(p.shape==='rect'){ ctx.fillRect(-p.size,-p.size/2,p.size*2,p.size); }
+    else { ctx.beginPath(); ctx.moveTo(0,-p.size); ctx.lineTo(p.size,0); ctx.lineTo(0,p.size); ctx.lineTo(-p.size,0); ctx.closePath(); ctx.fill(); }
     ctx.restore();
   }
-
   function animParticles(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     particles.forEach(p=>{
       p.x+=p.vx; p.y+=p.vy; p.rot+=p.vrot;
-      if(p.y < -10){ p.y=canvas.height+10; p.x=Math.random()*canvas.width; }
+      if(p.y<-10){ p.y=canvas.height+10; p.x=Math.random()*canvas.width; }
       drawParticle(p);
     });
     requestAnimationFrame(animParticles);
@@ -482,63 +533,47 @@ function startParticles(){
   animParticles();
 }
 
-/* ══ SHAKE SURPRISE ══ */
-let shakeTriggered = false;
-let lastX=0, lastY=0, lastZ=0;
-
+/* ══ SHAKE ══ */
+let shakeTriggered=false, lastX=0, lastY=0, lastZ=0;
 function initShake(){
-  if(typeof DeviceMotionEvent === 'undefined') return;
-  if(typeof DeviceMotionEvent.requestPermission === 'function'){
-    // iOS 13+ needs permission — try on first touch
+  if(typeof DeviceMotionEvent==='undefined') return;
+  if(typeof DeviceMotionEvent.requestPermission==='function'){
     document.addEventListener('touchend', function askPerm(){
-      DeviceMotionEvent.requestPermission().then(r=>{
-        if(r==='granted') listenShake();
-      }).catch(()=>{});
+      DeviceMotionEvent.requestPermission().then(r=>{ if(r==='granted') listenShake(); }).catch(()=>{});
       document.removeEventListener('touchend', askPerm);
-    }, {once:true});
-  } else {
-    listenShake();
-  }
+    },{once:true});
+  } else { listenShake(); }
 }
-
 function listenShake(){
   window.addEventListener('devicemotion', e=>{
     if(shakeTriggered) return;
-    const a = e.accelerationIncludingGravity;
-    if(!a) return;
+    const a=e.accelerationIncludingGravity; if(!a) return;
     const dx=Math.abs(a.x-lastX), dy=Math.abs(a.y-lastY), dz=Math.abs(a.z-lastZ);
     lastX=a.x; lastY=a.y; lastZ=a.z;
-    if(dx+dy+dz > 30){ triggerShake(); }
+    if(dx+dy+dz>30) triggerShake();
   });
 }
-
-function triggerShake(){
-  shakeTriggered = true;
-  document.getElementById('shake-overlay').classList.add('show');
-}
-function closeShake(){
-  document.getElementById('shake-overlay').classList.remove('show');
-}
-
+function triggerShake(){ shakeTriggered=true; document.getElementById('shake-overlay').classList.add('show'); }
+function closeShake(){ document.getElementById('shake-overlay').classList.remove('show'); }
 function showShakeHint(){
-  const hint = document.createElement('div');
-  hint.className = 'shake-hint';
-  hint.textContent = '📳 حركي التليفون عشان مفاجأة!';
+  const hint=document.createElement('div');
+  hint.className='shake-hint';
+  hint.textContent='📳 حركي التليفون عشان مفاجأة!';
   document.body.appendChild(hint);
-  setTimeout(()=> hint.remove(), 4500);
+  setTimeout(()=>hint.remove(),4500);
 }
 
-/* ══ BUILD MESSAGE — word by word ══ */
+/* ══ BUILD MESSAGE ══ */
 function buildMessage(){
-  const sources = Array.from(document.querySelectorAll('#msg-src > *'));
-  const container = document.getElementById('msg-body');
-  const cursor = document.createElement('span');
-  cursor.className = 'cursor';
+  const sources=Array.from(document.querySelectorAll('#msg-src > *'));
+  const container=document.getElementById('msg-body');
+  const cursor=document.createElement('span');
+  cursor.className='cursor';
 
   function makePoem(){
-    const d = document.createElement('div');
-    d.className = 'msg-poem-block';
-    d.innerHTML = `
+    const d=document.createElement('div');
+    d.className='msg-poem-block';
+    d.innerHTML=`
       <div class="poem-label-inner">✦ المتنبي ✦</div>
       <div class="poem-lines">
         <span class="poem-line-item">عَلى قَدرِ أَهلِ العَزمِ تَأتي العَزائِمُ</span>
@@ -550,96 +585,63 @@ function buildMessage(){
         <span class="poem-line-item">وَتَصغُرُ في عَينِ العَظيمِ العَظائِمُ</span>
       </div>
       <div class="poem-by">— أبو الطيب المتنبي</div>`;
-
-    // Animate poem lines one by one after block appears
     setTimeout(()=>{
       d.classList.add('revealed');
-      const lines = d.querySelectorAll('.poem-line-item');
-      const seps = d.querySelectorAll('.poem-sep');
-      const by = d.querySelector('.poem-by');
-      lines.forEach((line, i)=>{
-        setTimeout(()=> line.classList.add('show'), i * 400);
-        if(seps[i]) setTimeout(()=> seps[i].classList.add('show'), i*400+200);
+      const lines=d.querySelectorAll('.poem-line-item');
+      const seps=d.querySelectorAll('.poem-sep');
+      const by=d.querySelector('.poem-by');
+      lines.forEach((line,i)=>{
+        setTimeout(()=>line.classList.add('show'), i*400);
+        if(seps[i]) setTimeout(()=>seps[i].classList.add('show'), i*400+200);
       });
-      setTimeout(()=> by.classList.add('show'), lines.length * 400 + 200);
-    }, 100);
-
+      setTimeout(()=>by.classList.add('show'), lines.length*400+200);
+    },100);
     return d;
   }
 
-  const WORD_DELAY = 120;
-  const PARA_DELAY = 350;
-  let segIndex = 0;
+  const WORD_DELAY=120, PARA_DELAY=350;
+  let segIndex=0;
 
   function processNext(){
-    if(segIndex >= sources.length){ cursor.remove(); return; }
-    const el = sources[segIndex];
-    const type = el.dataset.type || 'p';
-    segIndex++;
-
-    if(type === 'poem'){
-      cursor.remove();
-      container.appendChild(makePoem());
-      setTimeout(processNext, 2800); // wait for poem animation
-      return;
-    }
-
+    if(segIndex>=sources.length){ cursor.remove(); return; }
+    const el=sources[segIndex]; const type=el.dataset.type||'p'; segIndex++;
+    if(type==='poem'){ cursor.remove(); container.appendChild(makePoem()); setTimeout(processNext,2800); return; }
     let currentEl;
-    if(type === 'name'){
-      currentEl = document.createElement('span');
-      currentEl.className = 'msg-name';
-    } else if(type === 'last'){
-      currentEl = document.createElement('p');
-      currentEl.style.color = 'var(--gold-dark)';
-      currentEl.style.fontFamily = "'Amiri',serif";
-      currentEl.style.fontSize = '18px';
-      currentEl.style.marginTop = '16px';
-    } else {
-      currentEl = document.createElement('p');
-    }
+    if(type==='name'){ currentEl=document.createElement('span'); currentEl.className='msg-name'; }
+    else if(type==='last'){
+      currentEl=document.createElement('p');
+      currentEl.style.color='var(--gold-dark)';
+      currentEl.style.fontFamily="'Amiri',serif";
+      currentEl.style.fontSize='18px';
+      currentEl.style.marginTop='16px';
+    } else { currentEl=document.createElement('p'); }
     container.appendChild(currentEl);
-
-    const words = el.textContent.trim().split(/\s+/);
-    let wi = 0;
-    const textNode = document.createTextNode('');
+    const words=el.textContent.trim().split(/\s+/);
+    let wi=0;
+    const textNode=document.createTextNode('');
     currentEl.appendChild(textNode);
     currentEl.appendChild(cursor);
-
     function typeWord(){
-      if(wi >= words.length){
-        cursor.remove();
-        setTimeout(processNext, PARA_DELAY);
-        return;
-      }
-      const prefix = wi === 0 ? '' : ' ';
-      textNode.nodeValue += prefix + words[wi];
-      wi++;
-      cursor.remove();
-      currentEl.appendChild(cursor);
-      setTimeout(typeWord, WORD_DELAY);
+      if(wi>=words.length){ cursor.remove(); setTimeout(processNext,PARA_DELAY); return; }
+      const prefix=wi===0?'':' ';
+      textNode.nodeValue+=prefix+words[wi]; wi++;
+      cursor.remove(); currentEl.appendChild(cursor);
+      setTimeout(typeWord,WORD_DELAY);
     }
     typeWord();
   }
-
-  setTimeout(processNext, 600);
+  setTimeout(processNext,600);
 }
 
 /* ══ COUNTDOWN ══ */
 function startCountdown(){
   function tick(){
-    const now = new Date();
-    const t = new Date();
+    const now=new Date(); const t=new Date();
     t.setHours(10,0,0,0);
-    if(now >= t) t.setDate(t.getDate()+1);
-    const diff = t - now;
-    if(diff <= 0){
-      document.getElementById('cd-boxes').style.display='none';
-      document.getElementById('cd-done').style.display='block';
-      return;
-    }
-    const h=Math.floor(diff/3600000);
-    const m=Math.floor((diff%3600000)/60000);
-    const s=Math.floor((diff%60000)/1000);
+    if(now>=t) t.setDate(t.getDate()+1);
+    const diff=t-now;
+    if(diff<=0){ document.getElementById('cd-boxes').style.display='none'; document.getElementById('cd-done').style.display='block'; return; }
+    const h=Math.floor(diff/3600000), m=Math.floor((diff%3600000)/60000), s=Math.floor((diff%60000)/1000);
     document.getElementById('cd-h').textContent=String(h).padStart(2,'0');
     document.getElementById('cd-m').textContent=String(m).padStart(2,'0');
     document.getElementById('cd-s').textContent=String(s).padStart(2,'0');
@@ -649,14 +651,11 @@ function startCountdown(){
 
 /* ══ STARS ══ */
 function spawnStars(){
-  const wrap = document.getElementById('bstars');
+  const wrap=document.getElementById('bstars');
   ['✦','✧','⭐','💛','🌟'].forEach(c=>{
     for(let j=0;j<4;j++){
-      const s=document.createElement('div');
-      s.className='bstar';
-      s.textContent=c;
-      s.style.left=Math.random()*100+'vw';
-      s.style.top=Math.random()*100+'vh';
+      const s=document.createElement('div'); s.className='bstar'; s.textContent=c;
+      s.style.left=Math.random()*100+'vw'; s.style.top=Math.random()*100+'vh';
       s.style.animationDuration=(3+Math.random()*5)+'s';
       s.style.animationDelay=(Math.random()*6)+'s';
       s.style.fontSize=(11+Math.random()*12)+'px';
