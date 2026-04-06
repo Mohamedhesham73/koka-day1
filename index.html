@@ -385,7 +385,7 @@
   <p>I know the road still feels long. But I promise you — from here, looking back — it was worth every single second. And so are you.</p>
   <p data-type="last">With all the love I have — from your future self 🌙</p>
 </div>
-
+<button class="wish-trigger" id="wish-trigger" onclick="openWish()" style="display:none;position:fixed;bottom:88px;right:24px;z-index:100;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#C9A96E,#E8C98A);border:1px solid rgba(201,169,110,0.4);cursor:pointer;font-size:24px;box-shadow:0 4px 20px rgba(201,169,110,0.5);display:none;align-items:center;justify-content:center;animation:pulse 1s ease-in-out infinite;">⭐</button>
 <button class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</button>
 <audio id="bgMusic" loop>
   <source src="./song.mp3" type="audio/mpeg"/>
@@ -476,11 +476,13 @@ let wishShooters = []; // tracked for tapping
       y:Math.random()*canvas.height*0.35,
       speed:Math.random()*2+1.5,
       angle:Math.PI/4+(Math.random()-0.5)*0.3,
-      alpha:1, width:Math.random()*1.5+0.5,
+      alpha:1, life:0, width:Math.random()*6+8,
       trail:[], tappable:true
     };
     shootersList.push(s);
     wishShooters.push(s);
+    document.getElementById('wish-trigger').style.display='flex';
+    setTimeout(()=> document.getElementById('wish-trigger').style.display='none', 6000);
   }
   function scheduleShooter(){
     setTimeout(()=>{ spawnShooter(); scheduleShooter(); }, 1500+Math.random()*1500);
@@ -524,7 +526,7 @@ let wishShooters = []; // tracked for tapping
       s.y+=Math.sin(s.angle)*s.speed;
       s.trail.push({x:s.x,y:s.y});
       if(s.trail.length>20) s.trail.shift();
-      s.alpha-=0.016;
+      s.alpha-=0.003;
       if(s.alpha<=0||s.x>canvas.width+50||s.y>canvas.height+50){
         shootersList.splice(i,1);
         const wi=wishShooters.indexOf(s);
@@ -562,7 +564,7 @@ document.getElementById('wish-canvas').addEventListener('click', function(e){
   // Check if tap is near any shooter's head
   for(const s of shootersList){
     const dist = Math.hypot(s.x-mx, s.y-my);
-    if(dist < 40){
+    if(dist < 90){
       openWish(); return;
     }
   }
