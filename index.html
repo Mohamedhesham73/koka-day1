@@ -34,6 +34,50 @@
     color: var(--white);
   }
 
+  /* ══ CINEMATIC OPENING ══ */
+  #intro {
+    position: fixed; inset: 0; z-index: 2000;
+    background: #000;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 40px 32px; text-align: center;
+    transition: opacity 1.2s ease;
+  }
+  #intro.fade-out { opacity: 0; pointer-events: none; }
+
+  .intro-line {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(16px, 4.5vw, 22px);
+    font-weight: 300; font-style: italic;
+    color: rgba(200,212,227,0);
+    letter-spacing: 2px; line-height: 2;
+    transition: color 1.2s ease;
+    margin-bottom: 6px;
+  }
+  .intro-line.show { color: rgba(200,212,227,0.85); }
+  .intro-line.gold-line { color: rgba(232,201,138,0); }
+  .intro-line.gold-line.show { color: rgba(232,201,138,0.9); }
+
+  .intro-skip {
+    position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(200,212,227,0.3); cursor: pointer;
+    transition: color 0.3s;
+    background: none; border: none;
+  }
+  .intro-skip:hover { color: rgba(200,212,227,0.6); }
+
+  /* ══ BREATHING OVERLAY ══ */
+  #breath-overlay {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 50%, rgba(107,143,196,0.06) 0%, transparent 70%);
+    animation: breathe 6s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%,100% { opacity: 0.4; transform: scale(1); }
+    50%      { opacity: 1;   transform: scale(1.04); }
+  }
+
   #stars-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 
   .bg-atm {
@@ -44,7 +88,8 @@
       radial-gradient(ellipse at 50% 0%, rgba(201,169,110,0.06) 0%, transparent 40%);
   }
 
-  .page { position: relative; z-index: 1; }
+  .page { position: relative; z-index: 1; display: none; }
+  .page.visible { display: block; }
 
   /* ── Hero ── */
   .hero {
@@ -165,10 +210,7 @@
     width:0%; transition:width 1.8s cubic-bezier(0.34,1.56,0.64,1);
   }
   .progress-stars { display:flex; gap:6px; margin-top:12px; }
-  .pstar {
-    width:28px; height:28px; border-radius:50%;
-    display:flex; align-items:center; justify-content:center; font-size:13px;
-  }
+  .pstar { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; }
   .pstar.done { background:rgba(107,143,196,0.2); border:1px solid rgba(107,143,196,0.3); }
   .pstar.todo { background:rgba(200,212,227,0.04); border:1px solid rgba(200,212,227,0.08); }
 
@@ -203,31 +245,8 @@
     color: var(--accent); margin-top: 24px; display: block;
   }
 
-  .cursor {
-    display:inline-block; width:1.5px; height:1em;
-    background:var(--accent); margin-left:2px;
-    vertical-align:text-bottom; animation:blink 0.8s step-end infinite;
-  }
+  .cursor { display:inline-block; width:1.5px; height:1em; background:var(--accent); margin-left:2px; vertical-align:text-bottom; animation:blink 0.8s step-end infinite; }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-
-  /* ── Quote ── */
-  .quote-section { padding: 0 22px; margin-bottom: 36px; }
-  .quote-card {
-    background: linear-gradient(135deg, rgba(30,45,74,0.8), rgba(13,18,32,0.9));
-    border: 1px solid rgba(107,143,196,0.15);
-    border-radius: 20px; padding: 28px 24px; text-align: center;
-  }
-  .quote-mark {
-    font-family: 'Cormorant Garamond', serif; font-size: 60px; line-height: 0.5;
-    color: rgba(107,143,196,0.2); display: block; margin-bottom: 12px;
-  }
-  .quote-text {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(17px, 4.5vw, 22px); font-style: italic; font-weight: 300;
-    color: var(--silver); line-height: 1.7; margin-bottom: 16px;
-  }
-  .quote-line { width:40px; height:1px; background:var(--accent2); margin:0 auto 12px; }
-  .quote-author { font-size:11px; color:var(--silver3); letter-spacing:2px; text-transform:uppercase; }
 
   /* ── Badge ── */
   .badge-section { padding: 0 22px; margin-bottom: 60px; text-align: center; }
@@ -260,10 +279,23 @@
 </head>
 <body>
 
+<!-- ══ CINEMATIC OPENING ══ -->
+<div id="intro">
+  <div class="intro-line" id="il1">Somewhere between now and after...</div>
+  <div class="intro-line" id="il2">a girl sat down and kept going.</div>
+  <div class="intro-line" style="margin-top:20px;font-size:clamp(13px,3.5vw,17px);color:rgba(107,143,196,0)" id="il3">She didn't know how strong she was.</div>
+  <div class="intro-line" style="font-size:clamp(13px,3.5vw,17px);color:rgba(107,143,196,0)" id="il4">She just knew she couldn't stop.</div>
+  <div class="intro-line gold-line" style="margin-top:28px;font-size:clamp(22px,6vw,32px);letter-spacing:6px" id="il5">KOKA.</div>
+  <button class="intro-skip" onclick="skipIntro()">tap to skip</button>
+</div>
+
+<!-- ══ BREATHING OVERLAY ══ -->
+<div id="breath-overlay"></div>
+
 <canvas id="stars-canvas"></canvas>
 <div class="bg-atm"></div>
 
-<div class="page">
+<div class="page" id="main-page">
 
   <div class="hero">
     <div class="hero-moon">🌙</div>
@@ -318,15 +350,6 @@
     </div>
   </div>
 
-  <div class="quote-section">
-    <div class="quote-card">
-      <span class="quote-mark">"</span>
-      <div class="quote-text">She is both hellfire and holy water, and the flavor you taste depends on how you treat her.</div>
-      <div class="quote-line"></div>
-      <div class="quote-author">— Sneha Pal</div>
-    </div>
-  </div>
-
   <div class="badge-section">
     <div class="badge">🌙 Exam #3: CONQUERED 🌙</div>
   </div>
@@ -349,68 +372,180 @@
 </audio>
 
 <script>
-/* STARFIELD */
+/* ══ CINEMATIC INTRO ══ */
+const introLines = [
+  { id:'il1', delay:600 },
+  { id:'il2', delay:1800 },
+  { id:'il3', delay:3200 },
+  { id:'il4', delay:4400 },
+  { id:'il5', delay:5800 },
+];
+
+let introTimer;
+function runIntro(){
+  introLines.forEach(({id, delay})=>{
+    introTimer = setTimeout(()=>{
+      const el = document.getElementById(id);
+      if(el) el.classList.add('show');
+    }, delay);
+  });
+  // Auto dismiss after last line
+  setTimeout(()=> dismissIntro(), 7800);
+}
+
+function dismissIntro(){
+  const intro = document.getElementById('intro');
+  intro.classList.add('fade-out');
+  setTimeout(()=>{
+    intro.style.display = 'none';
+    document.getElementById('main-page').classList.add('visible');
+    startMain();
+  }, 1200);
+}
+
+function skipIntro(){
+  clearTimeout(introTimer);
+  dismissIntro();
+}
+
+runIntro();
+
+/* ══ STARFIELD + SHOOTING STARS ══ */
 (function(){
   const canvas = document.getElementById('stars-canvas');
   const ctx = canvas.getContext('2d');
   function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
   resize(); window.addEventListener('resize', resize);
-  const stars=[];
-  for(let i=0;i<200;i++) stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.2+0.2,alpha:Math.random()*0.7+0.1,phase:Math.random()*Math.PI*2,speed:Math.random()*0.003+0.001});
-  const glows=[];
-  for(let i=0;i<15;i++) glows.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1,phase:Math.random()*Math.PI*2,speed:Math.random()*0.004+0.002});
-  let t=0;
+
+  // Static stars
+  const stars = [];
+  for(let i=0;i<200;i++) stars.push({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    r: Math.random()*1.2+0.2,
+    alpha: Math.random()*0.7+0.1,
+    phase: Math.random()*Math.PI*2,
+    speed: Math.random()*0.003+0.001
+  });
+
+  // Glow stars
+  const glows = [];
+  for(let i=0;i<15;i++) glows.push({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    r: Math.random()*2+1,
+    phase: Math.random()*Math.PI*2,
+    speed: Math.random()*0.004+0.002
+  });
+
+  // Shooting stars
+  const shooters = [];
+  function spawnShooter(){
+    shooters.push({
+      x: Math.random()*canvas.width*0.7,
+      y: Math.random()*canvas.height*0.4,
+      len: Math.random()*120+60,
+      speed: Math.random()*8+6,
+      angle: Math.PI/4 + (Math.random()-0.5)*0.3,
+      alpha: 1,
+      width: Math.random()*1.5+0.5,
+      trail: []
+    });
+  }
+
+  // Shoot every 4-8 seconds
+  function scheduleShooter(){
+    setTimeout(()=>{
+      spawnShooter();
+      scheduleShooter();
+    }, 4000 + Math.random()*4000);
+  }
+  scheduleShooter();
+
+  let t = 0;
   function draw(){
-    ctx.clearRect(0,0,canvas.width,canvas.height); t+=0.01;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    t += 0.01;
+
+    // Static stars
     stars.forEach(s=>{
-      const a=s.alpha*(0.6+0.4*Math.sin(t*s.speed*100+s.phase));
+      const a = s.alpha*(0.5+0.5*Math.sin(t*s.speed*100+s.phase));
       ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
       ctx.fillStyle=`rgba(200,212,227,${a})`; ctx.fill();
     });
+
+    // Glow stars
     glows.forEach(s=>{
-      const a=0.4+0.4*Math.sin(t*s.speed*100+s.phase);
-      const g=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*4);
-      g.addColorStop(0,`rgba(107,143,196,${a})`); g.addColorStop(1,'rgba(107,143,196,0)');
-      ctx.beginPath(); ctx.arc(s.x,s.y,s.r*4,0,Math.PI*2); ctx.fillStyle=g; ctx.fill();
-      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fillStyle=`rgba(220,235,255,${a})`; ctx.fill();
+      const a = 0.35+0.35*Math.sin(t*s.speed*100+s.phase);
+      const g = ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*5);
+      g.addColorStop(0,`rgba(107,143,196,${a})`);
+      g.addColorStop(1,'rgba(107,143,196,0)');
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r*5,0,Math.PI*2);
+      ctx.fillStyle=g; ctx.fill();
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(230,240,255,${a})`; ctx.fill();
     });
+
+    // Shooting stars
+    for(let i=shooters.length-1;i>=0;i--){
+      const s = shooters[i];
+      const dx = Math.cos(s.angle)*s.speed;
+      const dy = Math.sin(s.angle)*s.speed;
+      s.x += dx; s.y += dy;
+      s.trail.push({x:s.x, y:s.y});
+      if(s.trail.length > 18) s.trail.shift();
+      s.alpha -= 0.018;
+
+      if(s.alpha <= 0 || s.x > canvas.width+50 || s.y > canvas.height+50){
+        shooters.splice(i,1); continue;
+      }
+
+      // Draw trail
+      if(s.trail.length > 1){
+        for(let j=1;j<s.trail.length;j++){
+          const prog = j/s.trail.length;
+          ctx.beginPath();
+          ctx.moveTo(s.trail[j-1].x, s.trail[j-1].y);
+          ctx.lineTo(s.trail[j].x, s.trail[j].y);
+          ctx.strokeStyle=`rgba(220,235,255,${prog*s.alpha*0.8})`;
+          ctx.lineWidth = s.width*prog;
+          ctx.stroke();
+        }
+      }
+
+      // Draw head
+      const headGrad = ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.width*3);
+      headGrad.addColorStop(0,`rgba(255,255,255,${s.alpha})`);
+      headGrad.addColorStop(1,'rgba(200,220,255,0)');
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.width*3,0,Math.PI*2);
+      ctx.fillStyle=headGrad; ctx.fill();
+    }
+
     requestAnimationFrame(draw);
   }
   draw();
 })();
 
-/* PROGRESS */
-setTimeout(()=>{
-  document.getElementById('prog-fill').style.width='43%';
-  const wrap=document.getElementById('prog-stars');
-  for(let i=0;i<7;i++){
-    const s=document.createElement('div');
-    s.className='pstar '+(i<3?'done':'todo');
-    s.textContent=i<3?'⭐':'·';
-    wrap.appendChild(s);
-  }
-},600);
+/* ══ START MAIN (called after intro) ══ */
+function startMain(){
+  // Progress bar
+  setTimeout(()=>{
+    document.getElementById('prog-fill').style.width='43%';
+    const wrap = document.getElementById('prog-stars');
+    for(let i=0;i<7;i++){
+      const s=document.createElement('div');
+      s.className='pstar '+(i<3?'done':'todo');
+      s.textContent=i<3?'⭐':'·';
+      wrap.appendChild(s);
+    }
+  }, 400);
 
-/* MOOD */
-const moods={
-  tired:"That's okay. Tired means you've been giving everything you have. And everything is exactly what this week needed from you. Rest your eyes for a moment — then keep going, because you always do. 💙",
-  neutral:"Neutral is underrated. It means you're steady. You're not overwhelmed, not forcing it — you're just here, showing up. That quiet strength? That's actually everything. ✨",
-  fine:"Fine?! KOKA!! That's amazing — hold onto that feeling. Let it carry you through today. You've earned every bit of this lightness. Don't let anyone or anything take it from you. 🌙"
-};
-function selectMood(btn,mood){
-  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));
-  btn.classList.add('selected');
-  const r=document.getElementById('mood-response');
-  r.textContent=moods[mood]; r.classList.remove('show');
-  setTimeout(()=>r.classList.add('show'),50);
-}
-
-/* TYPEWRITER */
-(function(){
+  // Typewriter
   const sources=Array.from(document.querySelectorAll('#msg-src > *'));
   const container=document.getElementById('msg-text');
   const cursor=document.createElement('span'); cursor.className='cursor';
   const SPEED=90; let segIndex=0;
+
   function processNext(){
     if(segIndex>=sources.length){cursor.remove();return;}
     const el=sources[segIndex]; const type=el.dataset.type||'p'; segIndex++;
@@ -429,10 +564,24 @@ function selectMood(btn,mood){
     }
     typeWord();
   }
-  setTimeout(processNext,1000);
-})();
+  setTimeout(processNext, 800);
+}
 
-/* MUSIC */
+/* ══ MOOD ══ */
+const moods={
+  tired:"That's okay. Tired means you've been giving everything you have. And everything is exactly what this week needed from you. Rest your eyes for a moment — then keep going, because you always do. 💙",
+  neutral:"Neutral is underrated. It means you're steady. You're not overwhelmed, not forcing it — you're just here, showing up. That quiet strength? That's actually everything. ✨",
+  fine:"Fine?! KOKA!! That's amazing — hold onto that feeling. Let it carry you through today. You've earned every bit of this lightness. Don't let anyone or anything take it from you. 🌙"
+};
+function selectMood(btn,mood){
+  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const r=document.getElementById('mood-response');
+  r.textContent=moods[mood]; r.classList.remove('show');
+  setTimeout(()=>r.classList.add('show'),50);
+}
+
+/* ══ MUSIC ══ */
 let playing=false;
 const music=document.getElementById('bgMusic');
 const btn=document.getElementById('musicBtn');
@@ -442,7 +591,10 @@ function toggleMusic(){
   else{music.play().catch(()=>{});btn.textContent='🎶';btn.style.animation='spin 3s linear infinite';}
   playing=!playing;
 }
-document.body.addEventListener('click',function t(){if(!playing)toggleMusic();document.body.removeEventListener('click',t);},{once:true});
+document.body.addEventListener('click',function t(){
+  if(!playing) toggleMusic();
+  document.body.removeEventListener('click',t);
+},{once:true});
 </script>
 </body>
 </html>
