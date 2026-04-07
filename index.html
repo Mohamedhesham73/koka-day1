@@ -3,651 +3,631 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>KOKA 🌙</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌙</text></svg>"/>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<title>KOKA 🌸</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌸</text></svg>"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
 <style>
   :root {
-    --navy: #080B14;
-    --navy2: #0D1220;
-    --navy3: #121828;
-    --blue: #1E2D4A;
-    --blue2: #243457;
-    --silver: #C8D4E3;
-    --silver2: #8FA3BC;
-    --silver3: #4A6080;
-    --white: #F0F4FA;
-    --white2: #D8E2F0;
-    --accent: #6B8FC4;
-    --accent2: #4A6FA5;
-    --gold: #C9A96E;
-    --gold2: #E8C98A;
+    --blush: #FDF0F3;
+    --pink: #F2A7BA;
+    --pink2: #E8849C;
+    --pink3: #D4607A;
+    --rose: #FFE4EC;
+    --green: #7BAF8E;
+    --green2: #5A9470;
+    --green3: #3D7A57;
+    --cream: #FFF8F0;
+    --white: #FFFFFF;
+    --text: #3D2030;
+    --text2: #7A4A5A;
+    --text3: #B08090;
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin:0; padding:0; box-sizing:border-box; }
 
   body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--navy);
+    font-family: 'Lato', sans-serif;
+    background: var(--blush);
     min-height: 100vh;
     overflow-x: hidden;
-    color: var(--white);
+    color: var(--text);
   }
 
-  /* ══ CINEMATIC OPENING ══ */
-  #intro {
-    position: fixed; inset: 0; z-index: 2000;
-    background: #000;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 40px 32px; text-align: center;
-    transition: opacity 1.2s ease;
-  }
-  #intro.fade-out { opacity: 0; pointer-events: none; }
+  #petal-canvas { position:fixed; inset:0; z-index:0; pointer-events:none; }
 
-  .intro-line {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(16px, 4.5vw, 22px);
-    font-weight: 300; font-style: italic;
-    color: rgba(200,212,227,0);
-    letter-spacing: 2px; line-height: 2;
-    transition: color 1.2s ease;
-    margin-bottom: 4px;
-  }
-  .intro-line.show { color: rgba(200,212,227,0.85); }
-  .intro-line.silver { color: rgba(107,143,196,0); }
-  .intro-line.silver.show { color: rgba(107,143,196,0.9); }
-  .intro-line.gold-line { color: rgba(232,201,138,0); }
-  .intro-line.gold-line.show { color: rgba(232,201,138,0.9); }
+  /* Interactive petal overlay — on top */
+  #tap-canvas { position:fixed; inset:0; z-index:3; pointer-events:none; }
+  #tap-canvas.active { pointer-events:all; cursor:pointer; }
 
-  .intro-skip {
-    position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
-    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-    color: rgba(200,212,227,0.3); cursor: pointer;
-    transition: color 0.3s; background: none; border: none;
-  }
-
-  /* ══ BREATHING ══ */
-  #breath-overlay {
-    position: fixed; inset: 0; z-index: 0; pointer-events: none;
-    background: radial-gradient(ellipse at 50% 50%, rgba(107,143,196,0.06) 0%, transparent 70%);
-    animation: breathe 6s ease-in-out infinite;
-  }
-  @keyframes breathe {
-    0%,100% { opacity: 0.4; transform: scale(1); }
-    50%      { opacity: 1;   transform: scale(1.04); }
-  }
-
-  #stars-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-
-  /* Wish canvas — on top & interactive */
-  #wish-canvas { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
-  #wish-canvas.active { pointer-events: all; cursor: crosshair; }
-
-  .bg-atm {
-    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  .bg-glow {
+    position:fixed; inset:0; z-index:0; pointer-events:none;
     background:
-      radial-gradient(ellipse at 15% 15%, rgba(107,143,196,0.12) 0%, transparent 50%),
-      radial-gradient(ellipse at 85% 85%, rgba(30,45,74,0.8) 0%, transparent 60%),
-      radial-gradient(ellipse at 50% 0%, rgba(201,169,110,0.06) 0%, transparent 40%);
+      radial-gradient(ellipse at 20% 10%, rgba(242,167,186,0.25) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 90%, rgba(123,175,142,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 60% 40%, rgba(255,228,236,0.3) 0%, transparent 40%);
   }
 
-  .page { position: relative; z-index: 1; display: none; }
-  .page.visible { display: block; }
+  /* ══ PETAL TAP MESSAGE POPUP ══ */
+  #petal-msg {
+    position:fixed; z-index:1000;
+    background:var(--white); border:1px solid rgba(242,167,186,0.4);
+    border-radius:16px; padding:14px 18px;
+    box-shadow:0 8px 28px rgba(212,96,122,0.18);
+    font-family:'Playfair Display', serif;
+    font-size:15px; font-style:italic; color:var(--pink3);
+    text-align:center; max-width:220px;
+    opacity:0; pointer-events:none;
+    transition:opacity 0.3s ease;
+    transform:translateX(-50%);
+  }
+  #petal-msg.show { opacity:1; }
 
-  /* ── Wish overlay modal ── */
-  #wish-modal {
-    position: fixed; inset: 0; z-index: 900;
-    background: rgba(8,11,20,0.92);
-    display: none; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 32px 24px; text-align: center;
-    backdrop-filter: blur(8px);
+  /* ══ INTRO ══ */
+  #intro {
+    position:fixed; inset:0; z-index:2000;
+    background:var(--white);
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    padding:40px 32px; text-align:center;
+    transition:opacity 1s ease;
   }
-  #wish-modal.show { display: flex; animation: fadeIn 0.4s ease; }
-  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-  .wish-star { font-size: 52px; margin-bottom: 16px; animation: wishStar 2s ease-in-out infinite; }
-  @keyframes wishStar { 0%,100%{transform:scale(1) rotate(-5deg)} 50%{transform:scale(1.1) rotate(5deg)} }
-  .wish-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(22px, 6vw, 30px); font-style: italic; font-weight: 300;
-    color: var(--gold2); margin-bottom: 8px;
-  }
-  .wish-sub { font-size: 13px; color: var(--silver3); margin-bottom: 24px; letter-spacing: 1px; }
-  .wish-input {
-    width: 100%; max-width: 340px;
-    background: rgba(107,143,196,0.08);
-    border: 1px solid rgba(107,143,196,0.3);
-    border-radius: 14px; padding: 16px 18px;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px; font-style: italic;
-    color: var(--white); outline: none; text-align: center;
-    margin-bottom: 16px;
-  }
-  .wish-input::placeholder { color: var(--silver3); }
-  .wish-input:focus { border-color: var(--accent); }
-  .wish-btn {
-    background: linear-gradient(135deg, var(--accent2), var(--gold));
-    color: var(--white); font-family: 'DM Sans', sans-serif;
-    font-size: 13px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase;
-    padding: 12px 28px; border: none; border-radius: 50px; cursor: pointer;
-    box-shadow: 0 4px 20px rgba(107,143,196,0.3); margin-bottom: 12px;
-    transition: transform 0.15s;
-  }
-  .wish-btn:active { transform: scale(0.97); }
-  .wish-close {
-    font-size: 11px; color: var(--silver3); cursor: pointer;
-    background: none; border: none; letter-spacing: 2px; text-transform: uppercase;
-  }
-  .wish-saved {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 17px; font-style: italic;
-    color: var(--gold2); margin-top: 8px; min-height: 24px;
-    opacity: 0; transition: opacity 0.4s ease;
-  }
-  .wish-saved.show { opacity: 1; }
+  #intro.out { opacity:0; pointer-events:none; }
 
-  /* ── Wish hint ── */
-  .wish-hint {
-    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-    background: rgba(8,11,20,0.85);
-    border: 1px solid rgba(201,169,110,0.25);
-    color: var(--gold2); font-size: 11px; padding: 8px 18px;
-    border-radius: 50px; z-index: 10; white-space: nowrap;
-    animation: fadeHint 5s ease forwards;
+  .intro-petals { font-size:40px; margin-bottom:20px; animation:spin 8s linear infinite; display:inline-block; }
+  @keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+
+  .intro-msg {
+    font-family:'Playfair Display', serif;
+    font-size:clamp(14px,4vw,20px); font-style:italic; font-weight:400;
+    color:var(--text2); opacity:0; transform:translateY(16px);
+    transition:opacity 0.9s ease, transform 0.9s ease;
+    margin-bottom:8px; line-height:1.8;
   }
-  @keyframes fadeHint { 0%{opacity:0} 15%{opacity:1} 75%{opacity:1} 100%{opacity:0} }
+  .intro-msg.show { opacity:1; transform:translateY(0); }
+  .intro-name {
+    font-family:'Playfair Display', serif;
+    font-size:clamp(36px,10vw,60px); font-style:italic; font-weight:700;
+    color:var(--pink3); opacity:0; transform:scale(0.9);
+    transition:opacity 1s ease, transform 1s ease; margin-top:16px;
+  }
+  .intro-name.show { opacity:1; transform:scale(1); }
+  .intro-skip {
+    position:absolute; bottom:28px; left:50%; transform:translateX(-50%);
+    font-size:10px; letter-spacing:3px; text-transform:uppercase;
+    color:var(--text3); cursor:pointer; background:none; border:none;
+  }
+
+  .page { position:relative; z-index:1; display:none; }
+  .page.visible { display:block; }
 
   /* ── Hero ── */
   .hero {
-    min-height: 100vh; display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 80px 28px 60px; text-align: center; position: relative;
+    min-height:90vh; display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    padding:80px 28px 60px; text-align:center; position:relative;
   }
-  .hero-moon {
-    font-size: 48px; margin-bottom: 24px;
-    animation: moonFloat 4s ease-in-out infinite;
-    filter: drop-shadow(0 0 20px rgba(107,143,196,0.6));
-  }
-  @keyframes moonFloat { 0%,100%{transform:translateY(0) rotate(-5deg)} 50%{transform:translateY(-12px) rotate(5deg)} }
-  .hero-eyebrow { font-size:10px; font-weight:500; letter-spacing:5px; text-transform:uppercase; color:var(--accent); margin-bottom:16px; animation:fadeUp 1s 0.2s ease both; }
-  .hero-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(64px,18vw,110px); font-weight:300; font-style:italic;
-    line-height:0.9; letter-spacing:-2px; margin-bottom:20px;
-    animation: fadeUp 1s 0.3s ease both;
-    background: linear-gradient(135deg, var(--white) 0%, var(--silver) 40%, var(--gold2) 70%, var(--white) 100%);
-    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
-  }
-  .hero-line { width:80px; height:1px; background:linear-gradient(90deg,transparent,var(--accent),transparent); margin:0 auto 20px; animation:fadeUp 1s 0.4s ease both; }
-  .hero-sub { font-family:'Cormorant Garamond',serif; font-size:clamp(16px,4vw,22px); font-style:italic; font-weight:300; color:var(--silver2); margin-bottom:32px; animation:fadeUp 1s 0.5s ease both; letter-spacing:0.5px; }
-  .hero-tag { display:inline-flex; align-items:center; gap:8px; background:rgba(107,143,196,0.1); border:1px solid rgba(107,143,196,0.25); color:var(--accent); font-size:12px; font-weight:400; padding:10px 20px; border-radius:50px; animation:fadeUp 1s 0.6s ease both; letter-spacing:1px; }
-  .scroll-hint { position:absolute; bottom:32px; left:50%; transform:translateX(-50%); font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--silver3); animation:fadeUp 1s 1s ease both, nudge 2s 2s ease-in-out infinite; }
-  @keyframes nudge { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(5px)} }
+  .hero-flower { font-size:56px; margin-bottom:16px; animation:bloom 3s ease-in-out infinite; }
+  @keyframes bloom { 0%,100%{transform:scale(1) rotate(-3deg)} 50%{transform:scale(1.1) rotate(3deg)} }
+  .hero-tag { font-size:10px; letter-spacing:5px; text-transform:uppercase; color:var(--green2); margin-bottom:16px; animation:fadeUp 0.8s 0.2s ease both; }
+  .hero-title { font-family:'Playfair Display',serif; font-size:clamp(52px,15vw,88px); font-style:italic; font-weight:700; color:var(--pink3); line-height:0.95; margin-bottom:16px; animation:fadeUp 0.8s 0.3s ease both; }
+  .hero-sub { font-family:'Playfair Display',serif; font-size:clamp(15px,4vw,20px); font-style:italic; font-weight:400; color:var(--text2); margin-bottom:28px; animation:fadeUp 0.8s 0.4s ease both; line-height:1.6; max-width:320px; }
+  .hero-divider { display:flex; align-items:center; gap:12px; animation:fadeUp 0.8s 0.5s ease both; }
+  .hdiv-line { width:40px; height:1px; background:var(--pink); }
+  .hdiv-flower { font-size:16px; }
+  .scroll-hint { position:absolute; bottom:28px; left:50%; transform:translateX(-50%); font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--text3); animation:fadeUp 1s 1s ease both, bob 2s 2s ease-in-out infinite; }
+  @keyframes bob { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(5px)} }
   @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 
-  /* ── Divider ── */
-  .divider { display:flex; align-items:center; gap:14px; padding:0 28px; margin:36px 0; }
-  .div-line { flex:1; height:1px; background:rgba(200,212,227,0.08); }
-  .div-diamond { width:6px; height:6px; background:var(--accent); transform:rotate(45deg); }
+  .section { padding:0 20px; margin-bottom:40px; }
+  .section-label { font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--green2); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+  .section-label::after { content:''; flex:1; height:1px; background:rgba(123,175,142,0.25); }
 
-  /* ── Section label ── */
-  .section-label { font-size:10px; font-weight:500; letter-spacing:4px; text-transform:uppercase; color:var(--gold); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
-  .section-label::after { content:''; flex:1; height:1px; background:rgba(201,169,110,0.15); }
-
-  /* ── Moon phase ── */
-  .moon-section { padding: 0 22px; margin-bottom: 36px; }
-  .moon-card {
-    background: var(--navy2); border: 1px solid rgba(200,212,227,0.08);
-    border-radius: 20px; padding: 24px 20px; position: relative; overflow: hidden;
-    text-align: center;
+  /* ══ PETAL TAP HINT ══ */
+  .petal-hint {
+    background:rgba(242,167,186,0.15); border:1px solid rgba(242,167,186,0.3);
+    border-radius:50px; padding:10px 18px; text-align:center;
+    font-size:13px; color:var(--text2); margin-bottom:16px;
+    font-style:italic;
   }
-  .moon-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--silver3),var(--silver),var(--gold)); }
-  .moon-phase-emoji { font-size: 52px; margin-bottom: 10px; display: block; filter: drop-shadow(0 0 14px rgba(200,212,227,0.5)); }
-  .moon-phase-name { font-family:'Cormorant Garamond',serif; font-size:20px; font-style:italic; color:var(--silver); margin-bottom:6px; }
-  .moon-phase-energy { font-size:12px; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:14px; }
-  .moon-phase-msg { font-family:'Cormorant Garamond',serif; font-size:16px; font-style:italic; font-weight:300; color:var(--silver2); line-height:1.7; }
 
-  /* ── Mood ── */
-  .mood-section { padding: 0 22px; margin-bottom: 36px; }
-  .mood-card { background:var(--navy2); border:1px solid rgba(200,212,227,0.08); border-radius:20px; padding:24px 20px; position:relative; overflow:hidden; }
-  .mood-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--accent2),var(--silver),var(--gold)); }
-  .mood-question { font-family:'Cormorant Garamond',serif; font-size:18px; font-style:italic; font-weight:300; color:var(--silver); margin-bottom:18px; text-align:center; }
-  .mood-options { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:16px; }
-  .mood-btn { background:rgba(107,143,196,0.06); border:1px solid rgba(107,143,196,0.15); border-radius:14px; padding:14px 8px; text-align:center; cursor:pointer; transition:all 0.3s ease; -webkit-tap-highlight-color:transparent; }
-  .mood-btn:active { transform:scale(0.96); }
-  .mood-btn.selected { background:rgba(107,143,196,0.18); border-color:var(--accent); box-shadow:0 0 20px rgba(107,143,196,0.2); }
-  .mood-emoji { font-size:26px; display:block; margin-bottom:6px; }
-  .mood-label { font-size:11px; color:var(--silver2); letter-spacing:1px; text-transform:uppercase; }
-  .mood-response { font-family:'Cormorant Garamond',serif; font-size:16px; font-style:italic; font-weight:300; color:var(--gold2); text-align:center; line-height:1.7; min-height:24px; transition:opacity 0.4s ease; opacity:0; }
-  .mood-response.show { opacity:1; }
+  /* ══ AFFIRMATION CARD ══ */
+  .affirmation-wrap { perspective:1000px; }
+  .affirmation-card {
+    background:var(--white); border-radius:24px; padding:32px 24px;
+    border:1px solid rgba(242,167,186,0.25);
+    box-shadow:0 6px 28px rgba(212,96,122,0.1);
+    text-align:center; cursor:pointer;
+    transition:transform 0.15s ease, box-shadow 0.15s ease;
+    position:relative; overflow:hidden;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .affirmation-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--pink),var(--green),var(--pink2)); }
+  .affirmation-card:active { transform:scale(0.98); }
+  .aff-icon { font-size:36px; margin-bottom:12px; display:block; animation:petalSpin 4s linear infinite; }
+  @keyframes petalSpin { 0%,100%{transform:rotate(-5deg)} 50%{transform:rotate(5deg)} }
+  .aff-text {
+    font-family:'Playfair Display',serif;
+    font-size:clamp(17px,4.5vw,22px); font-style:italic; font-weight:400;
+    color:var(--text); line-height:1.6; margin-bottom:14px;
+    min-height:72px; display:flex; align-items:center; justify-content:center;
+    transition:opacity 0.3s ease;
+  }
+  .aff-text.fade { opacity:0; }
+  .aff-tap { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--text3); }
 
-  /* ── Progress ── */
-  .progress-section { padding:0 22px; margin-bottom:36px; }
-  .progress-top { display:flex; justify-content:space-between; margin-bottom:10px; }
-  .progress-top span { font-size:11px; color:var(--silver3); letter-spacing:1px; text-transform:uppercase; }
-  .progress-top strong { font-size:11px; color:var(--silver); }
-  .progress-track { height:4px; background:rgba(200,212,227,0.08); border-radius:99px; overflow:hidden; }
-  .progress-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,var(--accent2),var(--silver),var(--gold)); width:0%; transition:width 1.8s cubic-bezier(0.34,1.56,0.64,1); }
-  .progress-stars { display:flex; gap:6px; margin-top:12px; }
-  .pstar { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; }
-  .pstar.done { background:rgba(107,143,196,0.2); border:1px solid rgba(107,143,196,0.3); }
-  .pstar.todo { background:rgba(200,212,227,0.04); border:1px solid rgba(200,212,227,0.08); }
+  /* ══ GARDEN ══ */
+  .garden-wrap {
+    background:var(--white); border-radius:24px; padding:24px 20px;
+    border:1px solid rgba(123,175,142,0.2);
+    box-shadow:0 4px 20px rgba(123,175,142,0.08);
+  }
+  .garden-subtitle { font-family:'Playfair Display',serif; font-size:15px; font-style:italic; color:var(--text2); text-align:center; margin-bottom:20px; }
+  .garden-bed {
+    display:flex; flex-wrap:wrap; gap:8px; justify-content:center;
+    min-height:60px; align-items:flex-end;
+  }
+  .garden-flower {
+    font-size:28px; display:inline-block;
+    animation:growIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  @keyframes growIn { from{transform:scale(0) translateY(10px);opacity:0} to{transform:scale(1) translateY(0);opacity:1} }
+  .garden-note { font-size:12px; color:var(--text3); text-align:center; margin-top:12px; font-style:italic; }
+
+  /* ══ POLAROID WALL ══ */
+  .polaroid-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .polaroid {
+    background:var(--white);
+    border-radius:4px; padding:12px 12px 32px;
+    box-shadow:0 4px 16px rgba(212,96,122,0.12);
+    border:1px solid rgba(242,167,186,0.2);
+    transform:rotate(var(--rot));
+    transition:transform 0.3s ease;
+    cursor:pointer; position:relative;
+  }
+  .polaroid:nth-child(1){--rot:-2deg}
+  .polaroid:nth-child(2){--rot:1.5deg}
+  .polaroid:nth-child(3){--rot:2deg}
+  .polaroid:nth-child(4){--rot:-1deg}
+  .polaroid-inner {
+    background:var(--rose); border-radius:2px;
+    aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+    overflow:hidden; margin-bottom:8px; position:relative;
+  }
+  .polaroid-placeholder { font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--text3); text-align:center; padding:8px; line-height:1.5; }
+  .polaroid-input {
+    position:absolute; inset:0; width:100%; height:100%;
+    background:transparent; border:none; outline:none;
+    font-family:'Playfair Display',serif; font-size:13px; font-style:italic;
+    color:var(--text); text-align:center; padding:8px; resize:none;
+    cursor:text;
+  }
+  .polaroid-label { font-size:11px; color:var(--text3); text-align:center; letter-spacing:1px; }
+
+  /* ── Gallery of reasons ── */
+  .gallery-intro { font-family:'Playfair Display',serif; font-size:clamp(18px,5vw,24px); font-style:italic; color:var(--text2); text-align:center; margin-bottom:24px; line-height:1.6; }
+  .reasons-grid { display:flex; flex-direction:column; gap:14px; }
+  .reason-card { background:var(--white); border-radius:20px; padding:20px 20px; border:1px solid rgba(242,167,186,0.25); box-shadow:0 4px 20px rgba(212,96,122,0.06); display:flex; align-items:flex-start; gap:14px; opacity:0; transform:translateY(20px); transition:opacity 0.6s ease, transform 0.6s ease; position:relative; overflow:hidden; }
+  .reason-card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:linear-gradient(to bottom, var(--pink), var(--green)); }
+  .reason-card.visible { opacity:1; transform:translateY(0); }
+  .reason-num { font-family:'Playfair Display',serif; font-size:28px; font-style:italic; font-weight:700; color:var(--pink); line-height:1; min-width:36px; flex-shrink:0; }
+  .reason-content { flex:1; }
+  .reason-title { font-family:'Playfair Display',serif; font-size:16px; font-weight:700; font-style:italic; color:var(--text); margin-bottom:5px; }
+  .reason-text { font-size:14px; color:var(--text2); line-height:1.7; font-weight:300; }
 
   /* ── Message ── */
-  .message-section { padding:0 22px; margin-bottom:36px; }
-  .message-card { background:var(--navy2); border:1px solid rgba(200,212,227,0.07); border-radius:20px; padding:32px 24px; position:relative; overflow:hidden; }
-  .message-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--accent2),var(--silver2),var(--gold)); }
-  .letter-stamp { display:flex; align-items:center; gap:10px; margin-bottom:20px; }
-  .stamp-line { flex:1; height:1px; background:rgba(200,212,227,0.08); }
-  .stamp-text { font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--silver3); }
-  .msg-name { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:400; font-style:italic; color:var(--gold2); display:block; margin-bottom:20px; }
-  .msg-text { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:300; line-height:1.95; color:var(--white2); min-height:60px; }
-  .msg-text p { margin-bottom:20px; }
+  .message-card { background:var(--white); border-radius:24px; padding:30px 22px; box-shadow:0 6px 32px rgba(212,96,122,0.08); border:1px solid rgba(242,167,186,0.2); position:relative; overflow:hidden; }
+  .message-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg, var(--pink), var(--green), var(--pink2)); }
+  .message-card::after { content:'"'; position:absolute; bottom:-10px; right:16px; font-family:'Playfair Display',serif; font-size:100px; color:rgba(242,167,186,0.1); line-height:1; pointer-events:none; }
+  .msg-from { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--green2); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .msg-from::after { content:''; flex:1; height:1px; background:rgba(123,175,142,0.2); }
+  .msg-name { font-family:'Playfair Display',serif; font-size:26px; font-style:italic; font-weight:700; color:var(--pink3); display:block; margin-bottom:18px; }
+  .msg-text { font-size:15px; line-height:2; color:var(--text2); font-weight:300; min-height:60px; }
+  .msg-text p { margin-bottom:16px; }
   .msg-text p:last-child { margin-bottom:0; }
-  .msg-last { font-family:'Cormorant Garamond',serif; font-size:18px; font-style:italic; font-weight:400; color:var(--accent); margin-top:24px; display:block; }
+  .msg-last { font-family:'Playfair Display',serif; font-size:16px; font-style:italic; color:var(--pink3); margin-top:20px; display:block; }
 
-  .cursor { display:inline-block; width:1.5px; height:1em; background:var(--accent); margin-left:2px; vertical-align:text-bottom; animation:blink 0.8s step-end infinite; }
+  .cursor { display:inline-block; width:1.5px; height:1em; background:var(--pink3); margin-left:2px; vertical-align:text-bottom; animation:blink 0.8s step-end infinite; }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
-  /* ── Saved wish display ── */
-  .saved-wish-section { padding:0 22px; margin-bottom:36px; display:none; }
-  .saved-wish-section.show { display:block; }
-  .saved-wish-card {
-    background: rgba(201,169,110,0.06); border:1px solid rgba(201,169,110,0.2);
-    border-radius:20px; padding:22px 20px; text-align:center;
-  }
-  .saved-wish-label { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
-  .saved-wish-text { font-family:'Cormorant Garamond',serif; font-size:19px; font-style:italic; color:var(--gold2); line-height:1.6; }
+  /* ── Progress ── */
+  .progress-wrap { background:var(--white); border-radius:20px; padding:22px 20px; border:1px solid rgba(242,167,186,0.2); box-shadow:0 4px 16px rgba(212,96,122,0.06); }
+  .progress-top { display:flex; justify-content:space-between; margin-bottom:12px; }
+  .progress-top span { font-size:11px; color:var(--text3); letter-spacing:1px; text-transform:uppercase; }
+  .progress-top strong { font-size:11px; color:var(--text2); }
+  .progress-track { height:6px; background:rgba(242,167,186,0.15); border-radius:99px; overflow:hidden; margin-bottom:12px; }
+  .progress-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,var(--pink),var(--pink2),var(--green)); width:0%; transition:width 2s cubic-bezier(0.34,1.56,0.64,1); }
+  .progress-flowers { display:flex; gap:6px; }
+  .pflower { font-size:18px; }
+  .pflower.done { filter:none; }
+  .pflower.todo { filter:grayscale(1) opacity(0.3); }
 
   /* ── Badge ── */
-  .badge-section { padding:0 22px; margin-bottom:60px; text-align:center; }
-  .badge { display:inline-block; background:linear-gradient(135deg,var(--blue2),var(--accent2),var(--blue)); color:var(--white); font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; padding:18px 32px; border-radius:50px; border:1px solid rgba(107,143,196,0.3); box-shadow:0 8px 32px rgba(107,143,196,0.25); animation:pulse 3s ease-in-out infinite; letter-spacing:0.5px; }
-  @keyframes pulse { 0%,100%{transform:scale(1);box-shadow:0 8px 32px rgba(107,143,196,0.25)} 50%{transform:scale(1.02);box-shadow:0 12px 40px rgba(107,143,196,0.4)} }
+  .badge-section { padding:0 20px; margin-bottom:60px; text-align:center; }
+  .badge { display:inline-block; background:linear-gradient(135deg, var(--pink3), var(--pink2), var(--green2)); color:white; font-family:'Playfair Display',serif; font-size:19px; font-style:italic; font-weight:700; padding:18px 32px; border-radius:50px; box-shadow:0 8px 28px rgba(212,96,122,0.35); animation:pulse 3s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.03)} }
 
   /* ── Music ── */
-  .music-btn { position:fixed; bottom:24px; right:24px; z-index:100; width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,var(--accent2),var(--blue2)); border:1px solid rgba(107,143,196,0.3); cursor:pointer; font-size:22px; box-shadow:0 4px 20px rgba(107,143,196,0.3); display:flex; align-items:center; justify-content:center; transition:transform 0.2s; }
+  .music-btn { position:fixed; bottom:24px; right:24px; z-index:100; width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg, var(--pink3), var(--green2)); border:none; cursor:pointer; font-size:22px; box-shadow:0 4px 20px rgba(212,96,122,0.4); display:flex; align-items:center; justify-content:center; transition:transform 0.2s; }
   .music-btn:active { transform:scale(0.92); }
-  @keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+  @keyframes spin2 { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+
+  .divider { display:flex; align-items:center; gap:12px; padding:0 20px; margin:36px 0; }
+  .div-line { flex:1; height:1px; background:rgba(242,167,186,0.2); }
+  .div-dot { width:5px; height:5px; border-radius:50%; background:var(--pink); }
 </style>
 </head>
 <body>
 
-<!-- CINEMATIC INTRO -->
+<!-- PETAL TAP MESSAGE -->
+<div id="petal-msg"></div>
+
+<!-- INTRO -->
 <div id="intro">
-  <div class="intro-line" id="il1">Somewhere between now and after...</div>
-  <div class="intro-line" id="il2">a girl sat down and kept going.</div>
-  <div class="intro-line silver" style="margin-top:22px;font-size:clamp(14px,4vw,19px)" id="il3">Some people shine.</div>
-  <div class="intro-line gold-line" style="font-size:clamp(18px,5vw,26px);letter-spacing:3px" id="il4">She was the whole sky.</div>
-  <div class="intro-line" style="margin-top:22px;font-size:clamp(11px,3vw,15px);letter-spacing:3px;color:rgba(107,143,196,0)" id="il5">She didn't know how strong she was.</div>
-  <div class="intro-line" style="font-size:clamp(11px,3vw,15px);letter-spacing:3px;color:rgba(107,143,196,0)" id="il6">She just knew she couldn't stop.</div>
-  <div class="intro-line gold-line" style="margin-top:28px;font-size:clamp(24px,7vw,36px);letter-spacing:8px" id="il7">KOKA.</div>
+  <div class="intro-petals">🌸</div>
+  <div class="intro-msg" id="im1">There's a girl who blooms</div>
+  <div class="intro-msg" id="im2">even in the middle of a storm.</div>
+  <div class="intro-msg" id="im3" style="margin-top:16px;font-size:clamp(12px,3.5vw,16px);color:#B08090">She doesn't wait for the rain to stop.</div>
+  <div class="intro-msg" id="im4" style="font-size:clamp(12px,3.5vw,16px);color:#B08090">She dances in it.</div>
+  <div class="intro-name" id="im5">KOKA.</div>
   <button class="intro-skip" onclick="skipIntro()">tap to skip</button>
 </div>
 
-<!-- WISH MODAL -->
-<div id="wish-modal">
-  <div class="wish-star">⭐</div>
-  <div class="wish-title">You caught a shooting star</div>
-  <div class="wish-sub">Make a wish — it's yours to keep 🌙</div>
-  <input class="wish-input" id="wish-input" type="text" placeholder="I wish..." maxlength="120"/>
-  <button class="wish-btn" onclick="saveWish()">✦ Send it to the stars ✦</button>
-  <button class="wish-close" onclick="closeWish()">maybe later</button>
-  <div class="wish-saved" id="wish-saved"></div>
-</div>
-
-<div id="breath-overlay"></div>
-<canvas id="stars-canvas"></canvas>
-<canvas id="wish-canvas"></canvas>
-<div class="bg-atm"></div>
+<canvas id="petal-canvas"></canvas>
+<canvas id="tap-canvas"></canvas>
+<div class="bg-glow"></div>
 
 <div class="page" id="main-page">
 
   <div class="hero">
-    <div class="hero-moon">🌙</div>
-    <div class="hero-eyebrow">Day 3 — A letter from the future</div>
-    <h1 class="hero-title">KOKA.</h1>
-    <div class="hero-line"></div>
-    <p class="hero-sub">She made it. And so will you.</p>
-    <div class="hero-tag">✦ Still here. Still standing. Still her. ✦</div>
-    <div class="scroll-hint">read on ↓</div>
+    <div class="hero-flower">🌸</div>
+    <div class="hero-tag">Day 4 — You are blooming</div>
+    <h1 class="hero-title">Still<br/>growing.</h1>
+    <p class="hero-sub">Every exam is just another petal. And look how beautiful you already are.</p>
+    <div class="hero-divider"><div class="hdiv-line"></div><div class="hdiv-flower">🌸</div><div class="hdiv-line"></div></div>
+    <div class="scroll-hint">keep scrolling ↓</div>
   </div>
 
-  <div class="divider"><div class="div-line"></div><div class="div-diamond"></div><div class="div-line"></div></div>
-
-  <!-- Moon phase -->
-  <div class="moon-section">
-    <div class="section-label">Tonight's moon & your energy</div>
-    <div class="moon-card">
-      <span class="moon-phase-emoji" id="moon-emoji">🌙</span>
-      <div class="moon-phase-name" id="moon-name">Waxing Gibbous</div>
-      <div class="moon-phase-energy" id="moon-energy">Energy: Building & Powerful</div>
-      <div class="moon-phase-msg" id="moon-msg">The moon is almost full — and so are you. This is a time of momentum. Everything you've been building is about to peak. Keep going.</div>
-    </div>
-  </div>
-
-  <!-- Mood -->
-  <div class="mood-section">
-    <div class="section-label">How are you feeling right now?</div>
-    <div class="mood-card">
-      <div class="mood-question">"Be honest with yourself for a second..."</div>
-      <div class="mood-options">
-        <div class="mood-btn" onclick="selectMood(this,'tired')"><span class="mood-emoji">😮‍💨</span><span class="mood-label">Tired</span></div>
-        <div class="mood-btn" onclick="selectMood(this,'neutral')"><span class="mood-emoji">😶</span><span class="mood-label">Neutral</span></div>
-        <div class="mood-btn" onclick="selectMood(this,'fine')"><span class="mood-emoji">✨</span><span class="mood-label">Fine</span></div>
-      </div>
-      <div class="mood-response" id="mood-response"></div>
-    </div>
-  </div>
+  <div class="divider"><div class="div-line"></div><div class="div-dot"></div><div class="div-line"></div></div>
 
   <!-- Progress -->
-  <div class="progress-section">
-    <div class="section-label">Your journey so far</div>
-    <div class="progress-top"><span>Exam week progress</span><strong>3 of 7 done</strong></div>
-    <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
-    <div class="progress-stars" id="prog-stars"></div>
-  </div>
-
-  <!-- Saved wish -->
-  <div class="saved-wish-section" id="saved-wish-section">
-    <div class="section-label">Your wish 🌟</div>
-    <div class="saved-wish-card">
-      <div class="saved-wish-label">Sent to the stars</div>
-      <div class="saved-wish-text" id="saved-wish-display"></div>
+  <div class="section">
+    <div class="section-label">How far you've come</div>
+    <div class="progress-wrap">
+      <div class="progress-top"><span>Exam week</span><strong>4 of 7 done 🌸</strong></div>
+      <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
+      <div class="progress-flowers" id="prog-flowers"></div>
     </div>
   </div>
 
-  <!-- Message -->
-  <div class="message-section">
-    <div class="section-label">A letter from the future</div>
-    <div class="message-card">
-      <div class="letter-stamp">
-        <div class="stamp-line"></div>
-        <div class="stamp-text">From: Future KOKA &nbsp;·&nbsp; To: You, right now</div>
-        <div class="stamp-line"></div>
+  <!-- Petal tap hint -->
+  <div class="section">
+    <div class="petal-hint">🌸 Tap the falling petals — each one has a secret message for you</div>
+  </div>
+
+  <!-- Affirmation card -->
+  <div class="section">
+    <div class="section-label">Your affirmation for today</div>
+    <div class="affirmation-wrap">
+      <div class="affirmation-card" onclick="flipAffirmation()">
+        <span class="aff-icon">🌸</span>
+        <div class="aff-text" id="aff-text">"You are doing so much better than you think."</div>
+        <div class="aff-tap">tap to reveal a new one ✦</div>
       </div>
+    </div>
+  </div>
+
+  <!-- Garden -->
+  <div class="section">
+    <div class="section-label">Your garden 🌿</div>
+    <div class="garden-wrap">
+      <div class="garden-subtitle">A new flower blooms every time you visit 🌸</div>
+      <div class="garden-bed" id="garden-bed"></div>
+      <div class="garden-note" id="garden-note"></div>
+    </div>
+  </div>
+
+  <!-- Polaroid wall -->
+  <div class="section">
+    <div class="section-label">How are you feeling today?</div>
+    <div style="font-family:'Playfair Display',serif;font-size:14px;font-style:italic;color:var(--text2);margin-bottom:16px;text-align:center">Tap each frame and write something — a word, a feeling, anything 🌸</div>
+    <div class="polaroid-grid" id="polaroid-grid"></div>
+  </div>
+
+  <!-- Gallery -->
+  <div class="section">
+    <div class="section-label">Reasons you're going to be okay</div>
+    <div class="gallery-intro">"Not because everything is easy.<br/>Because <em>you</em> are."</div>
+    <div class="reasons-grid" id="reasons-grid"></div>
+  </div>
+
+  <div class="divider"><div class="div-line"></div><div class="div-dot"></div><div class="div-line"></div></div>
+
+  <!-- Message -->
+  <div class="section">
+    <div class="section-label">A message for today</div>
+    <div class="message-card">
+      <div class="msg-from">From someone who knows</div>
       <div class="msg-text" id="msg-text"></div>
     </div>
   </div>
 
   <div class="badge-section">
-    <div class="badge">🌙 Exam #3: CONQUERED 🌙</div>
+    <div class="badge">🌸 Exam #4: CONQUERED 🌸</div>
   </div>
 
 </div>
 
 <div id="msg-src" style="display:none">
-  <p data-type="name">Hey. It's me — you.</p>
-  <p>Well, technically it's you from the other side of this exam week. From the version of you who already lived through what you're going through right now — the exhaustion, the self-doubt, the mornings where getting out of bed felt like climbing a mountain.</p>
-  <p>I came back to tell you something important: you made it. All of it. Every single exam, every sleepless night, every moment you sat in that room and thought "I don't know enough" — you got through it. And you did it as yourself. Completely, beautifully yourself.</p>
-  <p>But what I really want to tell you — what I wish someone had told me when I was sitting exactly where you are right now — is this: the version of you that exists in this moment, tired and scared and still trying? That is the version I am most proud of. Not the one who finished. The one who kept going even when she didn't want to.</p>
-  <p>You are three exams in. Three. Do you understand how much that took? Don't rush past that. Sit with it for a second. You did that.</p>
-  <p>I know the road still feels long. But I promise you — from here, looking back — it was worth every single second. And so are you.</p>
-  <p data-type="last">With all the love I have — from your future self 🌙</p>
+  <p data-type="name">KOKA,</p>
+  <p>I've been thinking about what to say today, and honestly? I keep coming back to the same thing. You are not just getting through this week. You are proving something — to yourself, to everyone around you — that you've always been too humble to admit.</p>
+  <p>I remember writing to you once about a girl who fights lions without fear. A girl who sacrifices everything just to make the people she loves proud. I meant every single word. And today, sitting here on Day 4, I need you to remember that girl too — because she's you. She was always you.</p>
+  <p>Four exams down. You did that. You sat in those rooms, tired and maybe scared, and you answered every question anyway. That's not luck. That's not chance. That's the kind of character that takes years to build — and you built it somehow, quietly, when nobody was looking.</p>
+  <p>You once taught me how to keep fighting until my last breath just by watching you. You didn't even know you were doing it. That's the thing about you, KOKA — you inspire people without even trying. You just exist and somehow make everyone around you want to be better.</p>
+  <p>So tonight, please be gentle with yourself. Eat something good. Rest. And remember that someone out there is insanely proud of you — not for the grades, not for the results — but for the girl you choose to be every single day.</p>
+  <p data-type="last">Still rooting for you. Always. 🌸</p>
 </div>
-<button class="wish-trigger" id="wish-trigger" onclick="openWish()" style="display:none;position:fixed;bottom:88px;right:24px;z-index:100;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#C9A96E,#E8C98A);border:1px solid rgba(201,169,110,0.4);cursor:pointer;font-size:24px;box-shadow:0 4px 20px rgba(201,169,110,0.5);display:none;align-items:center;justify-content:center;animation:pulse 1s ease-in-out infinite;">⭐</button>
+
 <button class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</button>
 <audio id="bgMusic" loop>
   <source src="./song.mp3" type="audio/mpeg"/>
 </audio>
 
 <script>
-/* ══ CINEMATIC INTRO ══ */
-const introSeq = [
-  {id:'il1', delay:500},
-  {id:'il2', delay:1700},
-  {id:'il3', delay:3100},
-  {id:'il4', delay:4000},
-  {id:'il5', delay:5400},
-  {id:'il6', delay:6300},
-  {id:'il7', delay:7600},
+/* ══ DATA ══ */
+const reasons = [
+  {n:'01',title:'Because you never actually give up.',text:'You might feel like you are. But you open the exam paper anyway. You write anyway. That\'s not giving up — that\'s winning.'},
+  {n:'02',title:'Because you\'ve done harder things than this.',text:'You gave up things most people your age can\'t imagine giving up, just to chase something bigger. A few exams are nothing compared to that.'},
+  {n:'03',title:'Because you\'re not doing this alone.',text:'There are people praying for you, rooting for you, thinking about you right now. You carry all of that with you into every exam room.'},
+  {n:'04',title:'Because you\'re smarter than you think.',text:'The girl who doubts herself before every exam and still somehow does it — that\'s not someone who isn\'t ready. That\'s someone who cares deeply.'},
+  {n:'05',title:'Because you bloom under pressure.',text:'It\'s your thing. You always have. Even when you can\'t see it, everyone watching you can. You were built for exactly this.'},
+  {n:'06',title:'Because after this, you will feel everything.',text:'The relief, the pride, the joy — it\'s all waiting for you on the other side. And it\'s going to be so worth it. Every single second of it.'},
+  {n:'07',title:'Because you are exactly who you need to be.',text:'Not perfect. Not always ready. But real, and determined, and so genuinely herself. That girl always finds a way. She always does.'},
 ];
-let introTimers = [];
-function runIntro(){
-  introSeq.forEach(({id,delay})=>{
-    introTimers.push(setTimeout(()=>{
-      const el=document.getElementById(id);
-      if(el) el.classList.add('show');
-    }, delay));
-  });
-  introTimers.push(setTimeout(()=>dismissIntro(), 9500));
-}
-function dismissIntro(){
-  introTimers.forEach(t=>clearTimeout(t));
-  const intro=document.getElementById('intro');
-  intro.classList.add('fade-out');
-  setTimeout(()=>{
-    intro.style.display='none';
-    document.getElementById('main-page').classList.add('visible');
-    startMain();
-  },1200);
-}
-function skipIntro(){ introTimers.forEach(t=>clearTimeout(t)); dismissIntro(); }
-runIntro();
 
-/* ══ AUDIO ANALYSER for visualizer ══ */
-let analyser=null, dataArray=null, audioCtx=null, sourceNode=null, visualizerBeat=0;
-function initAnalyser(){
-  if(analyser) return;
-  try {
-    audioCtx = new (window.AudioContext||window.webkitAudioContext)();
-    analyser = audioCtx.createAnalyser();
-    analyser.fftSize = 64;
-    dataArray = new Uint8Array(analyser.frequencyBinCount);
-    sourceNode = audioCtx.createMediaElementSource(document.getElementById('bgMusic'));
-    sourceNode.connect(analyser);
-    analyser.connect(audioCtx.destination);
-  } catch(e){ analyser=null; }
-}
-function getBeat(){
-  if(!analyser) return 0;
-  analyser.getByteFrequencyData(dataArray);
-  let sum=0; for(let i=0;i<8;i++) sum+=dataArray[i];
-  return sum/(8*255);
-}
+const affirmations = [
+  '"You are doing so much better than you think."',
+  '"Rest is not giving up. Rest is how you keep going."',
+  '"You were made for more than you can see right now."',
+  '"Being tired doesn\'t mean you\'re failing. It means you\'re trying."',
+  '"Your best today is enough. It always has been."',
+  '"You are the girl who kept going. Remember that."',
+  '"There is strength in you that even you haven\'t fully discovered yet."',
+  '"You don\'t have to be fearless. You just have to keep moving."',
+  '"Every hard thing you\'ve done has been preparing you for this."',
+  '"You are loved far more than you know."',
+];
 
-/* ══ STARFIELD + SHOOTING STARS + VISUALIZER ══ */
-let shootersList = [];
-let wishShooters = []; // tracked for tapping
+const petalMessages = [
+  'You\'re going to be okay 🌸',
+  'Someone is so proud of you right now',
+  'You\'re stronger than this week',
+  'Rest. You\'ve earned it 🌿',
+  'You are the whole sky ✨',
+  'This too shall pass — beautifully',
+  'Your effort is seen. Always.',
+  'Keep going. Almost there 🌸',
+  'You inspire more people than you know',
+  'Today you showed up. That\'s everything.',
+];
 
+const gardenFlowers = ['🌸','🌺','🌼','🌻','🌹','💐','🌷','🪷','🌿','✿'];
+const polaroidPrompts = [
+  'One word for today...',
+  'Something I\'m proud of...',
+  'How my heart feels...',
+  'What I need tonight...',
+];
+
+/* ══ FALLING PETALS (background, not tappable) ══ */
+const bgPetals = [];
 (function(){
-  const canvas=document.getElementById('stars-canvas');
+  const canvas=document.getElementById('petal-canvas');
+  const ctx=canvas.getContext('2d');
+  function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
+  resize(); window.addEventListener('resize',resize);
+  const COLORS=['rgba(242,167,186,0.45)','rgba(255,200,215,0.35)','rgba(255,228,236,0.55)','rgba(123,175,142,0.25)','rgba(255,255,255,0.45)'];
+  for(let i=0;i<35;i++){
+    bgPetals.push({
+      x:Math.random()*canvas.width, y:Math.random()*canvas.height,
+      r:Math.random()*6+3,
+      color:COLORS[Math.floor(Math.random()*COLORS.length)],
+      vy:Math.random()*0.8+0.3, vx:(Math.random()-0.5)*0.4,
+      rot:Math.random()*Math.PI*2, vrot:(Math.random()-0.5)*0.02,
+      wobble:Math.random()*Math.PI*2, wobbleSpeed:Math.random()*0.02+0.01,
+    });
+  }
+  function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    bgPetals.forEach(p=>{
+      p.wobble+=p.wobbleSpeed; p.x+=p.vx+Math.sin(p.wobble)*0.4;
+      p.y+=p.vy; p.rot+=p.vrot;
+      if(p.y>canvas.height+10){ p.y=-10; p.x=Math.random()*canvas.width; }
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+      ctx.fillStyle=p.color; ctx.beginPath();
+      ctx.ellipse(0,0,p.r,p.r*1.6,0,0,Math.PI*2); ctx.fill();
+      ctx.restore();
+    });
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+/* ══ TAP PETALS (interactive layer) ══ */
+const tapPetals = [];
+let msgTimeout;
+(function(){
+  const canvas=document.getElementById('tap-canvas');
   const ctx=canvas.getContext('2d');
   function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
   resize(); window.addEventListener('resize',resize);
 
-  const stars=[];
-  for(let i=0;i<200;i++) stars.push({
-    x:Math.random()*canvas.width, y:Math.random()*canvas.height,
-    r:Math.random()*1.2+0.2, baseR:Math.random()*1.2+0.2,
-    alpha:Math.random()*0.7+0.1, phase:Math.random()*Math.PI*2,
-    speed:Math.random()*0.003+0.001
-  });
-
-  const glows=[];
-  for(let i=0;i<15;i++) glows.push({
-    x:Math.random()*canvas.width, y:Math.random()*canvas.height,
-    r:Math.random()*2+1, phase:Math.random()*Math.PI*2, speed:Math.random()*0.004+0.002
-  });
-
-  function spawnShooter(){
-    const s={
-      x:Math.random()*canvas.width*0.7,
-      y:Math.random()*canvas.height*0.35,
-      speed:Math.random()*2+1.5,
-      angle:Math.PI/4+(Math.random()-0.5)*0.3,
-      alpha:1, life:0, width:Math.random()*6+8,
-      trail:[], tappable:true
-    };
-    shootersList.push(s);
-    wishShooters.push(s);
-    document.getElementById('wish-trigger').style.display='flex';
-    setTimeout(()=> document.getElementById('wish-trigger').style.display='none', 6000);
+  // Spawn tappable petals
+  function spawnTap(){
+    tapPetals.push({
+      x:Math.random()*canvas.width,
+      y:-20,
+      r:Math.random()*10+12, // much bigger — easy to tap
+      vy:Math.random()*0.6+0.2,
+      vx:(Math.random()-0.5)*0.3,
+      rot:Math.random()*Math.PI*2,
+      vrot:(Math.random()-0.5)*0.015,
+      wobble:Math.random()*Math.PI*2,
+      wobbleSpeed:Math.random()*0.015+0.008,
+      alpha:0.85,
+      color:'rgba(242,167,186,0.75)',
+    });
   }
-  function scheduleShooter(){
-    setTimeout(()=>{ spawnShooter(); scheduleShooter(); }, 1500+Math.random()*1500);
-  }
-  scheduleShooter();
+  setInterval(spawnTap, 1800);
 
-  let t=0;
-  function draw(){
+  function animate(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    t+=0.01;
-    const beat = getBeat();
-    visualizerBeat = beat;
-
-    stars.forEach(s=>{
-      // Pulse with music beat
-      const beatBoost = 1 + beat*1.5;
-      const a=s.alpha*(0.5+0.5*Math.sin(t*s.speed*100+s.phase));
-      const r=s.baseR*beatBoost;
-      ctx.beginPath(); ctx.arc(s.x,s.y,r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(200,212,227,${a})`; ctx.fill();
-      // Extra glow on beat
-      if(beat>0.3){
-        ctx.beginPath(); ctx.arc(s.x,s.y,r*2.5,0,Math.PI*2);
-        ctx.fillStyle=`rgba(107,143,196,${beat*0.15})`; ctx.fill();
-      }
+    tapPetals.forEach(p=>{
+      p.wobble+=p.wobbleSpeed; p.x+=p.vx+Math.sin(p.wobble)*0.3;
+      p.y+=p.vy; p.rot+=p.vrot;
+      if(p.y>canvas.height+20) p.y=-20;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+      ctx.globalAlpha=p.alpha;
+      ctx.fillStyle=p.color; ctx.beginPath();
+      ctx.ellipse(0,0,p.r,p.r*1.5,0,0,Math.PI*2); ctx.fill();
+      // Pink border so they stand out
+      ctx.strokeStyle='rgba(212,96,122,0.4)'; ctx.lineWidth=1;
+      ctx.stroke();
+      ctx.restore();
     });
-
-    glows.forEach(s=>{
-      const a=(0.35+0.35*Math.sin(t*s.speed*100+s.phase))*(1+beat*0.5);
-      const g=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*5*(1+beat));
-      g.addColorStop(0,`rgba(107,143,196,${a})`);
-      g.addColorStop(1,'rgba(107,143,196,0)');
-      ctx.beginPath(); ctx.arc(s.x,s.y,s.r*5,0,Math.PI*2); ctx.fillStyle=g; ctx.fill();
-      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(230,240,255,${a})`; ctx.fill();
-    });
-
-    for(let i=shootersList.length-1;i>=0;i--){
-      const s=shootersList[i];
-      s.x+=Math.cos(s.angle)*s.speed;
-      s.y+=Math.sin(s.angle)*s.speed;
-      s.trail.push({x:s.x,y:s.y});
-      if(s.trail.length>20) s.trail.shift();
-      s.alpha-=0.003;
-      if(s.alpha<=0||s.x>canvas.width+50||s.y>canvas.height+50){
-        shootersList.splice(i,1);
-        const wi=wishShooters.indexOf(s);
-        if(wi>-1) wishShooters.splice(wi,1);
-        continue;
-      }
-      if(s.trail.length>1){
-        for(let j=1;j<s.trail.length;j++){
-          const prog=j/s.trail.length;
-          ctx.beginPath();
-          ctx.moveTo(s.trail[j-1].x,s.trail[j-1].y);
-          ctx.lineTo(s.trail[j].x,s.trail[j].y);
-          ctx.strokeStyle=`rgba(220,235,255,${prog*s.alpha*0.9})`;
-          ctx.lineWidth=s.width*prog; ctx.stroke();
-        }
-      }
-      const hg=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.width*4);
-      hg.addColorStop(0,`rgba(255,255,255,${s.alpha})`);
-      hg.addColorStop(1,'rgba(200,220,255,0)');
-      ctx.beginPath(); ctx.arc(s.x,s.y,s.width*4,0,Math.PI*2);
-      ctx.fillStyle=hg; ctx.fill();
-    }
-    requestAnimationFrame(draw);
+    requestAnimationFrame(animate);
   }
-  draw();
+  animate();
+
+  // Tap detection
+  canvas.classList.add('active');
+  canvas.addEventListener('click', function(e){
+    const rect=canvas.getBoundingClientRect();
+    const mx=e.clientX-rect.left, my=e.clientY-rect.top;
+    let hit=false;
+    for(let i=tapPetals.length-1;i>=0;i--){
+      const p=tapPetals[i];
+      const dist=Math.hypot(p.x-mx, p.y-my);
+      if(dist<p.r*2.5){
+        // Show message
+        const msg=petalMessages[Math.floor(Math.random()*petalMessages.length)];
+        const popup=document.getElementById('petal-msg');
+        popup.textContent=msg;
+        popup.style.left=e.clientX+'px';
+        popup.style.top=(e.clientY-70)+'px';
+        popup.classList.add('show');
+        clearTimeout(msgTimeout);
+        msgTimeout=setTimeout(()=>popup.classList.remove('show'),2500);
+        // Remove tapped petal
+        tapPetals.splice(i,1);
+        hit=true;
+        break;
+      }
+    }
+  });
 })();
 
-/* ══ WISH — tap shooting star ══ */
-let wishOpen = false;
-document.getElementById('wish-canvas').addEventListener('click', function(e){
-  if(wishOpen) return;
-  const rect = this.getBoundingClientRect();
-  const mx = e.clientX - rect.left;
-  const my = e.clientY - rect.top;
-  // Check if tap is near any shooter's head
-  for(const s of shootersList){
-    const dist = Math.hypot(s.x-mx, s.y-my);
-    if(dist < 90){
-      openWish(); return;
-    }
-  }
-});
+/* ══ INTRO ══ */
+const introSeq=[{id:'im1',delay:400},{id:'im2',delay:1400},{id:'im3',delay:2600},{id:'im4',delay:3500},{id:'im5',delay:4800}];
+let introTimers=[];
+function runIntro(){
+  introSeq.forEach(({id,delay})=>{ introTimers.push(setTimeout(()=>{ const el=document.getElementById(id); if(el) el.classList.add('show'); },delay)); });
+  introTimers.push(setTimeout(()=>dismissIntro(),6800));
+}
+function dismissIntro(){
+  introTimers.forEach(t=>clearTimeout(t));
+  const intro=document.getElementById('intro');
+  intro.classList.add('out');
+  setTimeout(()=>{ intro.style.display='none'; document.getElementById('main-page').classList.add('visible'); startMain(); },1000);
+}
+function skipIntro(){ introTimers.forEach(t=>clearTimeout(t)); dismissIntro(); }
+runIntro();
 
-function showWishHint(){
-  const h=document.createElement('div');
-  h.className='wish-hint';
-  h.textContent='✦ Tap a shooting star to make a wish 🌟';
-  document.body.appendChild(h);
-  // Make wish canvas interactive
-  document.getElementById('wish-canvas').classList.add('active');
-  setTimeout(()=>{ h.remove(); }, 5500);
-}
-
-function openWish(){
-  wishOpen=true;
-  document.getElementById('wish-modal').classList.add('show');
-  setTimeout(()=> document.getElementById('wish-input').focus(), 300);
-}
-function closeWish(){
-  wishOpen=false;
-  document.getElementById('wish-modal').classList.remove('show');
-}
-function saveWish(){
-  const val = document.getElementById('wish-input').value.trim();
-  if(!val) return;
-  const saved = document.getElementById('wish-saved');
-  saved.textContent = '🌟 "' + val + '" — sent to the stars forever';
-  saved.classList.add('show');
-  // Show in page
-  document.getElementById('saved-wish-display').textContent = '"' + val + '"';
-  document.getElementById('saved-wish-section').classList.add('show');
+/* ══ AFFIRMATION ══ */
+let affIndex=0;
+function flipAffirmation(){
+  const el=document.getElementById('aff-text');
+  el.classList.add('fade');
   setTimeout(()=>{
-    closeWish();
-  }, 2200);
+    affIndex=(affIndex+1)%affirmations.length;
+    el.textContent=affirmations[affIndex];
+    el.classList.remove('fade');
+  },300);
 }
-document.getElementById('wish-input').addEventListener('keydown', e=>{ if(e.key==='Enter') saveWish(); });
 
-/* ══ MOON PHASE ══ */
-function getMoonPhase(){
-  const now=new Date();
-  const lnm=new Date('2025-03-29'); // known new moon
-  const days=(now-lnm)/(1000*60*60*24);
-  const cycle=days%29.53;
-  if(cycle<1.85)  return {e:'🌑',n:'New Moon',      en:'Energy: Fresh Beginnings',  m:'A new cycle begins. This is your moment to set intentions and start fresh. Whatever you plant tonight will grow.'};
-  if(cycle<5.54)  return {e:'🌒',n:'Waxing Crescent',en:'Energy: Hope & Intention',   m:'The light is growing — just like your strength. Every step forward right now is building something beautiful.'};
-  if(cycle<9.22)  return {e:'🌓',n:'First Quarter',  en:'Energy: Action & Push',      m:'This moon is all about pushing through. Challenges right now are meant to be overcome. You have the energy — use it.'};
-  if(cycle<12.91) return {e:'🌔',n:'Waxing Gibbous', en:'Energy: Building & Powerful', m:'The moon is almost full — and so are you. This is a time of momentum. Everything you\'ve been building is about to peak.'};
-  if(cycle<16.61) return {e:'🌕',n:'Full Moon',       en:'Energy: Peak Power',          m:'Full moon energy is yours tonight. You are at your brightest, your most powerful. The world can feel it. So can you.'};
-  if(cycle<20.30) return {e:'🌖',n:'Waning Gibbous', en:'Energy: Gratitude & Release', m:'Time to release what no longer serves you. Let go of the pressure. You\'ve done so much — allow yourself to receive.'};
-  if(cycle<23.99) return {e:'🌗',n:'Last Quarter',   en:'Energy: Reflection & Rest',   m:'The moon is resting, and so should you. Reflection tonight will give you clarity tomorrow. You\'ve earned stillness.'};
-  if(cycle<27.68) return {e:'🌘',n:'Waning Crescent',en:'Energy: Surrender & Peace',   m:'The quietest, most magical phase. Surrender to the process. What\'s meant for you is already on its way.'};
-  return {e:'🌑',n:'New Moon',en:'Energy: Fresh Beginnings',m:'A new cycle begins. This is your moment to start fresh.'};
+/* ══ GARDEN ══ */
+function buildGarden(){
+  const key='koka-garden-count';
+  let count=parseInt(localStorage.getItem(key)||'0')+1;
+  localStorage.setItem(key,count);
+  count=Math.min(count,gardenFlowers.length);
+  const bed=document.getElementById('garden-bed');
+  for(let i=0;i<count;i++){
+    const f=document.createElement('span');
+    f.className='garden-flower';
+    f.textContent=gardenFlowers[i%gardenFlowers.length];
+    f.style.animationDelay=(i*0.12)+'s';
+    bed.appendChild(f);
+  }
+  const note=document.getElementById('garden-note');
+  if(count===1) note.textContent='Your first flower bloomed today 🌸';
+  else note.textContent=`${count} flowers have bloomed — one for each visit 🌿`;
 }
-function renderMoon(){
-  const m=getMoonPhase();
-  document.getElementById('moon-emoji').textContent=m.e;
-  document.getElementById('moon-name').textContent=m.n;
-  document.getElementById('moon-energy').textContent=m.en;
-  document.getElementById('moon-msg').textContent=m.m;
+
+/* ══ POLAROID WALL ══ */
+function buildPolaroids(){
+  const grid=document.getElementById('polaroid-grid');
+  polaroidPrompts.forEach((prompt,i)=>{
+    const key=`koka-polaroid-${i}`;
+    const saved=localStorage.getItem(key)||'';
+    const div=document.createElement('div');
+    div.className='polaroid';
+    div.innerHTML=`<div class="polaroid-inner">
+      <div class="polaroid-placeholder">${prompt}</div>
+      <textarea class="polaroid-input" placeholder="${prompt}" maxlength="60">${saved}</textarea>
+    </div>
+    <div class="polaroid-label">🌸 memory ${i+1}</div>`;
+    const ta=div.querySelector('textarea');
+    ta.addEventListener('input',()=> localStorage.setItem(key,ta.value));
+    grid.appendChild(div);
+  });
 }
 
 /* ══ START MAIN ══ */
 function startMain(){
-  renderMoon();
-  showWishHint();
-
+  // Progress
   setTimeout(()=>{
-    document.getElementById('prog-fill').style.width='43%';
-    const wrap=document.getElementById('prog-stars');
+    document.getElementById('prog-fill').style.width='57%';
+    const wrap=document.getElementById('prog-flowers');
     for(let i=0;i<7;i++){
-      const s=document.createElement('div');
-      s.className='pstar '+(i<3?'done':'todo');
-      s.textContent=i<3?'⭐':'·';
-      wrap.appendChild(s);
+      const f=document.createElement('span');
+      f.className='pflower '+(i<4?'done':'todo');
+      f.textContent=i<4?'🌸':'🤍';
+      wrap.appendChild(f);
     }
   },400);
 
+  buildGarden();
+  buildPolaroids();
+
+  // Reasons
+  const grid=document.getElementById('reasons-grid');
+  reasons.forEach((r,i)=>{
+    const card=document.createElement('div');
+    card.className='reason-card';
+    card.innerHTML=`<div class="reason-num">${r.n}</div>
+      <div class="reason-content">
+        <div class="reason-title">${r.title}</div>
+        <div class="reason-text">${r.text}</div>
+      </div>`;
+    grid.appendChild(card);
+    setTimeout(()=>card.classList.add('visible'),300+i*150);
+  });
+
+  // Typewriter
   const sources=Array.from(document.querySelectorAll('#msg-src > *'));
   const container=document.getElementById('msg-text');
   const cursor=document.createElement('span'); cursor.className='cursor';
-  const SPEED=90; let segIndex=0;
+  const SPEED=70; let segIndex=0;
   function processNext(){
     if(segIndex>=sources.length){cursor.remove();return;}
     const el=sources[segIndex]; const type=el.dataset.type||'p'; segIndex++;
@@ -659,28 +639,14 @@ function startMain(){
     const words=el.textContent.trim().split(/\s+/); let wi=0;
     const tn=document.createTextNode(''); cur.appendChild(tn); cur.appendChild(cursor);
     function typeWord(){
-      if(wi>=words.length){cursor.remove();setTimeout(processNext,350);return;}
+      if(wi>=words.length){cursor.remove();setTimeout(processNext,320);return;}
       tn.nodeValue+=(wi===0?'':' ')+words[wi]; wi++;
       cursor.remove(); cur.appendChild(cursor);
       setTimeout(typeWord,SPEED);
     }
     typeWord();
   }
-  setTimeout(processNext,800);
-}
-
-/* ══ MOOD ══ */
-const moods={
-  tired:"That's okay. Tired means you've been giving everything you have. And everything is exactly what this week needed from you. Rest your eyes for a moment — then keep going, because you always do. 💙",
-  neutral:"Neutral is underrated. It means you're steady. You're not overwhelmed, not forcing it — you're just here, showing up. That quiet strength? That's actually everything. ✨",
-  fine:"Fine?! KOKA!! That's amazing — hold onto that feeling. Let it carry you through today. You've earned every bit of this lightness. Don't let anyone or anything take it from you. 🌙"
-};
-function selectMood(btn,mood){
-  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));
-  btn.classList.add('selected');
-  const r=document.getElementById('mood-response');
-  r.textContent=moods[mood]; r.classList.remove('show');
-  setTimeout(()=>r.classList.add('show'),50);
+  setTimeout(processNext,600);
 }
 
 /* ══ MUSIC ══ */
@@ -690,12 +656,7 @@ const btn=document.getElementById('musicBtn');
 music.volume=0.4;
 function toggleMusic(){
   if(playing){music.pause();btn.textContent='🎵';btn.style.animation='';}
-  else{
-    initAnalyser();
-    if(audioCtx&&audioCtx.state==='suspended') audioCtx.resume();
-    music.play().catch(()=>{});
-    btn.textContent='🎶'; btn.style.animation='spin 3s linear infinite';
-  }
+  else{music.play().catch(()=>{});btn.textContent='🎶';btn.style.animation='spin2 3s linear infinite';}
   playing=!playing;
 }
 document.body.addEventListener('click',function t(){
