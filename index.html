@@ -33,11 +33,8 @@
     color: var(--text);
   }
 
+  /* Background petal canvas — pointer-events none always */
   #petal-canvas { position:fixed; inset:0; z-index:0; pointer-events:none; }
-
-  /* Interactive petal overlay — on top */
-  #tap-canvas { position:fixed; inset:0; z-index:3; pointer-events:none; }
-  #tap-canvas.active { pointer-events:all; cursor:pointer; }
 
   .bg-glow {
     position:fixed; inset:0; z-index:0; pointer-events:none;
@@ -100,7 +97,6 @@
   .page { position:relative; z-index:1; display:none; }
   .page.visible { display:block; }
 
-  /* ── Hero ── */
   .hero {
     min-height:90vh; display:flex; flex-direction:column;
     align-items:center; justify-content:center;
@@ -122,22 +118,19 @@
   .section-label { font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--green2); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
   .section-label::after { content:''; flex:1; height:1px; background:rgba(123,175,142,0.25); }
 
-  /* ══ PETAL TAP HINT ══ */
   .petal-hint {
     background:rgba(242,167,186,0.15); border:1px solid rgba(242,167,186,0.3);
     border-radius:50px; padding:10px 18px; text-align:center;
-    font-size:13px; color:var(--text2); margin-bottom:16px;
-    font-style:italic;
+    font-size:13px; color:var(--text2); margin-bottom:16px; font-style:italic;
   }
 
-  /* ══ AFFIRMATION CARD ══ */
   .affirmation-wrap { perspective:1000px; }
   .affirmation-card {
     background:var(--white); border-radius:24px; padding:32px 24px;
     border:1px solid rgba(242,167,186,0.25);
     box-shadow:0 6px 28px rgba(212,96,122,0.1);
     text-align:center; cursor:pointer;
-    transition:transform 0.15s ease, box-shadow 0.15s ease;
+    transition:transform 0.15s ease;
     position:relative; overflow:hidden;
     -webkit-tap-highlight-color:transparent;
   }
@@ -155,55 +148,24 @@
   .aff-text.fade { opacity:0; }
   .aff-tap { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--text3); }
 
-  /* ══ GARDEN ══ */
-  .garden-wrap {
-    background:var(--white); border-radius:24px; padding:24px 20px;
-    border:1px solid rgba(123,175,142,0.2);
-    box-shadow:0 4px 20px rgba(123,175,142,0.08);
-  }
+  .garden-wrap { background:var(--white); border-radius:24px; padding:24px 20px; border:1px solid rgba(123,175,142,0.2); box-shadow:0 4px 20px rgba(123,175,142,0.08); }
   .garden-subtitle { font-family:'Playfair Display',serif; font-size:15px; font-style:italic; color:var(--text2); text-align:center; margin-bottom:20px; }
-  .garden-bed {
-    display:flex; flex-wrap:wrap; gap:8px; justify-content:center;
-    min-height:60px; align-items:flex-end;
-  }
-  .garden-flower {
-    font-size:28px; display:inline-block;
-    animation:growIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
-  }
+  .garden-bed { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; min-height:60px; align-items:flex-end; }
+  .garden-flower { font-size:28px; display:inline-block; animation:growIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both; }
   @keyframes growIn { from{transform:scale(0) translateY(10px);opacity:0} to{transform:scale(1) translateY(0);opacity:1} }
   .garden-note { font-size:12px; color:var(--text3); text-align:center; margin-top:12px; font-style:italic; }
 
-  /* ══ POLAROID WALL ══ */
   .polaroid-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-  .polaroid {
-    background:var(--white);
-    border-radius:4px; padding:12px 12px 32px;
-    box-shadow:0 4px 16px rgba(212,96,122,0.12);
-    border:1px solid rgba(242,167,186,0.2);
-    transform:rotate(var(--rot));
-    transition:transform 0.3s ease;
-    cursor:pointer; position:relative;
-  }
+  .polaroid { background:var(--white); border-radius:4px; padding:12px 12px 32px; box-shadow:0 4px 16px rgba(212,96,122,0.12); border:1px solid rgba(242,167,186,0.2); transform:rotate(var(--rot)); position:relative; }
   .polaroid:nth-child(1){--rot:-2deg}
   .polaroid:nth-child(2){--rot:1.5deg}
   .polaroid:nth-child(3){--rot:2deg}
   .polaroid:nth-child(4){--rot:-1deg}
-  .polaroid-inner {
-    background:var(--rose); border-radius:2px;
-    aspect-ratio:1; display:flex; align-items:center; justify-content:center;
-    overflow:hidden; margin-bottom:8px; position:relative;
-  }
+  .polaroid-inner { background:var(--rose); border-radius:2px; aspect-ratio:1; display:flex; align-items:center; justify-content:center; overflow:hidden; margin-bottom:8px; position:relative; }
   .polaroid-placeholder { font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--text3); text-align:center; padding:8px; line-height:1.5; }
-  .polaroid-input {
-    position:absolute; inset:0; width:100%; height:100%;
-    background:transparent; border:none; outline:none;
-    font-family:'Playfair Display',serif; font-size:13px; font-style:italic;
-    color:var(--text); text-align:center; padding:8px; resize:none;
-    cursor:text;
-  }
+  .polaroid-input { position:absolute; inset:0; width:100%; height:100%; background:transparent; border:none; outline:none; font-family:'Playfair Display',serif; font-size:13px; font-style:italic; color:var(--text); text-align:center; padding:8px; resize:none; cursor:text; }
   .polaroid-label { font-size:11px; color:var(--text3); text-align:center; letter-spacing:1px; }
 
-  /* ── Gallery of reasons ── */
   .gallery-intro { font-family:'Playfair Display',serif; font-size:clamp(18px,5vw,24px); font-style:italic; color:var(--text2); text-align:center; margin-bottom:24px; line-height:1.6; }
   .reasons-grid { display:flex; flex-direction:column; gap:14px; }
   .reason-card { background:var(--white); border-radius:20px; padding:20px 20px; border:1px solid rgba(242,167,186,0.25); box-shadow:0 4px 20px rgba(212,96,122,0.06); display:flex; align-items:flex-start; gap:14px; opacity:0; transform:translateY(20px); transition:opacity 0.6s ease, transform 0.6s ease; position:relative; overflow:hidden; }
@@ -214,7 +176,6 @@
   .reason-title { font-family:'Playfair Display',serif; font-size:16px; font-weight:700; font-style:italic; color:var(--text); margin-bottom:5px; }
   .reason-text { font-size:14px; color:var(--text2); line-height:1.7; font-weight:300; }
 
-  /* ── Message ── */
   .message-card { background:var(--white); border-radius:24px; padding:30px 22px; box-shadow:0 6px 32px rgba(212,96,122,0.08); border:1px solid rgba(242,167,186,0.2); position:relative; overflow:hidden; }
   .message-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg, var(--pink), var(--green), var(--pink2)); }
   .message-card::after { content:'"'; position:absolute; bottom:-10px; right:16px; font-family:'Playfair Display',serif; font-size:100px; color:rgba(242,167,186,0.1); line-height:1; pointer-events:none; }
@@ -229,7 +190,6 @@
   .cursor { display:inline-block; width:1.5px; height:1em; background:var(--pink3); margin-left:2px; vertical-align:text-bottom; animation:blink 0.8s step-end infinite; }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
-  /* ── Progress ── */
   .progress-wrap { background:var(--white); border-radius:20px; padding:22px 20px; border:1px solid rgba(242,167,186,0.2); box-shadow:0 4px 16px rgba(212,96,122,0.06); }
   .progress-top { display:flex; justify-content:space-between; margin-bottom:12px; }
   .progress-top span { font-size:11px; color:var(--text3); letter-spacing:1px; text-transform:uppercase; }
@@ -241,12 +201,10 @@
   .pflower.done { filter:none; }
   .pflower.todo { filter:grayscale(1) opacity(0.3); }
 
-  /* ── Badge ── */
   .badge-section { padding:0 20px; margin-bottom:60px; text-align:center; }
   .badge { display:inline-block; background:linear-gradient(135deg, var(--pink3), var(--pink2), var(--green2)); color:white; font-family:'Playfair Display',serif; font-size:19px; font-style:italic; font-weight:700; padding:18px 32px; border-radius:50px; box-shadow:0 8px 28px rgba(212,96,122,0.35); animation:pulse 3s ease-in-out infinite; }
   @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.03)} }
 
-  /* ── Music ── */
   .music-btn { position:fixed; bottom:24px; right:24px; z-index:100; width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg, var(--pink3), var(--green2)); border:none; cursor:pointer; font-size:22px; box-shadow:0 4px 20px rgba(212,96,122,0.4); display:flex; align-items:center; justify-content:center; transition:transform 0.2s; }
   .music-btn:active { transform:scale(0.92); }
   @keyframes spin2 { from{transform:rotate(0)} to{transform:rotate(360deg)} }
@@ -258,10 +216,8 @@
 </head>
 <body>
 
-<!-- PETAL TAP MESSAGE -->
 <div id="petal-msg"></div>
 
-<!-- INTRO -->
 <div id="intro">
   <div class="intro-petals">🌸</div>
   <div class="intro-msg" id="im1">There's a girl who blooms</div>
@@ -273,7 +229,6 @@
 </div>
 
 <canvas id="petal-canvas"></canvas>
-<canvas id="tap-canvas"></canvas>
 <div class="bg-glow"></div>
 
 <div class="page" id="main-page">
@@ -289,7 +244,6 @@
 
   <div class="divider"><div class="div-line"></div><div class="div-dot"></div><div class="div-line"></div></div>
 
-  <!-- Progress -->
   <div class="section">
     <div class="section-label">How far you've come</div>
     <div class="progress-wrap">
@@ -299,12 +253,10 @@
     </div>
   </div>
 
-  <!-- Petal tap hint -->
   <div class="section">
     <div class="petal-hint">🌸 Tap the falling petals — each one has a secret message for you</div>
   </div>
 
-  <!-- Affirmation card -->
   <div class="section">
     <div class="section-label">Your affirmation for today</div>
     <div class="affirmation-wrap">
@@ -316,7 +268,6 @@
     </div>
   </div>
 
-  <!-- Garden -->
   <div class="section">
     <div class="section-label">Your garden 🌿</div>
     <div class="garden-wrap">
@@ -326,14 +277,12 @@
     </div>
   </div>
 
-  <!-- Polaroid wall -->
   <div class="section">
     <div class="section-label">How are you feeling today?</div>
     <div style="font-family:'Playfair Display',serif;font-size:14px;font-style:italic;color:var(--text2);margin-bottom:16px;text-align:center">Tap each frame and write something — a word, a feeling, anything 🌸</div>
     <div class="polaroid-grid" id="polaroid-grid"></div>
   </div>
 
-  <!-- Gallery -->
   <div class="section">
     <div class="section-label">Reasons you're going to be okay</div>
     <div class="gallery-intro">"Not because everything is easy.<br/>Because <em>you</em> are."</div>
@@ -342,7 +291,6 @@
 
   <div class="divider"><div class="div-line"></div><div class="div-dot"></div><div class="div-line"></div></div>
 
-  <!-- Message -->
   <div class="section">
     <div class="section-label">A message for today</div>
     <div class="message-card">
@@ -373,7 +321,6 @@
 </audio>
 
 <script>
-/* ══ DATA ══ */
 const reasons = [
   {n:'01',title:'Because you never actually give up.',text:'You might feel like you are. But you open the exam paper anyway. You write anyway. That\'s not giving up — that\'s winning.'},
   {n:'02',title:'Because you\'ve done harder things than this.',text:'You gave up things most people your age can\'t imagine giving up, just to chase something bigger. A few exams are nothing compared to that.'},
@@ -411,120 +358,108 @@ const petalMessages = [
 ];
 
 const gardenFlowers = ['🌸','🌺','🌼','🌻','🌹','💐','🌷','🪷','🌿','✿'];
-const polaroidPrompts = [
-  'One word for today...',
-  'Something I\'m proud of...',
-  'How my heart feels...',
-  'What I need tonight...',
-];
+const polaroidPrompts = ['One word for today...','Something I\'m proud of...','How my heart feels...','What I need tonight...'];
 
-/* ══ FALLING PETALS (background, not tappable) ══ */
-const bgPetals = [];
+/* ══ SINGLE CANVAS — background petals + tappable petals ══ */
+const tapPetals = [];
+let msgTimeout;
+
 (function(){
-  const canvas=document.getElementById('petal-canvas');
-  const ctx=canvas.getContext('2d');
+  const canvas = document.getElementById('petal-canvas');
+  const ctx = canvas.getContext('2d');
   function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
-  resize(); window.addEventListener('resize',resize);
+  resize(); window.addEventListener('resize', resize);
+
+  /* Background petals */
+  const bgPetals = [];
   const COLORS=['rgba(242,167,186,0.45)','rgba(255,200,215,0.35)','rgba(255,228,236,0.55)','rgba(123,175,142,0.25)','rgba(255,255,255,0.45)'];
-  for(let i=0;i<35;i++){
+  for(let i=0;i<30;i++){
     bgPetals.push({
       x:Math.random()*canvas.width, y:Math.random()*canvas.height,
-      r:Math.random()*6+3,
+      r:Math.random()*5+2,
       color:COLORS[Math.floor(Math.random()*COLORS.length)],
-      vy:Math.random()*0.8+0.3, vx:(Math.random()-0.5)*0.4,
+      vy:Math.random()*0.7+0.2, vx:(Math.random()-0.5)*0.3,
       rot:Math.random()*Math.PI*2, vrot:(Math.random()-0.5)*0.02,
       wobble:Math.random()*Math.PI*2, wobbleSpeed:Math.random()*0.02+0.01,
     });
   }
-  function animate(){
+
+  /* Tappable petals spawn */
+  function spawnTap(){
+    tapPetals.push({
+      x: Math.random()*canvas.width,
+      y: -30,
+      r: Math.random()*8+14,
+      vy: Math.random()*0.5+0.15,
+      vx: (Math.random()-0.5)*0.3,
+      rot: Math.random()*Math.PI*2,
+      vrot: (Math.random()-0.5)*0.015,
+      wobble: Math.random()*Math.PI*2,
+      wobbleSpeed: Math.random()*0.012+0.006,
+    });
+  }
+  setInterval(spawnTap, 1800);
+
+  /* Draw loop */
+  function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    /* Background petals */
     bgPetals.forEach(p=>{
-      p.wobble+=p.wobbleSpeed; p.x+=p.vx+Math.sin(p.wobble)*0.4;
-      p.y+=p.vy; p.rot+=p.vrot;
+      p.wobble+=p.wobbleSpeed;
+      p.x+=p.vx+Math.sin(p.wobble)*0.3; p.y+=p.vy; p.rot+=p.vrot;
       if(p.y>canvas.height+10){ p.y=-10; p.x=Math.random()*canvas.width; }
       ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
       ctx.fillStyle=p.color; ctx.beginPath();
       ctx.ellipse(0,0,p.r,p.r*1.6,0,0,Math.PI*2); ctx.fill();
       ctx.restore();
     });
-    requestAnimationFrame(animate);
-  }
-  animate();
-})();
 
-/* ══ TAP PETALS (interactive layer) ══ */
-const tapPetals = [];
-let msgTimeout;
-(function(){
-  const canvas=document.getElementById('tap-canvas');
-  const ctx=canvas.getContext('2d');
-  function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
-  resize(); window.addEventListener('resize',resize);
-
-  // Spawn tappable petals
-  function spawnTap(){
-    tapPetals.push({
-      x:Math.random()*canvas.width,
-      y:-20,
-      r:Math.random()*10+12, // much bigger — easy to tap
-      vy:Math.random()*0.6+0.2,
-      vx:(Math.random()-0.5)*0.3,
-      rot:Math.random()*Math.PI*2,
-      vrot:(Math.random()-0.5)*0.015,
-      wobble:Math.random()*Math.PI*2,
-      wobbleSpeed:Math.random()*0.015+0.008,
-      alpha:0.85,
-      color:'rgba(242,167,186,0.75)',
-    });
-  }
-  setInterval(spawnTap, 1800);
-
-  function animate(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+    /* Tappable petals — bigger, more visible */
     tapPetals.forEach(p=>{
-      p.wobble+=p.wobbleSpeed; p.x+=p.vx+Math.sin(p.wobble)*0.3;
-      p.y+=p.vy; p.rot+=p.vrot;
-      if(p.y>canvas.height+20) p.y=-20;
+      p.wobble+=p.wobbleSpeed;
+      p.x+=p.vx+Math.sin(p.wobble)*0.3; p.y+=p.vy; p.rot+=p.vrot;
+      if(p.y>canvas.height+30){ p.y=-30; p.x=Math.random()*canvas.width; }
       ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
-      ctx.globalAlpha=p.alpha;
-      ctx.fillStyle=p.color; ctx.beginPath();
-      ctx.ellipse(0,0,p.r,p.r*1.5,0,0,Math.PI*2); ctx.fill();
-      // Pink border so they stand out
-      ctx.strokeStyle='rgba(212,96,122,0.4)'; ctx.lineWidth=1;
-      ctx.stroke();
+      ctx.globalAlpha=0.9;
+      ctx.fillStyle='rgba(242,167,186,0.8)';
+      ctx.beginPath(); ctx.ellipse(0,0,p.r,p.r*1.5,0,0,Math.PI*2); ctx.fill();
+      ctx.strokeStyle='rgba(212,96,122,0.5)'; ctx.lineWidth=1.5; ctx.stroke();
       ctx.restore();
     });
-    requestAnimationFrame(animate);
-  }
-  animate();
 
-  // Tap detection
-  canvas.classList.add('active');
-  canvas.addEventListener('click', function(e){
-    const rect=canvas.getBoundingClientRect();
-    const mx=e.clientX-rect.left, my=e.clientY-rect.top;
-    let hit=false;
-    for(let i=tapPetals.length-1;i>=0;i--){
-      const p=tapPetals[i];
-      const dist=Math.hypot(p.x-mx, p.y-my);
-      if(dist<p.r*2.5){
-        // Show message
-        const msg=petalMessages[Math.floor(Math.random()*petalMessages.length)];
-        const popup=document.getElementById('petal-msg');
-        popup.textContent=msg;
-        popup.style.left=e.clientX+'px';
-        popup.style.top=(e.clientY-70)+'px';
-        popup.classList.add('show');
-        clearTimeout(msgTimeout);
-        msgTimeout=setTimeout(()=>popup.classList.remove('show'),2500);
-        // Remove tapped petal
-        tapPetals.splice(i,1);
-        hit=true;
-        break;
-      }
-    }
-  });
+    requestAnimationFrame(draw);
+  }
+  draw();
 })();
+
+/* ══ TAP DETECTION — on document, not canvas ══ */
+document.addEventListener('click', function(e){
+  /* Skip if tapping interactive elements */
+  const tag = e.target.tagName;
+  if(tag==='BUTTON'||tag==='TEXTAREA'||tag==='INPUT') return;
+
+  const mx=e.clientX, my=e.clientY;
+  for(let i=tapPetals.length-1;i>=0;i--){
+    const p=tapPetals[i];
+    /* Convert canvas coords (fixed) to screen coords */
+    const dist=Math.hypot(p.x-mx, p.y-my);
+    if(dist < p.r*2.8){
+      const msg=petalMessages[Math.floor(Math.random()*petalMessages.length)];
+      const popup=document.getElementById('petal-msg');
+      popup.textContent=msg;
+      const left=Math.min(Math.max(mx, 120), window.innerWidth-120);
+      popup.style.left=left+'px';
+      popup.style.top=Math.max(my-80, 20)+'px';
+      popup.classList.add('show');
+      clearTimeout(msgTimeout);
+      msgTimeout=setTimeout(()=>popup.classList.remove('show'),2500);
+      tapPetals.splice(i,1);
+      e.stopPropagation();
+      return;
+    }
+  }
+});
 
 /* ══ INTRO ══ */
 const introSeq=[{id:'im1',delay:400},{id:'im2',delay:1400},{id:'im3',delay:2600},{id:'im4',delay:3500},{id:'im5',delay:4800}];
@@ -547,11 +482,7 @@ let affIndex=0;
 function flipAffirmation(){
   const el=document.getElementById('aff-text');
   el.classList.add('fade');
-  setTimeout(()=>{
-    affIndex=(affIndex+1)%affirmations.length;
-    el.textContent=affirmations[affIndex];
-    el.classList.remove('fade');
-  },300);
+  setTimeout(()=>{ affIndex=(affIndex+1)%affirmations.length; el.textContent=affirmations[affIndex]; el.classList.remove('fade'); },300);
 }
 
 /* ══ GARDEN ══ */
@@ -563,57 +494,48 @@ function buildGarden(){
   const bed=document.getElementById('garden-bed');
   for(let i=0;i<count;i++){
     const f=document.createElement('span');
-    f.className='garden-flower';
-    f.textContent=gardenFlowers[i%gardenFlowers.length];
-    f.style.animationDelay=(i*0.12)+'s';
-    bed.appendChild(f);
+    f.className='garden-flower'; f.textContent=gardenFlowers[i%gardenFlowers.length];
+    f.style.animationDelay=(i*0.12)+'s'; bed.appendChild(f);
   }
   const note=document.getElementById('garden-note');
-  if(count===1) note.textContent='Your first flower bloomed today 🌸';
-  else note.textContent=`${count} flowers have bloomed — one for each visit 🌿`;
+  note.textContent=count===1?'Your first flower bloomed today 🌸':`${count} flowers have bloomed — one for each visit 🌿`;
 }
 
-/* ══ POLAROID WALL ══ */
+/* ══ POLAROIDS ══ */
 function buildPolaroids(){
   const grid=document.getElementById('polaroid-grid');
   polaroidPrompts.forEach((prompt,i)=>{
     const key=`koka-polaroid-${i}`;
     const saved=localStorage.getItem(key)||'';
-    const div=document.createElement('div');
-    div.className='polaroid';
+    const div=document.createElement('div'); div.className='polaroid';
     div.innerHTML=`<div class="polaroid-inner">
       <div class="polaroid-placeholder">${prompt}</div>
       <textarea class="polaroid-input" placeholder="${prompt}" maxlength="60">${saved}</textarea>
-    </div>
-    <div class="polaroid-label">🌸 memory ${i+1}</div>`;
+    </div><div class="polaroid-label">🌸 memory ${i+1}</div>`;
     const ta=div.querySelector('textarea');
-    ta.addEventListener('input',()=> localStorage.setItem(key,ta.value));
+    ta.addEventListener('input',()=>localStorage.setItem(key,ta.value));
     grid.appendChild(div);
   });
 }
 
 /* ══ START MAIN ══ */
 function startMain(){
-  // Progress
   setTimeout(()=>{
     document.getElementById('prog-fill').style.width='57%';
     const wrap=document.getElementById('prog-flowers');
     for(let i=0;i<7;i++){
       const f=document.createElement('span');
       f.className='pflower '+(i<4?'done':'todo');
-      f.textContent=i<4?'🌸':'🤍';
-      wrap.appendChild(f);
+      f.textContent=i<4?'🌸':'🤍'; wrap.appendChild(f);
     }
   },400);
 
   buildGarden();
   buildPolaroids();
 
-  // Reasons
   const grid=document.getElementById('reasons-grid');
   reasons.forEach((r,i)=>{
-    const card=document.createElement('div');
-    card.className='reason-card';
+    const card=document.createElement('div'); card.className='reason-card';
     card.innerHTML=`<div class="reason-num">${r.n}</div>
       <div class="reason-content">
         <div class="reason-title">${r.title}</div>
@@ -623,7 +545,6 @@ function startMain(){
     setTimeout(()=>card.classList.add('visible'),300+i*150);
   });
 
-  // Typewriter
   const sources=Array.from(document.querySelectorAll('#msg-src > *'));
   const container=document.getElementById('msg-text');
   const cursor=document.createElement('span'); cursor.className='cursor';
