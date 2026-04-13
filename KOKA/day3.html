@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>KOKA 🌙</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌙</text></svg>"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy: #080B14;
+    --navy2: #0D1220;
+    --navy3: #121828;
+    --blue: #1E2D4A;
+    --blue2: #243457;
+    --silver: #C8D4E3;
+    --silver2: #8FA3BC;
+    --silver3: #4A6080;
+    --white: #F0F4FA;
+    --white2: #D8E2F0;
+    --accent: #6B8FC4;
+    --accent2: #4A6FA5;
+    --gold: #C9A96E;
+    --gold2: #E8C98A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: var(--white);
+  }
+
+  /* ══ CINEMATIC OPENING ══ */
+  #intro {
+    position: fixed; inset: 0; z-index: 2000;
+    background: #000;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 40px 32px; text-align: center;
+    transition: opacity 1.2s ease;
+  }
+  #intro.fade-out { opacity: 0; pointer-events: none; }
+
+  .intro-line {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(16px, 4.5vw, 22px);
+    font-weight: 300; font-style: italic;
+    color: rgba(200,212,227,0);
+    letter-spacing: 2px; line-height: 2;
+    transition: color 1.2s ease;
+    margin-bottom: 4px;
+  }
+  .intro-line.show { color: rgba(200,212,227,0.85); }
+  .intro-line.silver { color: rgba(107,143,196,0); }
+  .intro-line.silver.show { color: rgba(107,143,196,0.9); }
+  .intro-line.gold-line { color: rgba(232,201,138,0); }
+  .intro-line.gold-line.show { color: rgba(232,201,138,0.9); }
+
+  .intro-skip {
+    position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(200,212,227,0.3); cursor: pointer;
+    transition: color 0.3s; background: none; border: none;
+  }
+
+  /* ══ BREATHING ══ */
+  #breath-overlay {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 50%, rgba(107,143,196,0.06) 0%, transparent 70%);
+    animation: breathe 6s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%,100% { opacity: 0.4; transform: scale(1); }
+    50%      { opacity: 1;   transform: scale(1.04); }
+  }
+
+  #stars-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+  /* Wish canvas — on top & interactive */
+  #wish-canvas { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
+  #wish-canvas.active { pointer-events: all; cursor: crosshair; }
+
+  .bg-atm {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse at 15% 15%, rgba(107,143,196,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 85%, rgba(30,45,74,0.8) 0%, transparent 60%),
+      radial-gradient(ellipse at 50% 0%, rgba(201,169,110,0.06) 0%, transparent 40%);
+  }
+
+  .page { position: relative; z-index: 1; display: none; }
+  .page.visible { display: block; }
+
+  /* ── Wish overlay modal ── */
+  #wish-modal {
+    position: fixed; inset: 0; z-index: 900;
+    background: rgba(8,11,20,0.92);
+    display: none; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 32px 24px; text-align: center;
+    backdrop-filter: blur(8px);
+  }
+  #wish-modal.show { display: flex; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  .wish-star { font-size: 52px; margin-bottom: 16px; animation: wishStar 2s ease-in-out infinite; }
+  @keyframes wishStar { 0%,100%{transform:scale(1) rotate(-5deg)} 50%{transform:scale(1.1) rotate(5deg)} }
+  .wish-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 6vw, 30px); font-style: italic; font-weight: 300;
+    color: var(--gold2); margin-bottom: 8px;
+  }
+  .wish-sub { font-size: 13px; color: var(--silver3); margin-bottom: 24px; letter-spacing: 1px; }
+  .wish-input {
+    width: 100%; max-width: 340px;
+    background: rgba(107,143,196,0.08);
+    border: 1px solid rgba(107,143,196,0.3);
+    border-radius: 14px; padding: 16px 18px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-style: italic;
+    color: var(--white); outline: none; text-align: center;
+    margin-bottom: 16px;
+  }
+  .wish-input::placeholder { color: var(--silver3); }
+  .wish-input:focus { border-color: var(--accent); }
+  .wish-btn {
+    background: linear-gradient(135deg, var(--accent2), var(--gold));
+    color: var(--white); font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase;
+    padding: 12px 28px; border: none; border-radius: 50px; cursor: pointer;
+    box-shadow: 0 4px 20px rgba(107,143,196,0.3); margin-bottom: 12px;
+    transition: transform 0.15s;
+  }
+  .wish-btn:active { transform: scale(0.97); }
+  .wish-close {
+    font-size: 11px; color: var(--silver3); cursor: pointer;
+    background: none; border: none; letter-spacing: 2px; text-transform: uppercase;
+  }
+  .wish-saved {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px; font-style: italic;
+    color: var(--gold2); margin-top: 8px; min-height: 24px;
+    opacity: 0; transition: opacity 0.4s ease;
+  }
+  .wish-saved.show { opacity: 1; }
+
+  /* ── Wish hint ── */
+  .wish-hint {
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+    background: rgba(8,11,20,0.85);
+    border: 1px solid rgba(201,169,110,0.25);
+    color: var(--gold2); font-size: 11px; padding: 8px 18px;
+    border-radius: 50px; z-index: 10; white-space: nowrap;
+    animation: fadeHint 5s ease forwards;
+  }
+  @keyframes fadeHint { 0%{opacity:0} 15%{opacity:1} 75%{opacity:1} 100%{opacity:0} }
+
+  /* ── Hero ── */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 80px 28px 60px; text-align: center; position: relative;
+  }
+  .hero-moon {
+    font-size: 48px; margin-bottom: 24px;
+    animation: moonFloat 4s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px rgba(107,143,196,0.6));
+  }
+  @keyframes moonFloat { 0%,100%{transform:translateY(0) rotate(-5deg)} 50%{transform:translateY(-12px) rotate(5deg)} }
+  .hero-eyebrow { font-size:10px; font-weight:500; letter-spacing:5px; text-transform:uppercase; color:var(--accent); margin-bottom:16px; animation:fadeUp 1s 0.2s ease both; }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(64px,18vw,110px); font-weight:300; font-style:italic;
+    line-height:0.9; letter-spacing:-2px; margin-bottom:20px;
+    animation: fadeUp 1s 0.3s ease both;
+    background: linear-gradient(135deg, var(--white) 0%, var(--silver) 40%, var(--gold2) 70%, var(--white) 100%);
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .hero-line { width:80px; height:1px; background:linear-gradient(90deg,transparent,var(--accent),transparent); margin:0 auto 20px; animation:fadeUp 1s 0.4s ease both; }
+  .hero-sub { font-family:'Cormorant Garamond',serif; font-size:clamp(16px,4vw,22px); font-style:italic; font-weight:300; color:var(--silver2); margin-bottom:32px; animation:fadeUp 1s 0.5s ease both; letter-spacing:0.5px; }
+  .hero-tag { display:inline-flex; align-items:center; gap:8px; background:rgba(107,143,196,0.1); border:1px solid rgba(107,143,196,0.25); color:var(--accent); font-size:12px; font-weight:400; padding:10px 20px; border-radius:50px; animation:fadeUp 1s 0.6s ease both; letter-spacing:1px; }
+  .scroll-hint { position:absolute; bottom:32px; left:50%; transform:translateX(-50%); font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--silver3); animation:fadeUp 1s 1s ease both, nudge 2s 2s ease-in-out infinite; }
+  @keyframes nudge { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(5px)} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ── Divider ── */
+  .divider { display:flex; align-items:center; gap:14px; padding:0 28px; margin:36px 0; }
+  .div-line { flex:1; height:1px; background:rgba(200,212,227,0.08); }
+  .div-diamond { width:6px; height:6px; background:var(--accent); transform:rotate(45deg); }
+
+  /* ── Section label ── */
+  .section-label { font-size:10px; font-weight:500; letter-spacing:4px; text-transform:uppercase; color:var(--gold); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+  .section-label::after { content:''; flex:1; height:1px; background:rgba(201,169,110,0.15); }
+
+  /* ── Moon phase ── */
+  .moon-section { padding: 0 22px; margin-bottom: 36px; }
+  .moon-card {
+    background: var(--navy2); border: 1px solid rgba(200,212,227,0.08);
+    border-radius: 20px; padding: 24px 20px; position: relative; overflow: hidden;
+    text-align: center;
+  }
+  .moon-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--silver3),var(--silver),var(--gold)); }
+  .moon-phase-emoji { font-size: 52px; margin-bottom: 10px; display: block; filter: drop-shadow(0 0 14px rgba(200,212,227,0.5)); }
+  .moon-phase-name { font-family:'Cormorant Garamond',serif; font-size:20px; font-style:italic; color:var(--silver); margin-bottom:6px; }
+  .moon-phase-energy { font-size:12px; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:14px; }
+  .moon-phase-msg { font-family:'Cormorant Garamond',serif; font-size:16px; font-style:italic; font-weight:300; color:var(--silver2); line-height:1.7; }
+
+  /* ── Mood ── */
+  .mood-section { padding: 0 22px; margin-bottom: 36px; }
+  .mood-card { background:var(--navy2); border:1px solid rgba(200,212,227,0.08); border-radius:20px; padding:24px 20px; position:relative; overflow:hidden; }
+  .mood-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--accent2),var(--silver),var(--gold)); }
+  .mood-question { font-family:'Cormorant Garamond',serif; font-size:18px; font-style:italic; font-weight:300; color:var(--silver); margin-bottom:18px; text-align:center; }
+  .mood-options { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:16px; }
+  .mood-btn { background:rgba(107,143,196,0.06); border:1px solid rgba(107,143,196,0.15); border-radius:14px; padding:14px 8px; text-align:center; cursor:pointer; transition:all 0.3s ease; -webkit-tap-highlight-color:transparent; }
+  .mood-btn:active { transform:scale(0.96); }
+  .mood-btn.selected { background:rgba(107,143,196,0.18); border-color:var(--accent); box-shadow:0 0 20px rgba(107,143,196,0.2); }
+  .mood-emoji { font-size:26px; display:block; margin-bottom:6px; }
+  .mood-label { font-size:11px; color:var(--silver2); letter-spacing:1px; text-transform:uppercase; }
+  .mood-response { font-family:'Cormorant Garamond',serif; font-size:16px; font-style:italic; font-weight:300; color:var(--gold2); text-align:center; line-height:1.7; min-height:24px; transition:opacity 0.4s ease; opacity:0; }
+  .mood-response.show { opacity:1; }
+
+  /* ── Progress ── */
+  .progress-section { padding:0 22px; margin-bottom:36px; }
+  .progress-top { display:flex; justify-content:space-between; margin-bottom:10px; }
+  .progress-top span { font-size:11px; color:var(--silver3); letter-spacing:1px; text-transform:uppercase; }
+  .progress-top strong { font-size:11px; color:var(--silver); }
+  .progress-track { height:4px; background:rgba(200,212,227,0.08); border-radius:99px; overflow:hidden; }
+  .progress-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,var(--accent2),var(--silver),var(--gold)); width:0%; transition:width 1.8s cubic-bezier(0.34,1.56,0.64,1); }
+  .progress-stars { display:flex; gap:6px; margin-top:12px; }
+  .pstar { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; }
+  .pstar.done { background:rgba(107,143,196,0.2); border:1px solid rgba(107,143,196,0.3); }
+  .pstar.todo { background:rgba(200,212,227,0.04); border:1px solid rgba(200,212,227,0.08); }
+
+  /* ── Message ── */
+  .message-section { padding:0 22px; margin-bottom:36px; }
+  .message-card { background:var(--navy2); border:1px solid rgba(200,212,227,0.07); border-radius:20px; padding:32px 24px; position:relative; overflow:hidden; }
+  .message-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--accent2),var(--silver2),var(--gold)); }
+  .letter-stamp { display:flex; align-items:center; gap:10px; margin-bottom:20px; }
+  .stamp-line { flex:1; height:1px; background:rgba(200,212,227,0.08); }
+  .stamp-text { font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--silver3); }
+  .msg-name { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:400; font-style:italic; color:var(--gold2); display:block; margin-bottom:20px; }
+  .msg-text { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:300; line-height:1.95; color:var(--white2); min-height:60px; }
+  .msg-text p { margin-bottom:20px; }
+  .msg-text p:last-child { margin-bottom:0; }
+  .msg-last { font-family:'Cormorant Garamond',serif; font-size:18px; font-style:italic; font-weight:400; color:var(--accent); margin-top:24px; display:block; }
+
+  .cursor { display:inline-block; width:1.5px; height:1em; background:var(--accent); margin-left:2px; vertical-align:text-bottom; animation:blink 0.8s step-end infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* ── Saved wish display ── */
+  .saved-wish-section { padding:0 22px; margin-bottom:36px; display:none; }
+  .saved-wish-section.show { display:block; }
+  .saved-wish-card {
+    background: rgba(201,169,110,0.06); border:1px solid rgba(201,169,110,0.2);
+    border-radius:20px; padding:22px 20px; text-align:center;
+  }
+  .saved-wish-label { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
+  .saved-wish-text { font-family:'Cormorant Garamond',serif; font-size:19px; font-style:italic; color:var(--gold2); line-height:1.6; }
+
+  /* ── Badge ── */
+  .badge-section { padding:0 22px; margin-bottom:60px; text-align:center; }
+  .badge { display:inline-block; background:linear-gradient(135deg,var(--blue2),var(--accent2),var(--blue)); color:var(--white); font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; padding:18px 32px; border-radius:50px; border:1px solid rgba(107,143,196,0.3); box-shadow:0 8px 32px rgba(107,143,196,0.25); animation:pulse 3s ease-in-out infinite; letter-spacing:0.5px; }
+  @keyframes pulse { 0%,100%{transform:scale(1);box-shadow:0 8px 32px rgba(107,143,196,0.25)} 50%{transform:scale(1.02);box-shadow:0 12px 40px rgba(107,143,196,0.4)} }
+
+  /* ── Music ── */
+  .music-btn { position:fixed; bottom:24px; right:24px; z-index:100; width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,var(--accent2),var(--blue2)); border:1px solid rgba(107,143,196,0.3); cursor:pointer; font-size:22px; box-shadow:0 4px 20px rgba(107,143,196,0.3); display:flex; align-items:center; justify-content:center; transition:transform 0.2s; }
+  .music-btn:active { transform:scale(0.92); }
+  @keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+</style>
+</head>
+<body>
+
+<!-- CINEMATIC INTRO -->
+<div id="intro">
+  <div class="intro-line" id="il1">Somewhere between now and after...</div>
+  <div class="intro-line" id="il2">a girl sat down and kept going.</div>
+  <div class="intro-line silver" style="margin-top:22px;font-size:clamp(14px,4vw,19px)" id="il3">Some people shine.</div>
+  <div class="intro-line gold-line" style="font-size:clamp(18px,5vw,26px);letter-spacing:3px" id="il4">She was the whole sky.</div>
+  <div class="intro-line" style="margin-top:22px;font-size:clamp(11px,3vw,15px);letter-spacing:3px;color:rgba(107,143,196,0)" id="il5">She didn't know how strong she was.</div>
+  <div class="intro-line" style="font-size:clamp(11px,3vw,15px);letter-spacing:3px;color:rgba(107,143,196,0)" id="il6">She just knew she couldn't stop.</div>
+  <div class="intro-line gold-line" style="margin-top:28px;font-size:clamp(24px,7vw,36px);letter-spacing:8px" id="il7">KOKA.</div>
+  <button class="intro-skip" onclick="skipIntro()">tap to skip</button>
+</div>
+
+<!-- WISH MODAL -->
+<div id="wish-modal">
+  <div class="wish-star">⭐</div>
+  <div class="wish-title">You caught a shooting star</div>
+  <div class="wish-sub">Make a wish — it's yours to keep 🌙</div>
+  <input class="wish-input" id="wish-input" type="text" placeholder="I wish..." maxlength="120"/>
+  <button class="wish-btn" onclick="saveWish()">✦ Send it to the stars ✦</button>
+  <button class="wish-close" onclick="closeWish()">maybe later</button>
+  <div class="wish-saved" id="wish-saved"></div>
+</div>
+
+<div id="breath-overlay"></div>
+<canvas id="stars-canvas"></canvas>
+<canvas id="wish-canvas"></canvas>
+<div class="bg-atm"></div>
+
+<div class="page" id="main-page">
+
+  <div class="hero">
+    <div class="hero-moon">🌙</div>
+    <div class="hero-eyebrow">Day 3 — A letter from the future</div>
+    <h1 class="hero-title">KOKA.</h1>
+    <div class="hero-line"></div>
+    <p class="hero-sub">She made it. And so will you.</p>
+    <div class="hero-tag">✦ Still here. Still standing. Still her. ✦</div>
+    <div class="scroll-hint">read on ↓</div>
+  </div>
+
+  <div class="divider"><div class="div-line"></div><div class="div-diamond"></div><div class="div-line"></div></div>
+
+  <!-- Moon phase -->
+  <div class="moon-section">
+    <div class="section-label">Tonight's moon & your energy</div>
+    <div class="moon-card">
+      <span class="moon-phase-emoji" id="moon-emoji">🌙</span>
+      <div class="moon-phase-name" id="moon-name">Waxing Gibbous</div>
+      <div class="moon-phase-energy" id="moon-energy">Energy: Building & Powerful</div>
+      <div class="moon-phase-msg" id="moon-msg">The moon is almost full — and so are you. This is a time of momentum. Everything you've been building is about to peak. Keep going.</div>
+    </div>
+  </div>
+
+  <!-- Mood -->
+  <div class="mood-section">
+    <div class="section-label">How are you feeling right now?</div>
+    <div class="mood-card">
+      <div class="mood-question">"Be honest with yourself for a second..."</div>
+      <div class="mood-options">
+        <div class="mood-btn" onclick="selectMood(this,'tired')"><span class="mood-emoji">😮‍💨</span><span class="mood-label">Tired</span></div>
+        <div class="mood-btn" onclick="selectMood(this,'neutral')"><span class="mood-emoji">😶</span><span class="mood-label">Neutral</span></div>
+        <div class="mood-btn" onclick="selectMood(this,'fine')"><span class="mood-emoji">✨</span><span class="mood-label">Fine</span></div>
+      </div>
+      <div class="mood-response" id="mood-response"></div>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-section">
+    <div class="section-label">Your journey so far</div>
+    <div class="progress-top"><span>Exam week progress</span><strong>3 of 7 done</strong></div>
+    <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
+    <div class="progress-stars" id="prog-stars"></div>
+  </div>
+
+  <!-- Saved wish -->
+  <div class="saved-wish-section" id="saved-wish-section">
+    <div class="section-label">Your wish 🌟</div>
+    <div class="saved-wish-card">
+      <div class="saved-wish-label">Sent to the stars</div>
+      <div class="saved-wish-text" id="saved-wish-display"></div>
+    </div>
+  </div>
+
+  <!-- Message -->
+  <div class="message-section">
+    <div class="section-label">A letter from the future</div>
+    <div class="message-card">
+      <div class="letter-stamp">
+        <div class="stamp-line"></div>
+        <div class="stamp-text">From: Future KOKA &nbsp;·&nbsp; To: You, right now</div>
+        <div class="stamp-line"></div>
+      </div>
+      <div class="msg-text" id="msg-text"></div>
+    </div>
+  </div>
+
+  <div class="badge-section">
+    <div class="badge">🌙 Exam #3: CONQUERED 🌙</div>
+  </div>
+
+</div>
+
+<div id="msg-src" style="display:none">
+  <p data-type="name">Hey. It's me — you.</p>
+  <p>Well, technically it's you from the other side of this exam week. From the version of you who already lived through what you're going through right now — the exhaustion, the self-doubt, the mornings where getting out of bed felt like climbing a mountain.</p>
+  <p>I came back to tell you something important: you made it. All of it. Every single exam, every sleepless night, every moment you sat in that room and thought "I don't know enough" — you got through it. And you did it as yourself. Completely, beautifully yourself.</p>
+  <p>But what I really want to tell you — what I wish someone had told me when I was sitting exactly where you are right now — is this: the version of you that exists in this moment, tired and scared and still trying? That is the version I am most proud of. Not the one who finished. The one who kept going even when she didn't want to.</p>
+  <p>You are three exams in. Three. Do you understand how much that took? Don't rush past that. Sit with it for a second. You did that.</p>
+  <p>I know the road still feels long. But I promise you — from here, looking back — it was worth every single second. And so are you.</p>
+  <p data-type="last">With all the love I have — from your future self 🌙</p>
+</div>
+<button class="wish-trigger" id="wish-trigger" onclick="openWish()" style="display:none;position:fixed;bottom:88px;right:24px;z-index:100;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#C9A96E,#E8C98A);border:1px solid rgba(201,169,110,0.4);cursor:pointer;font-size:24px;box-shadow:0 4px 20px rgba(201,169,110,0.5);display:none;align-items:center;justify-content:center;animation:pulse 1s ease-in-out infinite;">⭐</button>
+<button class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</button>
+<audio id="bgMusic" loop>
+  <source src="./song.mp3" type="audio/mpeg"/>
+</audio>
+
+<script>
+/* ══ CINEMATIC INTRO ══ */
+const introSeq = [
+  {id:'il1', delay:500},
+  {id:'il2', delay:1700},
+  {id:'il3', delay:3100},
+  {id:'il4', delay:4000},
+  {id:'il5', delay:5400},
+  {id:'il6', delay:6300},
+  {id:'il7', delay:7600},
+];
+let introTimers = [];
+function runIntro(){
+  introSeq.forEach(({id,delay})=>{
+    introTimers.push(setTimeout(()=>{
+      const el=document.getElementById(id);
+      if(el) el.classList.add('show');
+    }, delay));
+  });
+  introTimers.push(setTimeout(()=>dismissIntro(), 9500));
+}
+function dismissIntro(){
+  introTimers.forEach(t=>clearTimeout(t));
+  const intro=document.getElementById('intro');
+  intro.classList.add('fade-out');
+  setTimeout(()=>{
+    intro.style.display='none';
+    document.getElementById('main-page').classList.add('visible');
+    startMain();
+  },1200);
+}
+function skipIntro(){ introTimers.forEach(t=>clearTimeout(t)); dismissIntro(); }
+runIntro();
+
+/* ══ AUDIO ANALYSER for visualizer ══ */
+let analyser=null, dataArray=null, audioCtx=null, sourceNode=null, visualizerBeat=0;
+function initAnalyser(){
+  if(analyser) return;
+  try {
+    audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 64;
+    dataArray = new Uint8Array(analyser.frequencyBinCount);
+    sourceNode = audioCtx.createMediaElementSource(document.getElementById('bgMusic'));
+    sourceNode.connect(analyser);
+    analyser.connect(audioCtx.destination);
+  } catch(e){ analyser=null; }
+}
+function getBeat(){
+  if(!analyser) return 0;
+  analyser.getByteFrequencyData(dataArray);
+  let sum=0; for(let i=0;i<8;i++) sum+=dataArray[i];
+  return sum/(8*255);
+}
+
+/* ══ STARFIELD + SHOOTING STARS + VISUALIZER ══ */
+let shootersList = [];
+let wishShooters = []; // tracked for tapping
+
+(function(){
+  const canvas=document.getElementById('stars-canvas');
+  const ctx=canvas.getContext('2d');
+  function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
+  resize(); window.addEventListener('resize',resize);
+
+  const stars=[];
+  for(let i=0;i<200;i++) stars.push({
+    x:Math.random()*canvas.width, y:Math.random()*canvas.height,
+    r:Math.random()*1.2+0.2, baseR:Math.random()*1.2+0.2,
+    alpha:Math.random()*0.7+0.1, phase:Math.random()*Math.PI*2,
+    speed:Math.random()*0.003+0.001
+  });
+
+  const glows=[];
+  for(let i=0;i<15;i++) glows.push({
+    x:Math.random()*canvas.width, y:Math.random()*canvas.height,
+    r:Math.random()*2+1, phase:Math.random()*Math.PI*2, speed:Math.random()*0.004+0.002
+  });
+
+  function spawnShooter(){
+    const s={
+      x:Math.random()*canvas.width*0.7,
+      y:Math.random()*canvas.height*0.35,
+      speed:Math.random()*2+1.5,
+      angle:Math.PI/4+(Math.random()-0.5)*0.3,
+      alpha:1, life:0, width:Math.random()*6+8,
+      trail:[], tappable:true
+    };
+    shootersList.push(s);
+    wishShooters.push(s);
+    document.getElementById('wish-trigger').style.display='flex';
+    setTimeout(()=> document.getElementById('wish-trigger').style.display='none', 6000);
+  }
+  function scheduleShooter(){
+    setTimeout(()=>{ spawnShooter(); scheduleShooter(); }, 1500+Math.random()*1500);
+  }
+  scheduleShooter();
+
+  let t=0;
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    t+=0.01;
+    const beat = getBeat();
+    visualizerBeat = beat;
+
+    stars.forEach(s=>{
+      // Pulse with music beat
+      const beatBoost = 1 + beat*1.5;
+      const a=s.alpha*(0.5+0.5*Math.sin(t*s.speed*100+s.phase));
+      const r=s.baseR*beatBoost;
+      ctx.beginPath(); ctx.arc(s.x,s.y,r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(200,212,227,${a})`; ctx.fill();
+      // Extra glow on beat
+      if(beat>0.3){
+        ctx.beginPath(); ctx.arc(s.x,s.y,r*2.5,0,Math.PI*2);
+        ctx.fillStyle=`rgba(107,143,196,${beat*0.15})`; ctx.fill();
+      }
+    });
+
+    glows.forEach(s=>{
+      const a=(0.35+0.35*Math.sin(t*s.speed*100+s.phase))*(1+beat*0.5);
+      const g=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*5*(1+beat));
+      g.addColorStop(0,`rgba(107,143,196,${a})`);
+      g.addColorStop(1,'rgba(107,143,196,0)');
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r*5,0,Math.PI*2); ctx.fillStyle=g; ctx.fill();
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(230,240,255,${a})`; ctx.fill();
+    });
+
+    for(let i=shootersList.length-1;i>=0;i--){
+      const s=shootersList[i];
+      s.x+=Math.cos(s.angle)*s.speed;
+      s.y+=Math.sin(s.angle)*s.speed;
+      s.trail.push({x:s.x,y:s.y});
+      if(s.trail.length>20) s.trail.shift();
+      s.alpha-=0.003;
+      if(s.alpha<=0||s.x>canvas.width+50||s.y>canvas.height+50){
+        shootersList.splice(i,1);
+        const wi=wishShooters.indexOf(s);
+        if(wi>-1) wishShooters.splice(wi,1);
+        continue;
+      }
+      if(s.trail.length>1){
+        for(let j=1;j<s.trail.length;j++){
+          const prog=j/s.trail.length;
+          ctx.beginPath();
+          ctx.moveTo(s.trail[j-1].x,s.trail[j-1].y);
+          ctx.lineTo(s.trail[j].x,s.trail[j].y);
+          ctx.strokeStyle=`rgba(220,235,255,${prog*s.alpha*0.9})`;
+          ctx.lineWidth=s.width*prog; ctx.stroke();
+        }
+      }
+      const hg=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.width*4);
+      hg.addColorStop(0,`rgba(255,255,255,${s.alpha})`);
+      hg.addColorStop(1,'rgba(200,220,255,0)');
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.width*4,0,Math.PI*2);
+      ctx.fillStyle=hg; ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ══ WISH — tap shooting star ══ */
+let wishOpen = false;
+document.getElementById('wish-canvas').addEventListener('click', function(e){
+  if(wishOpen) return;
+  const rect = this.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  // Check if tap is near any shooter's head
+  for(const s of shootersList){
+    const dist = Math.hypot(s.x-mx, s.y-my);
+    if(dist < 120){
+      openWish(); return;
+    }
+  }
+});
+
+function showWishHint(){
+  const h=document.createElement('div');
+  h.className='wish-hint';
+  h.textContent='✦ Tap a shooting star to make a wish 🌟';
+  document.body.appendChild(h);
+  // Make wish canvas interactive
+  document.getElementById('wish-canvas').classList.add('active');
+  setTimeout(()=>{ h.remove(); }, 5500);
+}
+
+function openWish(){
+  wishOpen=true;
+  document.getElementById('wish-modal').classList.add('show');
+  setTimeout(()=> document.getElementById('wish-input').focus(), 300);
+}
+function closeWish(){
+  wishOpen=false;
+  document.getElementById('wish-modal').classList.remove('show');
+}
+function saveWish(){
+  const val = document.getElementById('wish-input').value.trim();
+  if(!val) return;
+  const saved = document.getElementById('wish-saved');
+  saved.textContent = '🌟 "' + val + '" — sent to the stars forever';
+  saved.classList.add('show');
+  // Show in page
+  document.getElementById('saved-wish-display').textContent = '"' + val + '"';
+  document.getElementById('saved-wish-section').classList.add('show');
+  setTimeout(()=>{
+    closeWish();
+  }, 2200);
+}
+document.getElementById('wish-input').addEventListener('keydown', e=>{ if(e.key==='Enter') saveWish(); });
+
+/* ══ MOON PHASE ══ */
+function getMoonPhase(){
+  const now=new Date();
+  const lnm=new Date('2025-03-29'); // known new moon
+  const days=(now-lnm)/(1000*60*60*24);
+  const cycle=days%29.53;
+  if(cycle<1.85)  return {e:'🌑',n:'New Moon',      en:'Energy: Fresh Beginnings',  m:'A new cycle begins. This is your moment to set intentions and start fresh. Whatever you plant tonight will grow.'};
+  if(cycle<5.54)  return {e:'🌒',n:'Waxing Crescent',en:'Energy: Hope & Intention',   m:'The light is growing — just like your strength. Every step forward right now is building something beautiful.'};
+  if(cycle<9.22)  return {e:'🌓',n:'First Quarter',  en:'Energy: Action & Push',      m:'This moon is all about pushing through. Challenges right now are meant to be overcome. You have the energy — use it.'};
+  if(cycle<12.91) return {e:'🌔',n:'Waxing Gibbous', en:'Energy: Building & Powerful', m:'The moon is almost full — and so are you. This is a time of momentum. Everything you\'ve been building is about to peak.'};
+  if(cycle<16.61) return {e:'🌕',n:'Full Moon',       en:'Energy: Peak Power',          m:'Full moon energy is yours tonight. You are at your brightest, your most powerful. The world can feel it. So can you.'};
+  if(cycle<20.30) return {e:'🌖',n:'Waning Gibbous', en:'Energy: Gratitude & Release', m:'Time to release what no longer serves you. Let go of the pressure. You\'ve done so much — allow yourself to receive.'};
+  if(cycle<23.99) return {e:'🌗',n:'Last Quarter',   en:'Energy: Reflection & Rest',   m:'The moon is resting, and so should you. Reflection tonight will give you clarity tomorrow. You\'ve earned stillness.'};
+  if(cycle<27.68) return {e:'🌘',n:'Waning Crescent',en:'Energy: Surrender & Peace',   m:'The quietest, most magical phase. Surrender to the process. What\'s meant for you is already on its way.'};
+  return {e:'🌑',n:'New Moon',en:'Energy: Fresh Beginnings',m:'A new cycle begins. This is your moment to start fresh.'};
+}
+function renderMoon(){
+  const m=getMoonPhase();
+  document.getElementById('moon-emoji').textContent=m.e;
+  document.getElementById('moon-name').textContent=m.n;
+  document.getElementById('moon-energy').textContent=m.en;
+  document.getElementById('moon-msg').textContent=m.m;
+}
+
+/* ══ START MAIN ══ */
+function startMain(){
+  renderMoon();
+  showWishHint();
+
+  setTimeout(()=>{
+    document.getElementById('prog-fill').style.width='43%';
+    const wrap=document.getElementById('prog-stars');
+    for(let i=0;i<7;i++){
+      const s=document.createElement('div');
+      s.className='pstar '+(i<3?'done':'todo');
+      s.textContent=i<3?'⭐':'·';
+      wrap.appendChild(s);
+    }
+  },400);
+
+  const sources=Array.from(document.querySelectorAll('#msg-src > *'));
+  const container=document.getElementById('msg-text');
+  const cursor=document.createElement('span'); cursor.className='cursor';
+  const SPEED=90; let segIndex=0;
+  function processNext(){
+    if(segIndex>=sources.length){cursor.remove();return;}
+    const el=sources[segIndex]; const type=el.dataset.type||'p'; segIndex++;
+    let cur;
+    if(type==='name'){cur=document.createElement('span');cur.className='msg-name';}
+    else if(type==='last'){cur=document.createElement('span');cur.className='msg-last';}
+    else{cur=document.createElement('p');}
+    container.appendChild(cur);
+    const words=el.textContent.trim().split(/\s+/); let wi=0;
+    const tn=document.createTextNode(''); cur.appendChild(tn); cur.appendChild(cursor);
+    function typeWord(){
+      if(wi>=words.length){cursor.remove();setTimeout(processNext,350);return;}
+      tn.nodeValue+=(wi===0?'':' ')+words[wi]; wi++;
+      cursor.remove(); cur.appendChild(cursor);
+      setTimeout(typeWord,SPEED);
+    }
+    typeWord();
+  }
+  setTimeout(processNext,800);
+}
+
+/* ══ MOOD ══ */
+const moods={
+  tired:"That's okay. Tired means you've been giving everything you have. And everything is exactly what this week needed from you. Rest your eyes for a moment — then keep going, because you always do. 💙",
+  neutral:"Neutral is underrated. It means you're steady. You're not overwhelmed, not forcing it — you're just here, showing up. That quiet strength? That's actually everything. ✨",
+  fine:"Fine?! KOKA!! That's amazing — hold onto that feeling. Let it carry you through today. You've earned every bit of this lightness. Don't let anyone or anything take it from you. 🌙"
+};
+function selectMood(btn,mood){
+  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const r=document.getElementById('mood-response');
+  r.textContent=moods[mood]; r.classList.remove('show');
+  setTimeout(()=>r.classList.add('show'),50);
+}
+
+/* ══ MUSIC ══ */
+let playing=false;
+const music=document.getElementById('bgMusic');
+const btn=document.getElementById('musicBtn');
+music.volume=0.4;
+function toggleMusic(){
+  if(playing){music.pause();btn.textContent='🎵';btn.style.animation='';}
+  else{
+    initAnalyser();
+    if(audioCtx&&audioCtx.state==='suspended') audioCtx.resume();
+    music.play().catch(()=>{});
+    btn.textContent='🎶'; btn.style.animation='spin 3s linear infinite';
+  }
+  playing=!playing;
+}
+document.body.addEventListener('click',function t(){
+  if(!playing) toggleMusic();
+  document.body.removeEventListener('click',t);
+},{once:true});
+</script>
+</body>
+</html>
